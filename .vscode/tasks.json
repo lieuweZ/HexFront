@@ -1,0 +1,60 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/game/BaseProject.sln",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary;ForceNoAlign"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "publish",
+                "${workspaceFolder}/game/BaseProject.sln",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary;ForceNoAlign",
+				"-c",
+                "Release"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "watch",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "watch",
+                "run",
+                "--project",
+                "${workspaceFolder}/game/BaseProject.sln"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "MonoGame Content Builder (MGCB)",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "mgcb-editor",
+                "${workspaceFolder}/game/Content/Content.mgcb"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/game"
+            },
+            "problemMatcher": []
+        }
+    ]
+}
