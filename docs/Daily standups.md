@@ -1,7 +1,7 @@
 ### daily standup
 
 #### formaat
-Naame. activiteit van gister, activiteit van vaandaag, Obstakel
+Naam. activiteit van gister. activiteit van vaandaag. Obstakel.
 
 ##### 2025 04 10
 Daamin gister niks gedaan aan het project maar gedacht over de prototype. Gdd en papier prototype. Geen obstakels
