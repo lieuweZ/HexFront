@@ -1,7 +1,7 @@
 ### daily standup
 
 #### formaat
-Naam. activiteit van gister. activiteit van vaandaag. Obstakel.
+Naam. activiteit van gister. activiteit van vandag. Obstakel.
 
 ##### 2025 04 10
 Daamin gister niks gedaan aan het project maar gedacht over de prototype. Gdd en papier prototype. Geen obstakels
@@ -32,3 +32,10 @@ Daamin niks gedaan in het weekend, sprint planning bericht naar mike sturen, als
 Lieuwe niks gedaan, sprint planning, geen obstakels.
 
 Lehan niks gedaan, sprint planning en mogelijke besprekingen, geen obstakels
+
+##### 2025 04 15
+
+Lieuwe. sprint planning gewerkt naar bestaande code gekeken. units programeren. geen obstakels.
+Daamin. Sprint planning. Main menu maken. geen obstakels
+nicolaas. gewerkt aan de sprint planning. userstories controleren. geen obstakels.
+Lehan. De grid te laten tekenen. De grid op een goede manier te laten tekenen met kleur. geen obstakels.
