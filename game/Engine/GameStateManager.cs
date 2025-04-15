@@ -12,6 +12,7 @@ public class GameStateManager : IGameLoopObject
     public const string LOBBY_JOIN_GAME_STATE = "Lobby Join Game";
     public const string GAME_STATE = "Game";
     public const string GO_TO_PREVIOUS_SCREEN = "GO TO PREVIOUS SCREEN";
+    public const string MAIN_MENU = "Main Menu";
 
     private readonly Stack<string> previousGameStates = new Stack<string>();
     private string currentStateName = string.Empty;
@@ -42,7 +43,7 @@ public class GameStateManager : IGameLoopObject
         }
         else
         {
-			SwitchToState(name);
+            SwitchToState(name);
         }
     }
 

@@ -7,7 +7,7 @@ namespace BaseProject
         [STAThread]
         static void Main()
         {
-            using (var game = new Game())
+            using (var game = new HexFront())
                 game.Run();
         }
     }
