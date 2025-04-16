@@ -163,9 +163,9 @@ namespace Blok3Game.Engine.GameObjects
 
 		public void GridMouseInput(Vector2 cell)
 		{
-            Cell box = new Cell();
-			box.cell.Color = 0xff00ff;
-            this.Add(box, (int)cell.X, (int)cell.Y);
+            Cube box = new Cube();
+            Cell cl = (Cell)(this.Get((int)cell.X, (int)cell.Y));
+            cl.SetObject(box);
         }
 
         public override void Reset()
