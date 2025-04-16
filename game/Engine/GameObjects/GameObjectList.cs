@@ -97,7 +97,11 @@ namespace Blok3Game.Engine.GameObjects
 				return;
 			}
 
-			foreach (GameObject obj in children)
+			if(true)
+            DebugDraw(gameTime, spriteBatch);
+
+
+            foreach (GameObject obj in children)
 			{
 				obj.Draw(gameTime, spriteBatch);
 			}
@@ -111,5 +115,7 @@ namespace Blok3Game.Engine.GameObjects
 				obj.Reset();
 			}
 		}
+
+
 	}
 }

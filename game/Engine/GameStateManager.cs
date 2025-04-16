@@ -115,4 +115,8 @@ public class GameStateManager : IGameLoopObject
             currentGameState.Reset();
         }
     }
+
+    public void DebugDraw(GameTime gameTime, SpriteBatch spriteBatch)
+    {
+    }
 }
