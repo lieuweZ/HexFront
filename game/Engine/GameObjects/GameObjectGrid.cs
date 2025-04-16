@@ -22,7 +22,8 @@ namespace Blok3Game.Engine.GameObjects
 				for (int y = 0; y < rows; y++)
 				{
 					grid[x, y] = null;
-				}
+                    Add(new Cell(),x,y);
+                }
 			}
 		}
 
@@ -119,13 +120,12 @@ namespace Blok3Game.Engine.GameObjects
 
 		public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
 		{
-            DebugDraw(gameTime, spriteBatch);
             foreach (GameObject obj in grid)
 			{
                 if (obj != null)
                     obj.Draw(gameTime, spriteBatch);
 			}
-
+            DebugDraw(gameTime, spriteBatch);
         }
 
         public override void DebugDraw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -140,7 +140,7 @@ namespace Blok3Game.Engine.GameObjects
 					int PosY = (int)(40 + j * (tileScale / 1.35));
 
 
-                    Color cl = new Color(GetColorEGA((i + j * Rows)));
+                    Color cl = new Color(DrawingHelper.GetColorEGA((i + j * Rows)));
 
 					if (MousePos.X > PosX && MousePos.X < PosX + tileScale && MousePos.Y > PosY && MousePos.Y < PosY + tileScale)
 						if (DrawingHelper.InsideHexagon(new Rectangle(PosX, PosY, tileScale, tileScale), MousePos))
@@ -150,17 +150,21 @@ namespace Blok3Game.Engine.GameObjects
 							{
 								GridMouseInput(new Vector2(i, j));
                             }
-						}
+							GameObject ce = this.Get(i, j);
+                            ce.DebugDraw(gameTime, spriteBatch);
+
+                        }
 
 
-                    DrawingHelper.FillHexagon(new Rectangle(PosX, PosY, tileScale, tileScale), spriteBatch, cl);
+                    //DrawingHelper.FillHexagon(new Rectangle(PosX, PosY, tileScale, tileScale), spriteBatch, cl);
                 }
 			}
         }
 
 		public void GridMouseInput(Vector2 cell)
 		{
-            Box box = new Box();
+            Cell box = new Cell();
+			box.cell.Color = 0xff00ff;
             this.Add(box, (int)cell.X, (int)cell.Y);
         }
 
@@ -173,103 +177,5 @@ namespace Blok3Game.Engine.GameObjects
 				obj.Reset();
 			}
 		}
-
-		public uint GetColorCGA(int colorNumber)
-        {
-            float red = 2F / 3F * (colorNumber & 4) / 4F + 1F / 3F * (colorNumber & 8) / 8F;
-            float green = 2F / 3F * (colorNumber & 2) / 2F + 1F / 3F * (colorNumber & 8) / 8F;
-            float blue = 2F / 3F * (colorNumber & 1) / 1F + 1F / 3F * (colorNumber & 8) / 8F;
-
-            if (colorNumber == 6)
-                green = green * 2 / 3;
-
-            uint color = (uint)(255) << 24 | (uint)(red * 255) << 16 | (uint)(green * 255) << 8 | (uint)(blue * 255);
-
-            return color;
-        }
-
-
-        public uint GetColorEGA(int colorNumber)
-        {
-            int[] colorbin = new int[6];
-            int[] binary = new int[6];
-
-
-            for (int i = colorNumber; i > 0;i--)
-            {
-                binary[binary.Length - 1] += 1;
-                for (int j = binary.Length - 1; j > 0;j--)
-                {
-                    if (binary[j] > 1)
-                    {
-                        binary[j] = 0;
-                        binary[j - 1]++;
-                    }
-                }
-            }
-
-
-            int limit = binary.Length;
-
-            if (colorbin.Length < limit)
-            {
-                limit = colorbin.Length;
-            }
-
-            for (int i = 0; i < limit; i++)
-            {
-                colorbin[colorbin.Length - 1 - i] = binary[limit - 1 - i];
-            }
-
-
-            float red = (colorbin[colorbin.Length - 3] == 1 ? (2F / 3F) : 0) + (colorbin[0] == 1 ? (1F / 3F) : 0);
-            float green = (colorbin[colorbin.Length - 2] == 1 ? (2F / 3F) : 0) + (colorbin[1] == 1 ? (1F / 3F) : 0);
-            float blue = (colorbin[colorbin.Length - 1] == 1 ? (2F / 3F) : 0) + (colorbin[2] == 1 ? (1F / 3F) : 0);
-
-            uint color = (uint)(255) << 24 | (uint)(red * 255) << 16 | (uint)(green * 255) << 8 | (uint)(blue * 255);
-
-            return color;
-        }
-
-        public uint GetColorXGA(int colorNumber)
-        {
-            int[] colorbin = new int[6];
-            int[] binary = new int[6];
-
-
-            for (int i = colorNumber; i > 0; i--)
-            {
-                binary[binary.Length - 1] += 1;
-                for (int j = binary.Length - 1; j > 0; j--)
-                {
-                    if (binary[j] > 2)
-                    {
-                        binary[j] = 0;
-                        binary[j - 1]++;
-                    }
-                }
-            }
-
-			
-            int limit = binary.Length;
-
-            if (colorbin.Length < limit)
-            {
-                limit = colorbin.Length;
-            }
-
-            for (int i = 0; i < limit; i++)
-            {
-                colorbin[colorbin.Length - 1 - i] = binary[limit - 1 - i];
-            }
-			
-            float red = (colorbin[colorbin.Length - 3] == 1 ? (2F / 4F) : 0) + (colorbin[0] == 1 ? (1F / 4F) : 0);
-            float green = (colorbin[colorbin.Length - 2] == 1 ? (2F / 4F) : 0) + (colorbin[1] == 1 ? (1F / 4F) : 0);
-            float blue = (colorbin[colorbin.Length - 1] == 1 ? (2F / 4F) : 0) + (colorbin[2] == 1 ? (1F / 4F) : 0);
-
-            uint color = (uint)(255) << 24 | (uint)(red * 255) << 16 | (uint)(green * 255) << 8 | (uint)(blue * 255);
-
-            return color;
-        }
     }
 }

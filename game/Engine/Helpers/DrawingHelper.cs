@@ -117,5 +117,62 @@ namespace Blok3Game.Engine.Helpers
                 spriteBatch.Draw(pixel, new Rectangle(r.X + r.Width / 2 - i, (int)(r.Y + r.Height - i * (1.0 - disp)), bw, bw), col); // Top
             }
         }
+
+        public static uint GetColorCGA(int colorNumber)
+        {
+            float red = 2F / 3F * (colorNumber & 4) / 4F + 1F / 3F * (colorNumber & 8) / 8F;
+            float green = 2F / 3F * (colorNumber & 2) / 2F + 1F / 3F * (colorNumber & 8) / 8F;
+            float blue = 2F / 3F * (colorNumber & 1) / 1F + 1F / 3F * (colorNumber & 8) / 8F;
+
+            if (colorNumber == 6)
+                green = green * 2 / 3;
+
+            uint color = (uint)(255) << 24 | (uint)(red * 255) << 16 | (uint)(green * 255) << 8 | (uint)(blue * 255);
+
+            return color;
+        }
+
+
+        public static uint GetColorEGA(int colorNumber)
+        {
+            int[] colorbin = new int[6];
+            int[] binary = new int[6];
+
+
+            for (int i = colorNumber; i > 0; i--)
+            {
+                binary[binary.Length - 1] += 1;
+                for (int j = binary.Length - 1; j > 0; j--)
+                {
+                    if (binary[j] > 1)
+                    {
+                        binary[j] = 0;
+                        binary[j - 1]++;
+                    }
+                }
+            }
+
+
+            int limit = binary.Length;
+
+            if (colorbin.Length < limit)
+            {
+                limit = colorbin.Length;
+            }
+
+            for (int i = 0; i < limit; i++)
+            {
+                colorbin[colorbin.Length - 1 - i] = binary[limit - 1 - i];
+            }
+
+
+            float red = (colorbin[colorbin.Length - 3] == 1 ? (2F / 3F) : 0) + (colorbin[0] == 1 ? (1F / 3F) : 0);
+            float green = (colorbin[colorbin.Length - 2] == 1 ? (2F / 3F) : 0) + (colorbin[1] == 1 ? (1F / 3F) : 0);
+            float blue = (colorbin[colorbin.Length - 1] == 1 ? (2F / 3F) : 0) + (colorbin[2] == 1 ? (1F / 3F) : 0);
+
+            uint color = (uint)(255) << 24 | (uint)(red * 255) << 16 | (uint)(green * 255) << 8 | (uint)(blue * 255);
+
+            return color;
+        }
     }
 }
