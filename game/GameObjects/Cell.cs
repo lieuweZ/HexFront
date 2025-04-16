@@ -32,6 +32,15 @@ namespace Blok3Game.GameObjects
             obj.Position = this.position + obj.Position;
         }
 
+        public override void Update(GameTime gameTime)
+        {
+            if (Obj != null)
+            {
+                Obj.Update(gameTime);
+            }
+        }
+
+
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             DrawingHelper.FillHexagon(new Rectangle((int)this.position.X, (int)this.position.Y, tileScale, tileScale), spriteBatch, new Color(cell.Color));
