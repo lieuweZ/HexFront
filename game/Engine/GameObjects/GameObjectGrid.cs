@@ -31,9 +31,9 @@ namespace Blok3Game.Engine.GameObjects
 		{
 			grid[x, y] = obj;
 			obj.Parent = this;
-            float dispX = (((int)y & 1) * tileScale / 2F);
+            float dispX = (((int)y & 1) * (tileScale / 1.825F));
 
-            int PosX = (int)(40 + x * (tileScale + tileScale / 10) - dispX + tileScale / 10);
+            int PosX = (int)(40 + x * (tileScale + tileScale / 10) - dispX + tileScale / 2.95);
             int PosY = (int)(40 + y * (tileScale / 1.35));
             obj.Position = new Vector2(PosX, PosY) + obj.Position;
         }
@@ -134,9 +134,9 @@ namespace Blok3Game.Engine.GameObjects
 			{
 				for(int j = 0; j < Columns; j++)
 				{
-                    float dispX = ((j & 1) * tileScale / 2F);
+                    float dispX = ((j & 1) * tileScale / 1.825F);
 
-					int PosX = (int)(40 + i * (tileScale + tileScale / 10) - dispX + tileScale / 10);
+					int PosX = (int)(40 + i * (tileScale + tileScale / 10) - dispX + tileScale / 2.95);
 					int PosY = (int)(40 + j * (tileScale / 1.35));
 
 
