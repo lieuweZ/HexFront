@@ -8,12 +8,12 @@ namespace Blok3Game.GameObjects
 {
     public class Player : GameObject
     {
-        private static bool myTurn = true;
-        private static Timer turnTimer;
-        private List<ResourceType> resources;
-        private List<GameObject> hand;
-        private GameObject centralBuilding;
-        private bool surrendered;
+        public static bool myTurn = true;
+        public static Timer turnTimer;
+        public List<ResourceType> resources;
+        public List<GameObject> hand;
+        public GameObject centralBuilding;
+        public bool surrendered;
 
         public Player()
         {
