@@ -23,7 +23,7 @@ namespace BaseProject
             GameStateManager.AddGameState(GameStateManager.LOBBY_JOIN_GAME_STATE, new LobbyJoinGameState());
             GameStateManager.AddGameState(GameStateManager.LOBBY_WAIT_FOR_PLAYERS_STATE, new LobbyWaitForPlayersState());
             GameStateManager.AddGameState(GameStateManager.GAME_STATE, new GameState());
-            GameStateManager.SwitchTo(GameStateManager.GAME_STATE);
+            GameStateManager.SwitchTo(GameStateManager.LOBBY_JOIN_OR_CREATE_STATE);
         }
 
 		protected override void OnExiting(object sender, EventArgs args)

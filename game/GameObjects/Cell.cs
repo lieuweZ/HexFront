@@ -55,8 +55,8 @@ namespace Blok3Game.GameObjects
             }
 
             
-
-
+            
+            
             //DrawingHelper.FillRectangle(new Rectangle((int)this.position.X, (int)this.position.Y, 25, 25), spriteBatch, Color.Blue);
         }
     }
