@@ -14,6 +14,7 @@ namespace BaseProject
     {
         public static HexFront self;
         public int CellScale;
+        public int OverrideCellScale = 16;
         protected override void LoadContent()
         {
             base.LoadContent();

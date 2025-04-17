@@ -20,12 +20,12 @@ namespace Blok3Game.GameStates
         public MainMenuState() : base()
         {
             // mainMenuBackground = GameEnvironment.AssetManager.GetSprite("Images/UI/background_bac");
-            // borders = new Rectangle(0, 0, mainMenuBackground.Width, mainMenuBackground.Height);
-            // TitleText = new SpriteGameObject("Images/UI/Title", 1, "Title");
-            // TitleText.Position = new Vector2(GameEnvironment.Screen.X / 2 - TitleText.Width / 2, GameEnvironment.Screen.Y * 0.1f);
+             //borders = new Rectangle(0, 0, mainMenuBackground.Width, mainMenuBackground.Height);
+             TitleText = new SpriteGameObject("Images/UI/Title", 1, "Title");
+             TitleText.Position = new Vector2(GameEnvironment.Screen.X / 2 - TitleText.Width / 2, GameEnvironment.Screen.Y * 0.1f);
 
-            GameObjectGrid grid = new GameObjectGrid(8,8);
-            grid.Interactible = false;
+            GameObjectGrid grid = new GameObjectGrid(9,10);
+            grid.Interactible = 2;
 
             Add(grid);
 
@@ -51,7 +51,7 @@ namespace Blok3Game.GameStates
             };
             Quit.Clicked += OnButtonClicked;
 
-            //  Add(TitleText);
+            Add(TitleText);
             Add(Start);
             Add(Quit);
         }
