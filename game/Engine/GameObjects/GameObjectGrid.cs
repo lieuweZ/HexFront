@@ -35,13 +35,12 @@ namespace Blok3Game.Engine.GameObjects
 
         public void Add(GameObject obj, int x, int y)
 		{
-            int tileScale = curCellScale;
+            Vector2 pos = GetHexagonPos(x, y);
+            int PosX = (int)pos.X;
+            int PosY = (int)pos.Y;
+
             grid[x, y] = obj;
 			obj.Parent = this;
-            float dispX = (((int)y & 1) * (tileScale / 1.825F));
-
-            int PosX = (int)(((tileScale * 1.5F) * (Rows == ignoreNumber ? 0.25 : 1)) + x * (tileScale + tileScale / 10) - dispX + tileScale / 2.95);
-            int PosY = (int)(((tileScale / 5) * (Rows == ignoreNumber ? 0 : 1)) + y * (tileScale / 1.35));
             obj.Position = new Vector2(PosX, PosY) + this.position;
         }
 
@@ -53,10 +52,9 @@ namespace Blok3Game.Engine.GameObjects
 			{
 				for(int y = 0;y < Rows; y++)
 				{
-                    float dispX = (((int)y & 1) * (tileScale / 1.825F));
-
-                    int PosX = (int)(((tileScale * 1.5F) * (Rows == ignoreNumber ? 0.25 : 1)) + x * (tileScale + tileScale / 10) - dispX + tileScale / 2.95);
-                    int PosY = (int)(((tileScale / 5) * (Rows == ignoreNumber ? 0 : 1)) + y * (tileScale / 1.35));
+                    Vector2 pos = GetHexagonPos(x, y);
+                    int PosX = (int)pos.X;
+                    int PosY = (int)pos.Y;
 
                     GameObject gm = this.Get(x, y);
 
@@ -167,6 +165,17 @@ namespace Blok3Game.Engine.GameObjects
             DebugDraw(gameTime, spriteBatch);
         }
 
+		public Vector2 GetHexagonPos(int i, int j)
+		{
+            int tileScale = curCellScale;
+            float dispX = ((j & 1) * tileScale / 1.825F);
+
+            int PosX = (int)(((tileScale * 1.5F) * (Rows == ignoreNumber ? 0.25 : 1)) + i * (tileScale + tileScale / 10) - dispX + tileScale / 2.95);
+            int PosY = (int)(((tileScale / 5) * (Rows == ignoreNumber ? 0 : 1)) + j * (tileScale / 1.35));
+
+			return new Vector2(PosX, PosY);
+        }
+
         public override void DebugDraw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             int tileScale = curCellScale;
@@ -174,10 +183,9 @@ namespace Blok3Game.Engine.GameObjects
 			{
 				for(int j = 0; j < Rows; j++)
 				{
-                    float dispX = ((j & 1) * tileScale / 1.825F);
-
-					int PosX = (int)(((tileScale * 1.5F) * (Rows == ignoreNumber ? 0.25 : 1)) + i * (tileScale + tileScale / 10) - dispX + tileScale / 2.95);
-					int PosY = (int)(((tileScale / 5) * (Rows == ignoreNumber ? 0 : 1)) + j * (tileScale / 1.35));
+					Vector2 pos = GetHexagonPos(i, j);
+					int PosX = (int)pos.X;
+					int PosY = (int)pos.Y;
 
 
                     Color cl = new Color(DrawingHelper.GetColorCGA((i + j * Rows)));
