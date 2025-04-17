@@ -34,6 +34,11 @@ namespace Blok3Game.GameObjects
             obj.Position = obj.Position;
         }
 
+        public void ClearObject()
+        {
+            Obj = null;
+        }
+
         public override void Update(GameTime gameTime)
         {
             if (Obj != null)

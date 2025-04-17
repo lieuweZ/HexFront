@@ -229,6 +229,25 @@ namespace Blok3Game.Engine.GameObjects
 				Cube box = new Cube();
 				Cell cl = (Cell)(this.Get((int)cell.X, (int)cell.Y));
 				cl.SetObject(box);
+				for (int i = 0; i < Columns; i++)
+				{
+					for (int j = 0; j < Rows; j++)
+					{
+						cl = (Cell)(this.Get(i, j));
+						if (cl.Obj == null)
+						{
+							return;
+						}
+					}
+				}
+				for (int i = 0; i < Columns; i++)
+				{
+					for (int j = 0; j < Rows; j++)
+					{
+						cl = (Cell)(this.Get(i, j));
+						cl.ClearObject();
+					}
+				}
 			}
         }
 
