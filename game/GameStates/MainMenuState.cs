@@ -1,6 +1,7 @@
 using System;
 using BaseProject;
 using Blok3Game.Engine.GameObjects;
+using Blok3Game.Engine.Helpers;
 using Blok3Game.Engine.JSON;
 using Blok3Game.Engine.SocketIOClient;
 using Blok3Game.Engine.UI;
@@ -22,6 +23,11 @@ namespace Blok3Game.GameStates
             // borders = new Rectangle(0, 0, mainMenuBackground.Width, mainMenuBackground.Height);
             // TitleText = new SpriteGameObject("Images/UI/Title", 1, "Title");
             // TitleText.Position = new Vector2(GameEnvironment.Screen.X / 2 - TitleText.Width / 2, GameEnvironment.Screen.Y * 0.1f);
+
+            GameObjectGrid grid = new GameObjectGrid(8,8);
+            grid.Interactible = false;
+
+            Add(grid);
 
             Texture2D buttonTexture = GameEnvironment.AssetManager.GetSprite("Images/UI/Button_Big@1x4");
             float scale = 0.2f;
@@ -50,11 +56,11 @@ namespace Blok3Game.GameStates
             Add(Quit);
         }
 
-        // public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-        // {
-        //     spriteBatch.Draw(mainMenuBackground, Vector2.Zero, borders, Color.White);
-        //     base.Draw(gameTime, spriteBatch);
-        // }
+         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+         {
+            DrawingHelper.FillRectangle(new Rectangle(0, 0, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height), spriteBatch, new Color(DrawingHelper.GetColorCGA(12)));
+            base.Draw(gameTime, spriteBatch);
+         }
 
         private void OnButtonClicked(UIElement Element)
         {

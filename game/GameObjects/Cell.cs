@@ -16,6 +16,7 @@ namespace Blok3Game.GameObjects
         public GameObject Obj;
         public ResourceType Resource;
         public CellType cell;
+        public int GlowTime = 0;
         public Cell()
         {
             cell = new CellType(DrawingHelper.GetColorEGA(34), true, false) ;

@@ -3,6 +3,7 @@ using Blok3Game.Engine.Helpers;
 using Blok3Game.GameObjects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace Blok3Game.Engine.GameObjects
 {
@@ -13,6 +14,8 @@ namespace Blok3Game.Engine.GameObjects
 		public Vector2 MousePos;
 		public bool MouseLeftState;
 		private int prevCellScale = HexFront.self.CellScale;
+		public bool Interactible = true;
+		private Random rand = new Random();
 
         public GameObjectGrid(int rows, int columns, int layer = 0, string id = "")
 			: base(layer, id)
@@ -44,9 +47,9 @@ namespace Blok3Game.Engine.GameObjects
 		{
             int tileScale = HexFront.self.CellScale;
 
-			for (int x = 0;x < 8;x++)
+			for (int x = 0;x < Rows; x++)
 			{
-				for(int y = 0;y < 8;y++)
+				for(int y = 0;y < Columns;y++)
 				{
                     float dispX = (((int)y & 1) * (tileScale / 1.825F));
 
@@ -120,9 +123,12 @@ namespace Blok3Game.Engine.GameObjects
 		public override void HandleInput(InputHelper inputHelper)
 		{
 			base.HandleInput(inputHelper);
-            MousePos = inputHelper.MousePosition;
+			if (Interactible)
+			{
+			MousePos = inputHelper.MousePosition;
 
-            MouseLeftState = inputHelper.MouseLeftButtonPressed;
+			MouseLeftState = inputHelper.MouseLeftButtonPressed;
+			}
 
             foreach (GameObject obj in grid)
 			{
@@ -171,20 +177,39 @@ namespace Blok3Game.Engine.GameObjects
 					int PosY = (int)(HexFront.self.CellScale / 5 + j * (tileScale / 1.35));
 
 
-                    Color cl = new Color(DrawingHelper.GetColorEGA((i + j * Rows)));
+                    Color cl = new Color(DrawingHelper.GetColorCGA((i + j * Rows)));
 
-					if (MousePos.X > PosX && MousePos.X < PosX + tileScale && MousePos.Y > PosY && MousePos.Y < PosY + tileScale)
+					if (Interactible)
+					{
+						if (MousePos.X > PosX && MousePos.X < PosX + tileScale && MousePos.Y > PosY && MousePos.Y < PosY + tileScale)
 						if (DrawingHelper.InsideHexagon(new Rectangle(PosX, PosY, tileScale, tileScale), MousePos))
 						{
 							cl = Color.White;
-							if(MouseLeftState)
+							if (MouseLeftState)
 							{
 								GridMouseInput(new Vector2(i, j));
-                            }
+							}
 							GameObject ce = this.Get(i, j);
-                            ce.DebugDraw(gameTime, spriteBatch);
+							ce.DebugDraw(gameTime, spriteBatch);
+						}
+					}
+					else
+					{
+                        Cell ce = (Cell)this.Get(i, j);
+                        if (rand.Next(1952) >= 1922 && ce.GlowTime == 0)
+						{
+                            ce.GlowTime = 50;
+                        } else
+						{
+							if(ce.GlowTime > 0)
+							ce.GlowTime--;
+						}
 
+						if(ce.GlowTime > 0)
+						{
+                            DrawingHelper.FillHexagon(new Rectangle(PosX, PosY, tileScale, tileScale), spriteBatch, cl);
                         }
+					}
 
 
                     //DrawingHelper.FillHexagon(new Rectangle(PosX, PosY, tileScale, tileScale), spriteBatch, cl);
