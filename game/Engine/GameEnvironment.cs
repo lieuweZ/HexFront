@@ -1,4 +1,5 @@
 ﻿using System;
+using BaseProject;
 using Blok3Game.Engine.AssetHandler;
 using Blok3Game.Engine.Helpers;
 using Microsoft.Xna.Framework;
@@ -125,10 +126,17 @@ public class GameEnvironment : Game
         {
             Exit();
         }
-        if (inputHelper.KeyPressed(Keys.F5))
+        if (inputHelper.KeyPressed(Keys.F11))
         {
             FullScreen = !FullScreen;
         }
+
+        /*if (inputHelper.KeyPressed(Keys.F2))
+        {
+            Random rand = new Random();
+            HexFront.self.UpdateScreenSize(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / rand.Next(1,4), GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / rand.Next(1, 4));
+        }*/
+        
         gameStateManager.HandleInput(inputHelper);
     }
 

@@ -13,16 +13,17 @@ namespace BaseProject
     public class HexFront : GameEnvironment
     {
         public static HexFront self;
+        public int CellScale;
         protected override void LoadContent()
         {
             base.LoadContent();
 
             self = this;
-
             screen = new Point(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
+            CellScale = screen.X / 12;
             ApplyResolutionSettings();
 
-            AssetManager.AudioManager.PlaySong("main_menu", true);
+            //AssetManager.AudioManager.PlaySong("main_menu", true);
 
             GameStateManager.AddGameState(GameStateManager.LOBBY_JOIN_OR_CREATE_STATE, new LobbyJoinOrCreateState());
             GameStateManager.AddGameState(GameStateManager.LOBBY_CREATE_GAME_STATE, new LobbyCreateGameState());
@@ -31,6 +32,13 @@ namespace BaseProject
             GameStateManager.AddGameState(GameStateManager.GAME_STATE, new GameState());
             GameStateManager.AddGameState(GameStateManager.MAIN_MENU, new MainMenuState());
             GameStateManager.SwitchTo(GameStateManager.MAIN_MENU);
+        }
+
+        public void UpdateScreenSize(int x, int y)
+        {
+            screen = new Point(x, y);
+            CellScale = screen.X / 12;
+            ApplyResolutionSettings();
         }
 
         protected override void OnExiting(object sender, EventArgs args)
