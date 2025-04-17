@@ -131,11 +131,11 @@ public class GameEnvironment : Game
             FullScreen = !FullScreen;
         }
 
-        if (inputHelper.KeyPressed(Keys.F2))
+        /*if (inputHelper.KeyPressed(Keys.F2))
         {
             Random rand = new Random();
             HexFront.self.UpdateScreenSize(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / rand.Next(1,4), GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / rand.Next(1, 4));
-        }
+        }*/
         
         gameStateManager.HandleInput(inputHelper);
     }

@@ -31,7 +31,7 @@ namespace BaseProject
             GameStateManager.AddGameState(GameStateManager.LOBBY_WAIT_FOR_PLAYERS_STATE, new LobbyWaitForPlayersState());
             GameStateManager.AddGameState(GameStateManager.GAME_STATE, new GameState());
             GameStateManager.AddGameState(GameStateManager.MAIN_MENU, new MainMenuState());
-            GameStateManager.SwitchTo(GameStateManager.LOBBY_JOIN_OR_CREATE_STATE);
+            GameStateManager.SwitchTo(GameStateManager.MAIN_MENU);
         }
 
         public void UpdateScreenSize(int x, int y)
