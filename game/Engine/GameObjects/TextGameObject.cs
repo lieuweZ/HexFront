@@ -39,7 +39,12 @@ namespace Blok3Game.Engine.GameObjects
 		public Vector2 Size
 		{
 			get
-			{ return spriteFont.MeasureString(text); }
+			{ 
+				return spriteFont.MeasureString(text); }
+			set
+			{
+                Size = spriteFont.MeasureString(text) * value;
+            }
 		}
 	}
 }
