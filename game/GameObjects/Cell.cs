@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Blok3Game.Engine.Helpers;
+using BaseProject;
 
 namespace Blok3Game.GameObjects
 {
@@ -15,7 +16,6 @@ namespace Blok3Game.GameObjects
         public GameObject Obj;
         public ResourceType Resource;
         public CellType cell;
-        private int tileScale = 82;
         public Cell()
         {
             cell = new CellType(DrawingHelper.GetColorEGA(34), true, false) ;
@@ -23,13 +23,14 @@ namespace Blok3Game.GameObjects
 
         public override void DebugDraw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            int tileScale = HexFront.self.CellScale;
             DrawingHelper.DrawHexagon(new Rectangle((int)this.position.X, (int)this.position.Y, tileScale, tileScale), spriteBatch, new Color(DrawingHelper.GetColorEGA(15)));
         }
 
         public void SetObject(GameObject obj)
         { 
             Obj = obj;
-            obj.Position = this.position + obj.Position;
+            obj.Position = obj.Position;
         }
 
         public override void Update(GameTime gameTime)
@@ -43,15 +44,18 @@ namespace Blok3Game.GameObjects
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            int tileScale = HexFront.self.CellScale;
             DrawingHelper.FillHexagon(new Rectangle((int)this.position.X, (int)this.position.Y, tileScale, tileScale), spriteBatch, new Color(cell.Color));
-            
-            if(Resource != null)
+
+            Vector2 displacementhalf = new Vector2(tileScale / 2, tileScale / 2);
+
+            if (Resource != null)
             {
-                Resource.Draw(gameTime, spriteBatch);
+                Resource.Draw(this.position + displacementhalf, gameTime, spriteBatch);
             }
             if (Obj != null)
             {
-                Obj.Draw(gameTime, spriteBatch);
+                Obj.Draw(this.position + displacementhalf, gameTime, spriteBatch);
             }
 
             

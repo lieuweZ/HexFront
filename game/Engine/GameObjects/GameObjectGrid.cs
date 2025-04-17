@@ -1,4 +1,5 @@
-﻿using Blok3Game.Engine.Helpers;
+﻿using BaseProject;
+using Blok3Game.Engine.Helpers;
 using Blok3Game.GameObjects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,7 +12,7 @@ namespace Blok3Game.Engine.GameObjects
 		protected int cellWidth = 82, cellHeight = 82;
 		public Vector2 MousePos;
 		public bool MouseLeftState;
-        private int tileScale = 82;
+		private int prevCellScale = HexFront.self.CellScale;
 
         public GameObjectGrid(int rows, int columns, int layer = 0, string id = "")
 			: base(layer, id)
@@ -29,13 +30,34 @@ namespace Blok3Game.Engine.GameObjects
 
         public void Add(GameObject obj, int x, int y)
 		{
-			grid[x, y] = obj;
+            int tileScale = HexFront.self.CellScale;
+            grid[x, y] = obj;
 			obj.Parent = this;
             float dispX = (((int)y & 1) * (tileScale / 1.825F));
 
-            int PosX = (int)(40 + x * (tileScale + tileScale / 10) - dispX + tileScale / 2.95);
-            int PosY = (int)(40 + y * (tileScale / 1.35));
+            int PosX = (int)(HexFront.self.CellScale * 1.5F + x * (tileScale + tileScale / 10) - dispX + tileScale / 2.95);
+            int PosY = (int)(HexFront.self.CellScale / 5 + y * (tileScale / 1.35));
             obj.Position = new Vector2(PosX, PosY) + obj.Position;
+        }
+
+		public void Resize()
+		{
+            int tileScale = HexFront.self.CellScale;
+
+			for (int x = 0;x < 8;x++)
+			{
+				for(int y = 0;y < 8;y++)
+				{
+                    float dispX = (((int)y & 1) * (tileScale / 1.825F));
+
+                    int PosX = (int)(HexFront.self.CellScale * 1.5F + x * (tileScale + tileScale / 10) - dispX + tileScale / 2.95);
+                    int PosY = (int)(HexFront.self.CellScale / 5 + y * (tileScale / 1.35));
+
+                    GameObject gm = this.Get(x, y);
+
+                    gm.Position = new Vector2(PosX, PosY);
+                }
+			}
         }
 
 		public GameObject Get(int x, int y)
@@ -111,7 +133,15 @@ namespace Blok3Game.Engine.GameObjects
 
 		public override void Update(GameTime gameTime)
 		{
-			foreach (GameObject obj in grid)
+			if (prevCellScale != HexFront.self.CellScale)
+			{
+				this.Resize();
+				prevCellScale = HexFront.self.CellScale;
+			}
+
+
+
+            foreach (GameObject obj in grid)
 			{
                 if (obj != null)
                     obj.Update(gameTime);
@@ -130,14 +160,15 @@ namespace Blok3Game.Engine.GameObjects
 
         public override void DebugDraw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            int tileScale = HexFront.self.CellScale;
             for (int i = 0; i < Rows; i++)
 			{
 				for(int j = 0; j < Columns; j++)
 				{
                     float dispX = ((j & 1) * tileScale / 1.825F);
 
-					int PosX = (int)(40 + i * (tileScale + tileScale / 10) - dispX + tileScale / 2.95);
-					int PosY = (int)(40 + j * (tileScale / 1.35));
+					int PosX = (int)(HexFront.self.CellScale * 1.5F + i * (tileScale + tileScale / 10) - dispX + tileScale / 2.95);
+					int PosY = (int)(HexFront.self.CellScale / 5 + j * (tileScale / 1.35));
 
 
                     Color cl = new Color(DrawingHelper.GetColorEGA((i + j * Rows)));

@@ -100,6 +100,13 @@ public class GameStateManager : IGameLoopObject
             currentGameState.Update(gameTime);
         }
     }
+    public void Draw(Vector2 displacement, GameTime gameTime, SpriteBatch spriteBatch)
+    {
+        if (currentGameState != null)
+        {
+                currentGameState.Draw(displacement, gameTime, spriteBatch);
+        }
+    }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
