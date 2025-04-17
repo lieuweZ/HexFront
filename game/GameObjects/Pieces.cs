@@ -11,12 +11,13 @@ namespace Blok3Game.Engine.GameObjects
         public string Type {get; private set;}
         public int Attack {get; private set;}
         public int Health {get; private set;}
-		public PieceObject(int id, string type, int attack, int health, string spriteName) : base(spriteName)
+		public PieceObject(int id, string type, int attack, int health, Vector2 position, string spriteName) : base(spriteName)
 		{
-            this.ID = id;
-            this.Type = type;
-            this.Attack = attack;
-            this.Health = health;
+            ID = id;
+            Type = type;
+            Attack = attack;
+            Health = health;
+            this.Position = position;
 		}
 
         public bool DamageObject (int attack) {
@@ -25,5 +26,7 @@ namespace Blok3Game.Engine.GameObjects
 
             return (this.Health - current_health) < 0;
         }
+
+ //       public void MovePiece ()
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Blok3Game.Engine.GameObjects
 {
-	public class PieceObject
+	public class ObjectManager
     {
     }
 }
