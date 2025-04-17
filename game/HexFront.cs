@@ -30,7 +30,7 @@ namespace BaseProject
             GameStateManager.AddGameState(GameStateManager.LOBBY_WAIT_FOR_PLAYERS_STATE, new LobbyWaitForPlayersState());
             GameStateManager.AddGameState(GameStateManager.GAME_STATE, new GameState());
             GameStateManager.AddGameState(GameStateManager.MAIN_MENU, new MainMenuState());
-            GameStateManager.SwitchTo(GameStateManager.MAIN_MENU);
+            GameStateManager.SwitchTo(GameStateManager.GAME_STATE);
         }
 
         protected override void OnExiting(object sender, EventArgs args)
