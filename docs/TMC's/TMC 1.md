@@ -102,8 +102,8 @@ Moodboard Nicolaas
 ## MAKE 
 
 ### Paper Prototype
-Voor het papier prototype was er eerst was er eerst een bord getekent met zeshoeken.<br>
-Toen werd er 2 vierkanten erop gezet die de functie van hoofd gebouw hadden.<br>
+Voor het papier prototype was er eerst een bord getekent met zeshoeken.<br>
+Toen werden er 2 vierkanten erop gezet die de functie van hoofd gebouw hadden.<br>
 Toen dit werd gedaan was er een soort interface gemaakt waar al de bouwbare objecten op zaten.<br>
 Er werd toen resource nodes toe gevoegt.<br>
 Hiernaa werd er een soort playtest gedaan met het getekende versie.<br>
