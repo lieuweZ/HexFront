@@ -11,15 +11,19 @@ Toen deze stap gedaan werd er weer 2 minuten gegeven om te stemmen op welke naam
 We begonnen met het verzamelen van van inspiratie, hiervoor heeft iedereen een plek gekregen waar ze afbeeldingen en plaatjes van hun inspiratie voor de game (zie afbeelingen 1,2,3,4).
 
 Moodboard Daamin
+
 ![MoodBoard](./img/daamin_mood.png){width=500}
 
 Moodboard Lehan
+
 ![MoodBoard](./img/lehan_mood.png){width=500}
 
 Moodboard Lieuwe
+
 ![MoodBoard](./img/lieuwe_mood.png){width=500}
 
 Moodboard Nicolaas
+
 ![MoodBoard](./img/nicolaas_mood.png){width=500}
 
 ### Formal Elements:
