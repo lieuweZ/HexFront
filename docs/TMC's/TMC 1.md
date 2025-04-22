@@ -8,7 +8,7 @@ Toen deze stap gedaan werd er weer 2 minuten gegeven om te stemmen op welke naam
 ![MoodBoard](./img/names.png)
 
 ### Inspiratie analyse:
-We begonnen met het verzamelen van van inspiratie, hiervoor heeft iedereen een plek gekregen waar ze afbeeldingen en plaatjes van hun inspiratie voor de game (zie afbeelingen 1,2,3,4).
+We begonnen met het verzamelen van van inspiratie, hiervoor heeft iedereen een plek gekregen waar ze afbeeldingen en plaatjes van hun inspiratie voor de game zie afbeeldingen hieronder.
 
 Moodboard Daamin
 
