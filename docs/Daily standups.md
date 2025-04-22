@@ -52,3 +52,13 @@ Daamin. verder gewerkt aan de main menu. de resource collector maken. geen obsta
 nicolaas. begon werken aan rng objecten en pieces. Verder werken aan de pieces. Geen obstakels.
 
 Lehan. De grid afgemaakt. De code mergen met de main branch. geen obstakels.
+
+##### 2025 04 22
+
+Lieuwe. 
+
+Daamin. besig met resource collector. Verder resource collector. Geen obstakels.
+
+nicolaas. Besig met de pieces. Pieces afmaken en de selectie hiervan. Geen obstakels.
+
+Lehan. De grid afgemaakt. TMC maken. geen obstakels.
