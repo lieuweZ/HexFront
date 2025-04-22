@@ -4,11 +4,11 @@
 
 ### Teamnaam 
 Voor het bedenken van de spel naam was er eerst 2 minuten gegeven om namen te bedenken voor het spel.<br>
-Toen deze stap gedaan werd er weer 2 minuten gegeven om te stemmen op welke naam we wilden idereen kreeg mogelijkheid om op twee te stemmen.
+Toen deze stap gedaan werd er weer 2 minuten gegeven om te stemmen op welke naam we wilden iedereen kreeg mogelijkheid om op twee te stemmen.
 ![MoodBoard](./img/names.png)
 
 ### Inspiratie analyse:
-We begonnen met het verzamelen van van inspiratie, hiervoor heeft iedereen een plek gekregen waar ze afbeeldingen en plaatjes van hun inspiratie voor de game zie afbeeldingen hieronder.
+We begonnen met het verzamelen van van inspiratie, hiervoor heeft iedereen een plek gekregen waar ze afbeeldingen van hun inspiratie voor de game in konden zetten zie afbeeldingen hieronder.
 
 Moodboard Daamin
 
@@ -100,6 +100,20 @@ Moodboard Nicolaas
 - Negatieve feedback loop : Je bent relatief sterk -> algemene kracht van aangeboden gebouwen wordt lager -> wordt zwakker -> algemene kracht van aangeboden gebouwen wordt hoger;
 
 ## MAKE 
+
+### Paper Prototype
+Voor het papier prototype was er eerst was er eerst een bord getekent met zeshoeken.<br>
+Toen werd er 2 vierkanten erop gezet die de functie van hoofd gebouw hadden.<br>
+Toen dit werd gedaan was er een soort interface gemaakt waar al de bouwbare objecten op zaten.<br>
+Er werd toen resource nodes toe gevoegt.<br>
+Hiernaa werd er een soort playtest gedaan met het getekende versie.<br>
+
+![prototype](./img/play.png){width=500}
+
+Tijdens het spelen werden er veranderingen toegevoegt aan de regels en veranderingen gebracht werden aan bestaande regels.<br>
+ 
+
+
 ![Main menu](./img/mainmenu.png "main menu")<br>
 Bij deze foto is het ook zichtbaar hoe de hoofd menu eruit ziet met de logo van het spel. <br>
 De achtergrond heeft als mogelijkheid om als een soort geheime mini game te kunnen werken. Het werkt als volgt je moet op elke plaat een vierkant plaatsen.<br>
