@@ -120,3 +120,5 @@ De achtergrond heeft als mogelijkheid om als een soort geheime mini game te kunn
 Op deze grid kan je zien dat er op gebouwt is je kan dit zien door de bluawe vierkant wat op de twee cellen zijn.<br>
 Deze grid kan ook een indicator geven voor wanneer de muis in een cell is.<br>
 De cell is 1 van de zeshoeken in de grid.<br>
+
+## CHECK
