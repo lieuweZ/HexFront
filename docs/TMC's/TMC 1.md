@@ -111,6 +111,51 @@ Hiernaa werd er een soort playtest gedaan met het getekende versie.<br>
 ![prototype](./img/play.png){width=500}
 
 Tijdens het spelen werden er veranderingen toegevoegt aan de regels en veranderingen gebracht werden aan bestaande regels.<br>
+
+#### Veranderingen
+
+Na / tijdens de fysieke prototype-test hebben we geobserveerd en wijzigingen aangebracht in de regels, en dit genoteerd:
+
+##### Game 1
+
+- Speler 1 leek het spel beter te begrijpen dan speler 2.  
+- Speler 1 plaatste heel snel al zijn resource collectors, terwijl speler 2 even nodig had om te volgen.  
+- Troepen trainen was een beetje onduidelijk voor speler 1, maar hij kwam er uiteindelijk wel achter.  
+- Speler 2 plaatste twee gebouwen op hetzelfde hexagon — dit mag niet. Dit moet duidelijker worden aangegeven.  
+- Het bord is momenteel vrij klein, waardoor gebouwen van speler 1 en speler 2 tegen elkaar aan liggen.  
+- Speler 2 plaatste zelfs een gebouw bovenop dat van speler 1.  
+- Spelers lijken de combat-mechanic te begrijpen, al is het nog niet helemaal duidelijk.  
+- De HP van gebouwen en de schade (damage) lijken niet in balans te zijn.  
+- Kans op stalemates is groot met deze balans.  
+- In het algemeen snappen spelers het spel, maar de balans van deze prototype moet beter.
+
+#### Feedback
+
+- Onduidelijk of je meer dan één building per tegel mag plaatsen.  
+- Defence towers zijn te sterk.  
+- Resources moeten beter verspreid worden.  
+- Bewegen en aanvallen in een plusvorm is een leuk concept, maar de uitvoering is minder goed (door slechte balans).
+
+#### Persoonlijke notities
+
+- Misschien een limiet aan het aantal gebouwen instellen.  
+- Of: mogelijkheid om een gebouw kapot te maken, waarna je er pas de volgende beurt weer iets op mag bouwen.  
+- Defence towers zijn te sterk:
+  - Ze zouden vijanden in 2 aanvallen moeten kunnen verslaan.  
+  - Ze mogen maximaal 1 vijand per beurt uitschakelen.  
+- Beweging en aanval in een plusvorm is een goed idee, maar moet beter worden uitgewerkt.
+
+#### Concrete aanpassingen
+
+- Towers mogen per beurt slechts **één unit** aanvallen in hun directe (1-tegel) omgeving.  
+- Aanvallen gebeurt in een **plusvorm**, niet in een cirkel of vierkant.  
+- Spelers kunnen een building **slopen**, waarna er **de volgende beurt** weer iets op die plek gebouwd mag worden.  
+- Buildings mogen **alleen rondom je eigen gebouwen** geplaatst worden, en **niet op een tegel waar al een building staat** (voor zowel speler als vijand).  
+- Troepen worden **geplaatst op de tile van de troop factory** (toevoegen aan handleiding).  
+- Grotere focus op units voor volgende playtest.  
+- Spelers focussen nu vooral op resource collection.  
+- Bij het slopen van buildings krijg je **resources terug**, afhankelijk van het soort gebouw.
+
  
 ### Digitale versie
 
