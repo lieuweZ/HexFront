@@ -112,7 +112,7 @@ Hiernaa werd er een soort playtest gedaan met het getekende versie.<br>
 
 Tijdens het spelen werden er veranderingen toegevoegt aan de regels en veranderingen gebracht werden aan bestaande regels.<br>
  
-
+### Digitale versie
 
 ![Main menu](./img/mainmenu.png "main menu")<br>
 Bij deze foto is het ook zichtbaar hoe de hoofd menu eruit ziet met de logo van het spel. <br>
