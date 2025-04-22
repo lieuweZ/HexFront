@@ -18,11 +18,11 @@ class SocketConnectionListener {
 		this.#databaseConnector = new MySqlDatabase();
 		this.#io = require("socket.io")(server);
 		
-		this.#roomMessageHandler = new RoomMessageHandler(this.#io, this, this.#rooms);
-		this.#gameMessageHandler = new GameMessageHandler(this.#io, this, this.#rooms);
+		this.#roomMessageHandler = new RoomMessageHandler(this.#io, this.#databaseConnector, this.#rooms);
+		this.#gameMessageHandler = new GameMessageHandler(this.#io, this.#databaseConnector, this.#rooms);
 
 		this.#handleSocketSession();
-		this.#handleIncomingConnections(this.#io);
+		this.#handleIncomingConnections();
 	}
 
 	exectutePreparedQuery(query, parameters) {
