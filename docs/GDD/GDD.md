@@ -4,7 +4,7 @@
 Een spel gemaakt door Twister, een gedreven team dat werkt aan indiegames.
 
 ## Core Concept
-- Bouw een koninkrijk, leid je troepen, en vernietig het centrale gebouw van je vijand.
+- Bouw een koninkrijk, leid je troepen, en vernietig het kasteel van je vijand.
 - In dit strategische 2D-spel draait alles om het slim opbouwen van een basis, het verzamelen van een leger en het strategisch plannen van aanvallen. Matches zijn kort (10-20 minuten), en visueel sfeervol met een cozy uitstraling.
 
 ## Main Features
