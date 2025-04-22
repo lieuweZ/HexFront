@@ -14,27 +14,27 @@ Een spel gemaakt door Twister, een gedreven team dat werkt aan indiegames.
 - Een cozy en overzichtelijke UI die spelers begeleidt zonder te overheersen.
 
 ### 🎨 Inspiratie
-- Stijl / Kleurenpalet: DotAGE;
+- Stijl / Kleurenpalet: dotAGE;
 - Hexagon Grid Design: As Far As The Eye, Dorfromantik;
 - Gameplay: Elementen uit Risk.
 
 ### 🧩 Interesting Mechanics
-- Gebied verovering via hex-tiles;
+- Gebied verovering (hex-tiles) middels gebouwen en units;
 - Resource management;
 - Dynamische events per match (bv. weersveranderingen);
 - Unieke units met speciale vaardigheden.
 
 ### 💡 Unieke Selling Points
-- Korte, bevredigende potjes met diepgang;
+- Korte potjes met diepgang;
 - Modulaire kaart die elke keer anders is;
-- Speelbaar solo of met vrienden (PvP en PvE);
-- Eenvoudige instap met strategische diepgang
+- Speelbaar tegen mensen (PvP);
+- Eenvoudige instap met strategische diepgang.
 
 ### 📐 Design Pillars
 - Toegankelijkheid: Makkelijk te leren, hoge vaardigheidsplafond;
 - Aesthetic: Rustgevende visuals in contrast met tactische gameplay;
 - Herhaalbaarheid: Procedurally generated maps zorgen voor variatie in elke match;
-- Gemeenschap: Spelvormen competitie ondersteunen.
+- Competitie: Spelvormen competitie ondersteunen.
 
 ## Doelgroep:
 - Liefhebbers van turn-based strategy games;
