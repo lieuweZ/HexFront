@@ -1,0 +1,24 @@
+<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><help_text></help_text><element><id>UMLClass</id><coordinates><x>280</x><y>120</y><w>210</w><h>190</h></coordinates><panel_attributes>Player
+--
+--
+-Timer:turnTimer
+-List&lt;ResourceType&gt;:resources
+-List&lt;GameObject&gt; :hand
+-GameObject:centralBuilding
+-bool:surrendered
+--
+/+endTurn()/
+/+Update()/
+/+OnTimedEvent()/</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>980</x><y>100</y><w>210</w><h>190</h></coordinates><panel_attributes>&lt;&lt;Stereotype&gt;&gt;
+Package::FatClass
+{Some Properties}
+--
+-id: Long
+_-ClassAttribute: Long_
+--
+#Operation(i: int): int
+/+AbstractOperation()/
+--
+Responsibilities
+-- Resp1
+*-- Resp2*</panel_attributes><additional_attributes></additional_attributes></element></diagram>
