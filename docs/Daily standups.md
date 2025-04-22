@@ -55,7 +55,7 @@ Lehan. De grid afgemaakt. De code mergen met de main branch. geen obstakels.
 
 ##### 2025 04 22
 
-Lieuwe. 
+Lieuwe. Ziek.
 
 Daamin. besig met resource collector. Verder resource collector. Geen obstakels.
 
