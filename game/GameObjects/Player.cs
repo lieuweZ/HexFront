@@ -10,41 +10,51 @@ namespace Blok3Game.GameObjects
     {
         public static bool myTurn = true;
         public static Timer turnTimer;
+
+        public string Name { get; set; }
         public List<ResourceType> resources;
         public List<GameObject> hand;
         public GameObject centralBuilding;
         public bool surrendered;
 
-        public Player()
+        public Player(string name = "Player 1")
         {
-            turnTimer = new Timer();
-            // 60 sec
-            turnTimer.Interval = 1000 * 60;
+            Name = name;
+            resources = new List<ResourceType>
+            {
+                new ResourceType { Id = 1, Name = "Wood", Amount = 5, Color = 0 },
+                new ResourceType { Id = 2, Name = "Stone", Amount = 3, Color = 1 },
+                new ResourceType { Id = 3, Name = "Gold", Amount = 2, Color = 2 }
+            };
+
+            hand = new List<GameObject>();
+            centralBuilding = null;
+            surrendered = false;
+
+            turnTimer = new Timer
+            {
+                Interval = 1000 * 60,
+                AutoReset = true,
+                Enabled = false
+            };
             turnTimer.Elapsed += OnTimedEvent;
-            turnTimer.AutoReset = true;
-            turnTimer.Enabled = false;
         }
+
         private static void endTurn()
         {
             myTurn = !myTurn;
         }
 
+        private static void OnTimedEvent(object source, ElapsedEventArgs e)
+        {
+            Console.WriteLine($"Ending turn at {e.SignalTime}");
+            endTurn();
+        }
+
         public override void Update(GameTime gameTime)
         {
-            if (myTurn)
-            {
-                turnTimer.Enabled = true;
-            }
-            else
-            {
-                turnTimer.Enabled = false;
-            }
+            turnTimer.Enabled = myTurn;
             base.Update(gameTime);
-        }
-        private static void OnTimedEvent(Object source, ElapsedEventArgs e)
-        {
-            Console.WriteLine("Ending turn", e.SignalTime);
-            endTurn();
         }
     }
 }
