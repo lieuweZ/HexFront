@@ -1,6 +1,9 @@
 ﻿using BaseProject;
 using Blok3Game.Engine.Helpers;
+using Blok3Game.Engine.JSON;
+using Blok3Game.Engine.SocketIOClient;
 using Blok3Game.GameObjects;
+using Blok3Game.Packets;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -232,10 +235,34 @@ namespace Blok3Game.Engine.GameObjects
 
 		public void GridMouseInput(Vector2 cell)
 		{
-			if (Interactible == 2)
+            
+            if (Interactible == 2)
 			{
 				MinigameInput(cell);
+            } else
+			{
+				PlacePiece(cell, 1);
             }
+        }
+
+		public void PlacePiece(Vector2 pos, int id)
+		{
+			CellUpdatePacket pack = new CellUpdatePacket(SocketClient.Instance.RoomId, pos, id);
+
+            if (id == 1)
+			{
+                SocketClient.Instance.SendDataPacket(pack);
+            } else
+			{
+                SocketClient.Instance.SendDataPacket(new CellUpdatePacket(SocketClient.Instance.RoomId, pos, 0));
+            }
+            
+        }
+
+		public void SetCellPiece(Vector2 cell, GameObject box)
+		{
+            Cell cl = (Cell)(this.Get((int)cell.X, (int)cell.Y));
+            cl.SetObject(box);
         }
 
 		public void MinigameInput(Vector2 cell)
