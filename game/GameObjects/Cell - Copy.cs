@@ -16,9 +16,9 @@ namespace Blok3Game.GameObjects
         {
             this.position = new Vector2(25, 25); 
         }
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(Vector2 displacement, GameTime gameTime, SpriteBatch spriteBatch)
         {           
-            DrawingHelper.FillRectangle(new Rectangle((int)this.position.X, (int)this.position.Y, 25, 25), spriteBatch, Color.Blue);
+            DrawingHelper.FillRectangle(new Rectangle((int)(displacement.X - this.position.X / 2), (int)(displacement.Y - this.position.Y / 2), 25, 25), spriteBatch, Color.Blue);
         }
     }
 }

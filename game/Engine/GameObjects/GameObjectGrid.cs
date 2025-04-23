@@ -1,7 +1,9 @@
-﻿using Blok3Game.Engine.Helpers;
+﻿using BaseProject;
+using Blok3Game.Engine.Helpers;
 using Blok3Game.GameObjects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace Blok3Game.Engine.GameObjects
 {
@@ -11,7 +13,11 @@ namespace Blok3Game.Engine.GameObjects
 		protected int cellWidth = 82, cellHeight = 82;
 		public Vector2 MousePos;
 		public bool MouseLeftState;
-        private int tileScale = 82;
+		private int prevCellScale = HexFront.self.CellScale;
+        private int curCellScale = HexFront.self.CellScale;
+        public int Interactible = 0;
+		private int ignoreNumber = 9;
+        private Random rand = new Random();
 
         public GameObjectGrid(int rows, int columns, int layer = 0, string id = "")
 			: base(layer, id)
@@ -29,13 +35,32 @@ namespace Blok3Game.Engine.GameObjects
 
         public void Add(GameObject obj, int x, int y)
 		{
-			grid[x, y] = obj;
-			obj.Parent = this;
-            float dispX = (((int)y & 1) * (tileScale / 1.825F));
+            Vector2 pos = GetHexagonPos(x, y);
+            int PosX = (int)pos.X;
+            int PosY = (int)pos.Y;
 
-            int PosX = (int)(40 + x * (tileScale + tileScale / 10) - dispX + tileScale / 2.95);
-            int PosY = (int)(40 + y * (tileScale / 1.35));
-            obj.Position = new Vector2(PosX, PosY) + obj.Position;
+            grid[x, y] = obj;
+			obj.Parent = this;
+            obj.Position = new Vector2(PosX, PosY) + this.position;
+        }
+
+		public void Resize()
+		{
+            int tileScale = curCellScale;
+
+			for (int x = 0;x < Columns; x++)
+			{
+				for(int y = 0;y < Rows; y++)
+				{
+                    Vector2 pos = GetHexagonPos(x, y);
+                    int PosX = (int)pos.X;
+                    int PosY = (int)pos.Y;
+
+                    GameObject gm = this.Get(x, y);
+
+                    gm.Position = new Vector2(PosX, PosY) + this.position;
+                }
+			}
         }
 
 		public GameObject Get(int x, int y)
@@ -60,9 +85,9 @@ namespace Blok3Game.Engine.GameObjects
 
 		public Vector2 GetAnchorPosition(GameObject s)
 		{
-			for (int x = 0; x < Columns; x++)
+			for (int x = 0; x < Rows; x++)
 			{
-				for (int y = 0; y < Rows; y++)
+				for (int y = 0; y < Columns; y++)
 				{
 					if (grid[x, y] == s)
 					{
@@ -98,9 +123,12 @@ namespace Blok3Game.Engine.GameObjects
 		public override void HandleInput(InputHelper inputHelper)
 		{
 			base.HandleInput(inputHelper);
-            MousePos = inputHelper.MousePosition;
+			if (Interactible == 0 || Interactible == 2)
+			{
+			MousePos = inputHelper.MousePosition;
 
-            MouseLeftState = inputHelper.MouseLeftButtonPressed;
+			MouseLeftState = inputHelper.MouseLeftButtonPressed;
+			}
 
             foreach (GameObject obj in grid)
 			{
@@ -111,7 +139,16 @@ namespace Blok3Game.Engine.GameObjects
 
 		public override void Update(GameTime gameTime)
 		{
-			foreach (GameObject obj in grid)
+			if (prevCellScale != HexFront.self.CellScale)
+			{
+                curCellScale = HexFront.self.CellScale;
+                this.Resize();
+				prevCellScale = curCellScale;
+            }
+
+
+
+            foreach (GameObject obj in grid)
 			{
                 if (obj != null)
                     obj.Update(gameTime);
@@ -128,32 +165,64 @@ namespace Blok3Game.Engine.GameObjects
             DebugDraw(gameTime, spriteBatch);
         }
 
+		public Vector2 GetHexagonPos(int i, int j)
+		{
+            int tileScale = curCellScale;
+            float dispX = ((j & 1) * tileScale / 1.825F);
+
+            int PosX = (int)(((tileScale * 1.5F) * (Rows == ignoreNumber ? 0.25 : 1)) + i * (tileScale + tileScale / 10) - dispX + tileScale / 2.95);
+            int PosY = (int)(((tileScale / 5) * (Rows == ignoreNumber ? 0 : 1)) + j * (tileScale / 1.35));
+
+			return new Vector2(PosX, PosY);
+        }
+
         public override void DebugDraw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            for (int i = 0; i < Rows; i++)
+            int tileScale = curCellScale;
+            for (int i = 0; i < Columns; i++)
 			{
-				for(int j = 0; j < Columns; j++)
+				for(int j = 0; j < Rows; j++)
 				{
-                    float dispX = ((j & 1) * tileScale / 1.825F);
+					Vector2 pos = GetHexagonPos(i, j);
+					int PosX = (int)pos.X;
+					int PosY = (int)pos.Y;
 
-					int PosX = (int)(40 + i * (tileScale + tileScale / 10) - dispX + tileScale / 2.95);
-					int PosY = (int)(40 + j * (tileScale / 1.35));
 
+                    Color cl = new Color(DrawingHelper.GetColorCGA((i + j * Rows)));
 
-                    Color cl = new Color(DrawingHelper.GetColorEGA((i + j * Rows)));
-
-					if (MousePos.X > PosX && MousePos.X < PosX + tileScale && MousePos.Y > PosY && MousePos.Y < PosY + tileScale)
+					if (Interactible == 0 || Interactible == 2)
+					{
+						if (MousePos.X > PosX && MousePos.X < PosX + tileScale && MousePos.Y > PosY && MousePos.Y < PosY + tileScale)
 						if (DrawingHelper.InsideHexagon(new Rectangle(PosX, PosY, tileScale, tileScale), MousePos))
 						{
 							cl = Color.White;
-							if(MouseLeftState)
+							if (MouseLeftState)
 							{
 								GridMouseInput(new Vector2(i, j));
-                            }
+							}
 							GameObject ce = this.Get(i, j);
+                            if (Interactible == 0)
                             ce.DebugDraw(gameTime, spriteBatch);
+						}
+					}
+					else
+					if(Interactible == 1)
+					{
+                        Cell ce = (Cell)this.Get(i, j);
+                        if (rand.Next(1952) >= 1922 && ce.GlowTime == 0)
+						{
+                            ce.GlowTime = 50;
+                        } else
+						{
+							if(ce.GlowTime > 0)
+							ce.GlowTime--;
+						}
 
+						if(ce.GlowTime > 0)
+						{
+                            DrawingHelper.FillHexagon(new Rectangle(PosX, PosY, tileScale, tileScale), spriteBatch, cl);
                         }
+					}
 
 
                     //DrawingHelper.FillHexagon(new Rectangle(PosX, PosY, tileScale, tileScale), spriteBatch, cl);
@@ -163,9 +232,36 @@ namespace Blok3Game.Engine.GameObjects
 
 		public void GridMouseInput(Vector2 cell)
 		{
+			if (Interactible == 2)
+			{
+				MinigameInput(cell);
+            }
+        }
+
+		public void MinigameInput(Vector2 cell)
+		{
             Cube box = new Cube();
             Cell cl = (Cell)(this.Get((int)cell.X, (int)cell.Y));
             cl.SetObject(box);
+            for (int i = 0; i < Columns; i++)
+            {
+                for (int j = 0; j < Rows; j++)
+                {
+                    cl = (Cell)(this.Get(i, j));
+                    if (cl.Obj == null)
+                    {
+                        return;
+                    }
+                }
+            }
+            for (int i = 0; i < Columns; i++)
+            {
+                for (int j = 0; j < Rows; j++)
+                {
+                    cl = (Cell)(this.Get(i, j));
+                    cl.ClearObject();
+                }
+            }
         }
 
         public override void Reset()

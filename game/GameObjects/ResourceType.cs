@@ -15,7 +15,7 @@ namespace Blok3Game.GameObjects
         public int Color;
         public string Name;
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(Vector2 displacement, GameTime gameTime, SpriteBatch spriteBatch)
         {
 
         }

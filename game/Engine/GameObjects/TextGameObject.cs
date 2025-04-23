@@ -40,11 +40,8 @@ namespace Blok3Game.Engine.GameObjects
 		{
 			get
 			{ 
-				return spriteFont.MeasureString(text); }
-			set
-			{
-                Size = spriteFont.MeasureString(text) * value;
-            }
+				return spriteFont.MeasureString(text); 
+			}
 		}
 	}
 }
