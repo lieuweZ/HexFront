@@ -15,5 +15,8 @@ Planning: Deze was problematisch doordat er laat was door gegeven wat er nodig w
 Samenwerking : Weinig tijd om aan het project te werken, buiten school niet veel samenwerking. Een teamlid is ziek laatste week van deze sprint.<br>
 User Stories : Scope alsnog te groot voor veel user stories, te veel afhankelijkheden. Belangrijkste gedeelte (kunnen spelen in turns) niet in user stories gezet.<br>
 ![table](/docs/images/retrospective.jpg "Retrospective")<br>
-We hadden hiernaa toen gestemt over welke onderdeel het meest aandacht aan gegeven moet worden dit werd gedaan door middel van dot voting.
+We hadden hiernaa toen gestemt over welke onderdeel het meest aandacht aan gegeven moet worden dit werd gedaan door middel van dot voting.<br>
 ![table](/docs/images/retrospective2.jpg "Retrospective")<br>
+We hadden toen samen overlegt van wat we beter moeten gaan doen voor de volgende sprint.
+We hadden toen op geschreven langs de onderdelen wat er nog verbetert moest worden.
+![table](/docs/images/retrospective3.jpg "Retrospective")<br>
