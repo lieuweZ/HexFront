@@ -34,6 +34,10 @@ namespace Blok3Game.Engine.GameObjects
 			position += velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
 		}
 
+        public virtual void Update(GameObject Object, GameTime gameTime)
+        {
+        }
+
         public virtual void Draw(Vector2 displacement, GameTime gameTime, SpriteBatch spriteBatch)
         {
         }

@@ -36,6 +36,29 @@ Lehan niks gedaan, sprint planning en mogelijke besprekingen, geen obstakels
 ##### 2025 04 15
 
 Lieuwe. sprint planning gewerkt naar bestaande code gekeken. units programeren. geen obstakels.
+
 Daamin. Sprint planning. Main menu maken. geen obstakels
+
 nicolaas. gewerkt aan de sprint planning. userstories controleren. geen obstakels.
+
 Lehan. De grid te laten tekenen. De grid op een goede manier te laten tekenen met kleur. geen obstakels.
+
+##### 2025 04 17
+
+Lieuwe. Verder gewerkt aan de units. De code van Lehan bekijken. geen obstakels.
+
+Daamin. verder gewerkt aan de main menu. de resource collector maken. geen obstakels.
+
+nicolaas. begon werken aan rng objecten en pieces. Verder werken aan de pieces. Geen obstakels.
+
+Lehan. De grid afgemaakt. De code mergen met de main branch. geen obstakels.
+
+##### 2025 04 22
+
+Lieuwe. Ziek.
+
+Daamin. besig met resource collector. Verder resource collector. Geen obstakels.
+
+nicolaas. Besig met de pieces. Pieces afmaken en de selectie hiervan. Geen obstakels.
+
+Lehan. De grid afgemaakt. TMC maken. geen obstakels.

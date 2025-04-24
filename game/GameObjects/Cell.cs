@@ -43,7 +43,7 @@ namespace Blok3Game.GameObjects
         {
             if (Obj != null)
             {
-                Obj.Update(gameTime);
+                Obj.Update(this, gameTime);
             }
         }
 
