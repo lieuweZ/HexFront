@@ -20,3 +20,14 @@ We hadden hiernaa toen gestemt over welke onderdeel het meest aandacht aan gegev
 We hadden toen samen overlegt van wat we beter moeten gaan doen voor de volgende sprint.<br>
 We hadden toen op geschreven langs de onderdelen wat er nog verbetert moest worden.<br>
 ![table](/docs/images/retrospective3.png "Retrospective")<br>
+Voor de 3 onderdelen hadden we opgreschreven,
+#### Communicatie
+- Meer vragen stellen (vooral buiten schooltijd)
+- Meer interactief bezig zijn met communicatie tijden meetings.
+#### Documentatie
+- Eerder beginnen met documentatie.
+- Tussen tijd documentatie uit voeren
+- Documentatie voor programeer code schrijven
+#### Planning
+- UserStory scopes meer specifiek maken.
+- Dailystandups meer frequent te houden op een woensdag.
