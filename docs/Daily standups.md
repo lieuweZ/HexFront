@@ -62,3 +62,13 @@ Daamin. besig met resource collector. Verder resource collector. Geen obstakels.
 nicolaas. Besig met de pieces. Pieces afmaken en de selectie hiervan. Geen obstakels.
 
 Lehan. De grid afgemaakt. TMC maken. geen obstakels.
+
+##### 2025 04 24
+
+Lieuwe. Ziek.
+
+Daamin. gewerkt aan de player UI. Retrspective. Geen obstakels
+
+nicolaas. Gewerkt aan de selecteren van pieces en pieces in grid systeem zetten. Pieces afmaken en werken aan de retrospective. Geen obstakels
+
+Lehan. De multi player laten werken. De retrospective. geen obstakels.
