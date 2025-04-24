@@ -25,13 +25,30 @@ Planning: Deze was problematisch doordat er laat was door gegeven wat er nodig w
 Samenwerking : Weinig tijd om aan het project te werken, buiten school niet veel samenwerking. Een teamlid is ziek laatste week van deze sprint.<br>
 User Stories : Scope alsnog te groot voor veel user stories, te veel afhankelijkheden. Belangrijkste gedeelte (kunnen spelen in turns) niet in user stories gezet.<br>
 ##### Overleg
-
-
+Toen we al de punten hadden ingevult hebben we toen aan elke lid van de team gevraagd over waarom die hebben gekozen voor deze punten.
+###### Formaat
+Punt: Uitleg. naam.
+###### + punten
+connecting: Hiermee word bedoelt met elkaar leren kennen. Daamin<br>
+Communicatie: De rede hiervoor is dat er gecommuniceerd word wanneer dat moet. Lehan/Nicolaas<br>
+Daily standup: Het gaat goed doordat de daily standups gedaan worden op een accepteerbaar manier. Lehan<br>
+###### △ punten
+Documentatie: Er was tijdens het sprint weinig gedaan aan Documentatie dit is iets wat verbetering nodig heeft. Lehan<br>
+Planning: Deze was problematisch doordat er laat was door gegeven wat er nodig was voor de deliverabels. Daamin<br>
+Samenwerking : Weinig tijd om aan het project te werken, buiten school niet veel samenwerking. Een teamlid is ziek laatste week van deze sprint. Nicolaas<br>
+User Stories : Scope alsnog te groot voor veel user stories, te veel afhankelijkheden. Belangrijkste gedeelte (kunnen spelen in turns) niet in user stories gezet. Nicolaas<br>
 
 ##### Uitkomst
 ![table](/docs/images/retrospective.jpg "Retrospective")<br>
-We hadden hiernaa toen gestemt over welke onderdeel het meest aandacht aan gegeven moet worden dit werd gedaan door middel van dot voting.<br>
+
+##### Stemmen
+
+Er werd om het prioriteit te bepalen van een probleem gestemt erover. 
+Deze process is genoemt dot voting bij deze process zet je stippen bij welke onderdeel je belangrijk vindt.
+#### Foto
 ![table](/docs/images/retrospective2.jpg "Retrospective")<br>
+
+##### Verbeteren
 We hadden toen samen overlegt van wat we beter moeten gaan doen voor de volgende sprint.<br>
 We hadden toen op geschreven langs de onderdelen wat er nog verbetert moest worden.<br>
 ![table](/docs/images/retrospective3.png "Retrospective")<br>
