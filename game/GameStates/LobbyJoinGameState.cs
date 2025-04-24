@@ -82,6 +82,7 @@ namespace Blok3Game.GameStates
                     Name = playerNameInput.Text
                 }
             });
+			GameState.Username = playerNameInput.Text;
         }
 
         private void OnButtonCancelClicked(UIElement element)

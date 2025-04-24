@@ -8,6 +8,7 @@ using Blok3Game.GameObjects;
 using Blok3Game.Packets;
 using System;
 using System.Collections.Generic;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Blok3Game.GameStates
 {
@@ -17,6 +18,7 @@ namespace Blok3Game.GameStates
         private Player player;
         private TextGameObject playerNameText;
         private List<TextGameObject> resourceTexts;
+        public static string Username = "";
 
         public GameState() : base()
         {
@@ -28,6 +30,7 @@ namespace Blok3Game.GameStates
             Add(player);
 
             playerNameText = new TextGameObject("Fonts/SpriteFont", 100);
+            playerNameText.Text = "";
             playerNameText.Position = new Vector2(10, 10);
             Add(playerNameText);
 
@@ -37,6 +40,7 @@ namespace Blok3Game.GameStates
             {
                 TextGameObject resText = new TextGameObject("Fonts/SpriteFont", 100);
                 resText.Position = new Vector2(10, yOffset);
+                resText.Text = "";
                 Add(resText);
                 resourceTexts.Add(resText);
                 yOffset += 25;
@@ -73,6 +77,7 @@ namespace Blok3Game.GameStates
 
         public override void Draw(GameTime gameTime, Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
         {
+            playerNameText.Text = GameState.Username;
             DrawingHelper.FillRectangle(
                 new Rectangle(0, 0, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height),
                 spriteBatch,

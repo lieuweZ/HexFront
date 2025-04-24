@@ -18,7 +18,7 @@ namespace Blok3Game.Engine.GameObjects
 
 		public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
 		{
-			if (visible)
+			if (visible && text != null)
 			{
 				spriteBatch.DrawString(spriteFont, text, GlobalPosition, color);
 			}
