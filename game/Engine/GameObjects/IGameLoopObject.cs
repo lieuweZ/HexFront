@@ -12,7 +12,9 @@ namespace Blok3Game.Engine.GameObjects
 
 		void Draw(GameTime gameTime, SpriteBatch spriteBatch);
 
-		void DebugDraw(GameTime gameTime, SpriteBatch spriteBatch);
+        void Draw(Vector2 displacement, GameTime gameTime, SpriteBatch spriteBatch);
+
+        void DebugDraw(GameTime gameTime, SpriteBatch spriteBatch);
 
         void Reset();
 	}
