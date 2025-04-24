@@ -16,14 +16,14 @@ Het tabel was eerst na getekent van de spotify retro kit. <br>
 ##### Punten
 We hadden het toen ingevult met wat goed vonden en wat nog verbetering nodig heeft.<br>
 Bij de + waren de volgende woorden ingevult,<br>
-connecting: Hiermee word bedoelt met elkaar leren kennen.<br>
-Communicatie: Hiermee word bedoelt dat het communiceren goed gaat.<br>
-Daily standup: HIermee word bedoelt dat de daily stand up op een gepaaste wijze gedaan worden.<br>
+connecting.<br>
+Communicatie.<br>
+Daily standup.<br>
 Bij de △ waren de volgende woorden ingevult,<br>
-Documentatie: Er was tijdens het sprint weinig gedaan aan Documentatie dit is iets wat verbetering nodig heeft.<br>
-Planning: Deze was problematisch doordat er laat was door gegeven wat er nodig was voor de delivarabels.<br>
-Samenwerking : Weinig tijd om aan het project te werken, buiten school niet veel samenwerking. Een teamlid is ziek laatste week van deze sprint.<br>
-User Stories : Scope alsnog te groot voor veel user stories, te veel afhankelijkheden. Belangrijkste gedeelte (kunnen spelen in turns) niet in user stories gezet.<br>
+Documentatie.<br>
+Planning.<br>
+Samenwerking.<br>
+User Stories.<br>
 ##### Overleg
 Toen we al de punten hadden ingevult hebben we toen aan elke lid van de team gevraagd over waarom die hebben gekozen voor deze punten.
 ###### Formaat
@@ -41,17 +41,25 @@ User Stories : Scope alsnog te groot voor veel user stories, te veel afhankelijk
 ##### Uitkomst
 ![table](/docs/images/retrospective.jpg "Retrospective")<br>
 
-##### Stemmen
+##### Groupering
 
-Er werd om het prioriteit te bepalen van een probleem gestemt erover. 
-Deze process is genoemt dot voting bij deze process zet je stippen bij welke onderdeel je belangrijk vindt.
-#### Foto
+Toen het vorige process afgerond was waren de punten toen in groepen gesorteert.
+De groepen die gemaakt waren zijn.
+- Communicatie
+- Documentatie
+- Planning
+Nadat deze onderdeel afgerond was begonnen we met stemmen.
+
+#### Stemmen
+
+Voor het stemmen hadden we dot voting gedaan.
+Met deze process hadt iedereen in het team gestemt op 2 onder delen die ze wilden op verbeteren.
+#### Uitkomst
 ![table](/docs/images/retrospective2.jpg "Retrospective")<br>
 
 ##### Verbeteren
-We hadden toen samen overlegt van wat we beter moeten gaan doen voor de volgende sprint.<br>
-We hadden toen op geschreven langs de onderdelen wat er nog verbetert moest worden.<br>
-![table](/docs/images/retrospective3.png "Retrospective")<br>
+Toen het stemmen process klaar was hadden we toen overlegt over hoe het verbetert moet worden.
+Deze werd toen opgeschreven naast het stemmen
 Voor de 3 onderdelen hadden we opgreschreven,
 #### Communicatie
 - Meer vragen stellen (vooral buiten schooltijd)
@@ -63,3 +71,5 @@ Voor de 3 onderdelen hadden we opgreschreven,
 #### Planning
 - UserStory scopes meer specifiek maken.
 - Dailystandups meer frequent te houden op een woensdag.
+#### Uitkomst
+![table](/docs/images/retrospective3.png "Retrospective")<br>
