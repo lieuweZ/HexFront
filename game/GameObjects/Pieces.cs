@@ -18,6 +18,10 @@ namespace Blok3Game.Engine.GameObjects
             this.Position = position;
 		}
 
+        public void Update()
+        {
+        }
+
         public bool TakeDamage (int attack) {
             int current_health = this.Health;
             this.Health -= attack;

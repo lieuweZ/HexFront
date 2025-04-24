@@ -11,10 +11,15 @@ namespace Blok3Game.GameStates
 {
     public class GameState : GameObjectList
     {
+        private PieceSelection selector;
         private GameObjectGrid grid;
+        private ObjectManager objectManager;
         public GameState() : base()
         {
+            selector = new PieceSelection();
+            objectManager = new ObjectManager();
             grid = new GameObjectGrid(8, 8);
+            Add(selector);
             Add(grid);
             SocketClient.Instance.SubscribeToDataPacket<CellUpdatePacket>(RecievedData);
         }
@@ -32,10 +37,9 @@ namespace Blok3Game.GameStates
 
             pack = null;
         }
-
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            DrawingHelper.FillRectangle(new Rectangle(0,0,GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height), spriteBatch, new Color(DrawingHelper.GetColorCGA(12)));
+           // DrawingHelper.FillRectangle(new Rectangle(0,0,GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height), spriteBatch, new Color(DrawingHelper.GetColorCGA(12)));
             base.Draw(gameTime, spriteBatch);
         }
     }
