@@ -167,3 +167,18 @@ Deze grid kan ook een indicator geven voor wanneer de muis in een cell is.<br>
 De cell is 1 van de zeshoeken in de grid.<br>
 
 ## CHECK
+Voor het Check gedeelte was er een eerst een playtest gedaan van wat er in het spel was toen. De persoon keek naar de hoofde menu en teste het ingebouwde minigame.<br>
+De feedback wat gegeven was door de persoon is.
+Feedback op huidige development
+- Interessant;
+- Hexagon pattern is gaaf;
+- Ziet er goed uit;
+- Goede contrast, diepte door contrast;
+- Logo is mooi;
+- Buttons eigen sprites;
+- Gele uitlining duidelijk waar je op staat;
+- Goede overal impressie;
+- Mooie design;
+Er werd een peer review gedaan doormiddle van het vragen aan een andere groep om te kijken naar document zoals de GDD.
+De groep die hiernaa keek had als oordeel gegeven
+

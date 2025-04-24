@@ -36,6 +36,7 @@ namespace Blok3Game.GameStates
 						UserId = userId
                     }
                 });
+                GameState.Username = playerNameInput.Text;
                 nextScreenName = GameStateManager.LOBBY_WAIT_FOR_PLAYERS_STATE;
                 Animate(AnimationState.MovingOffscreenInactive);
             }

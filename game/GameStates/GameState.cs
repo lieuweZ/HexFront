@@ -1,11 +1,14 @@
 ﻿using Blok3Game.Engine.GameObjects;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Blok3Game.Engine.Helpers;
 using Blok3Game.Engine.SocketIOClient;
 using Blok3Game.GameObjects;
 using Blok3Game.Packets;
 using System;
+using System.Collections.Generic;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Blok3Game.GameStates
 {
@@ -13,6 +16,11 @@ namespace Blok3Game.GameStates
     {
         private Selector selector;
         private GameObjectGrid grid;
+        private Player player;
+        private TextGameObject playerNameText;
+        private List<TextGameObject> resourceTexts;
+        public static string Username = "";
+
         public GameState() : base()
         {
             selector = new Selector();
@@ -24,6 +32,26 @@ namespace Blok3Game.GameStates
 
 
             SocketClient.Instance.SubscribeToDataPacket<CellUpdatePacket>(ReceivedData);
+
+            player = new Player("Alice");
+            Add(player);
+
+            playerNameText = new TextGameObject("Fonts/SpriteFont", 100);
+            playerNameText.Text = "";
+            playerNameText.Position = new Vector2(10, 10);
+            Add(playerNameText);
+
+            resourceTexts = new List<TextGameObject>();
+            float yOffset = 40;
+            foreach (var res in player.resources)
+            {
+                TextGameObject resText = new TextGameObject("Fonts/SpriteFont", 100);
+                resText.Position = new Vector2(10, yOffset);
+                resText.Text = "";
+                Add(resText);
+                resourceTexts.Add(resText);
+                yOffset += 25;
+            }
         }
 
         public void ReceivedData(object i)
@@ -38,9 +66,29 @@ namespace Blok3Game.GameStates
             pack = null;
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+
+        public override void Update(GameTime gameTime)
         {
-            DrawingHelper.FillRectangle(new Rectangle(0,0,GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height), spriteBatch, new Color(DrawingHelper.GetColorCGA(12)));
+            base.Update(gameTime);
+
+            playerNameText.Text = $"Name: {player.Name}";
+
+            for (int i = 0; i < player.resources.Count; i++)
+            {
+                var res = player.resources[i];
+                resourceTexts[i].Text = $"{res.Name}: {res.Amount}";
+            }
+        }
+
+        public override void Draw(GameTime gameTime, Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
+        {
+            playerNameText.Text = GameState.Username;
+            DrawingHelper.FillRectangle(
+                new Rectangle(0, 0, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height),
+                spriteBatch,
+                new Color(DrawingHelper.GetColorCGA(12))
+            );
+
             base.Draw(gameTime, spriteBatch);
         }
     }
