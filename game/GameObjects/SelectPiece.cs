@@ -13,6 +13,7 @@ namespace Blok3Game.Engine.GameObjects
     public class SelectPiece : GameObject
     {
         private Rectangle tangle;
+        public int ID {get; set;}
         private Color currentColor = Color.Red;
         private bool isHovered = false;
         private bool isSelected = false;
@@ -24,10 +25,11 @@ namespace Blok3Game.Engine.GameObjects
         }
         private Func<GameObject> pieceFac;
 
-        public SelectPiece(Vector2 position, int width, int height, Func<GameObject> fac) : base()
+        public SelectPiece(Vector2 position, int width, int height, int id) : base()
         {
+            ID = id;
             this.tangle = new Rectangle((int)position.X, (int)position.Y, width, height);
-            pieceFac = fac;
+        //    pieceFac = fac;
         }
 
         public override void HandleInput(InputHelper inputHelper)

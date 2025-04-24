@@ -21,4 +21,28 @@ namespace Blok3Game.GameObjects
             DrawingHelper.FillRectangle(new Rectangle((int)(displacement.X - this.position.X / 2), (int)(displacement.Y - this.position.Y / 2), 25, 25), spriteBatch, Color.Blue);
         }
     }
+
+    public class Cube2 : GameObject
+    {
+        public Cube2() 
+        {
+            this.position = new Vector2(25, 25); 
+        }
+        public override void Draw(Vector2 displacement, GameTime gameTime, SpriteBatch spriteBatch)
+        {           
+            DrawingHelper.FillRectangle(new Rectangle((int)(displacement.X - this.position.X / 2), (int)(displacement.Y - this.position.Y / 2), 25, 25), spriteBatch, Color.Red);
+        }
+    }
+
+    public class Cube3 : GameObject
+    {
+        public Cube3() 
+        {
+            this.position = new Vector2(25, 25); 
+        }
+        public override void Draw(Vector2 displacement, GameTime gameTime, SpriteBatch spriteBatch)
+        {           
+            DrawingHelper.FillRectangle(new Rectangle((int)(displacement.X - this.position.X / 2), (int)(displacement.Y - this.position.Y / 2), 25, 25), spriteBatch, Color.Green);
+        }
+    }
 }

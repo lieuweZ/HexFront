@@ -20,6 +20,7 @@ namespace Blok3Game.Engine.GameObjects
         private int curCellScale = HexFront.self.CellScale;
         public int Interactible = 0;
 		private int ignoreNumber = 9;
+		public Selector selector {get; set;}
         private Random rand = new Random();
 
         public GameObjectGrid(int rows, int columns, int layer = 0, string id = "")
@@ -235,13 +236,16 @@ namespace Blok3Game.Engine.GameObjects
 
 		public void GridMouseInput(Vector2 cell)
 		{
-            
             if (Interactible == 2)
 			{
 				MinigameInput(cell);
             } else
 			{
-				PlacePiece(cell, 1);
+				int? ID = selector.SelectedPiece?.ID;
+				if (ID != null)
+				{
+					PlacePiece(cell, ID.Value);
+				}
             }
         }
 
@@ -249,20 +253,16 @@ namespace Blok3Game.Engine.GameObjects
 		{
 			CellUpdatePacket pack = new CellUpdatePacket(SocketClient.Instance.RoomId, pos, id);
 
-            if (id == 1)
-			{
-                SocketClient.Instance.SendDataPacket(pack);
-            } else
-			{
-                SocketClient.Instance.SendDataPacket(new CellUpdatePacket(SocketClient.Instance.RoomId, pos, 0));
-            }
-            
+			SocketClient.Instance.SendDataPacket(pack);
         }
 
 		public void SetCellPiece(Vector2 cell, GameObject box)
 		{
             Cell cl = (Cell)(this.Get((int)cell.X, (int)cell.Y));
-            cl.SetObject(box);
+			if (cl.Obj == null)
+			{
+				cl.SetObject(box);
+			}
         }
 
 		public void MinigameInput(Vector2 cell)

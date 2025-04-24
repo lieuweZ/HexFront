@@ -20,7 +20,6 @@ namespace Blok3Game.Engine.GameObjects
             foreach(PieceObject piece in GamePieces)
             {
                 piece.Update();
-                Console.WriteLine(piece);
             }
         }
     }
