@@ -7,8 +7,11 @@ Voor deze retrospective was er gekozen voor het +△ methode.<br>
 Deze werd gekozen omdat deze meer simpler leek en niet teveel extras heeft zoals tekeningen met veel detail.
 
 ## Uitvoering
+#### Voorbereiding
 Hiervoor hadden we het getekent op de website Magma, deze was gekozen omdat het dan makelijker was om samen te tekenen aan het bord.<br>
 Het tabel was eerst na getekent van de spotify retro kit. <br>
+
+#### Invullen
 We hadden het toen ingevult met wat goed vonden en wat nog verbetering nodig heeft.<br>
 Wat er was opgeschreven bij de + is en wat erbij overlegt was,<br>
 connecting: Hiermee word bedoelt met elkaar leren kennen.<br>
