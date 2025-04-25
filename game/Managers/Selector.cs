@@ -22,7 +22,6 @@ namespace Blok3Game.Engine.GameObjects
             {
                 float x = centerX + i * (WIDTH + SPACING);
                 Add(new SelectPiece(new Vector2(x, y), WIDTH, HEIGHT,(i + 1)));
-
             }
         }
 

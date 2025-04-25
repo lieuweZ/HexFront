@@ -4,8 +4,10 @@ using Blok3Game.Engine.JSON;
 using Blok3Game.Engine.SocketIOClient;
 using Blok3Game.GameObjects;
 using Blok3Game.Packets;
+using Blok3Game.GameStates;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 
 namespace Blok3Game.Engine.GameObjects
@@ -134,6 +136,12 @@ namespace Blok3Game.Engine.GameObjects
 			MouseLeftState = inputHelper.MouseLeftButtonPressed;
 			}
 
+			KeyboardState keyboardState = Keyboard.GetState();
+			if (keyboardState.IsKeyDown(Keys.P))
+			{
+				PlaceTestCube();
+			}
+
             foreach (GameObject obj in grid)
 			{
                 if (obj != null)
@@ -244,26 +252,99 @@ namespace Blok3Game.Engine.GameObjects
 				int? ID = selector.SelectedPiece?.ID;
 				if (ID != null)
 				{
-					PlacePiece(cell, ID.Value);
+					if(CanPlaceAt(cell))
+					{
+						PlacePiece(cell, ID.Value);
+					}
 				}
             }
         }
 
 		public void PlacePiece(Vector2 pos, int id)
 		{
-			CellUpdatePacket pack = new CellUpdatePacket(SocketClient.Instance.RoomId, pos, id);
-
+			CellUpdatePacket pack = new CellUpdatePacket(SocketClient.Instance.RoomId, pos, id, GameState.Username);
 			SocketClient.Instance.SendDataPacket(pack);
         }
 
-		public void SetCellPiece(Vector2 cell, GameObject box)
+		public void SetCellPiece(Vector2 cell, GameObject box, string userName)
 		{
-            Cell cl = (Cell)(this.Get((int)cell.X, (int)cell.Y));
+			Cell cl = (Cell)(this.Get((int)cell.X, (int)cell.Y));
 			if (cl.Obj == null)
 			{
+				string ownerName = userName;
+
+				if (box is Cube cube)
+				{
+					cube.OwnerName = ownerName;
+				}
+				else if (box is Cube2 cube2)
+				{
+					cube2.OwnerName = ownerName;
+				}
+				else if (box is Cube3 cube3)
+				{
+					cube3.OwnerName = ownerName;
+				}
+
 				cl.SetObject(box);
 			}
+		}
+private bool CanPlaceAt(Vector2 pos)
+{
+    int x = (int)pos.X;
+    int y = (int)pos.Y;
+
+    Cell current = Get(x, y) as Cell;
+    if (current == null || current.Obj != null)
+        return false;
+
+    Vector2[] directions = new Vector2[]
+    {
+        new Vector2(0, -1), 
+        new Vector2(+1, -1),  
+        new Vector2(+1, 0), 
+        new Vector2(-1, +1), 
+        new Vector2(0, +1),   
+        new Vector2(-1, 0),  
+    };
+
+    Vector2[] selectedDirections = (x % 2 == 0) ? directions : directions;
+
+    foreach (Vector2 dir in selectedDirections)
+    {
+        int nx = x + (int)dir.X;
+        int ny = y + (int)dir.Y;
+
+        if (nx == x && ny == y)
+            continue;
+
+        Cell neighbor = Get(nx, ny) as Cell;
+
+        Console.WriteLine($"Checking neighbor at ({nx}, {ny})");
+
+        if (neighbor != null && neighbor.Obj != null)
+        {
+            string ownerName = GameState.Username;
+            var obj = neighbor.Obj;
+            bool isOwned =
+                (obj is Cube cube && cube.OwnerName == ownerName) ||
+                (obj is Cube2 cube2 && cube2.OwnerName == ownerName) ||
+                (obj is Cube3 cube3 && cube3.OwnerName == ownerName);
+
+            if (isOwned)
+            {
+                Console.WriteLine($"Cube at ({nx}, {ny}) is owned by: {ownerName}");
+                return true; 
+            }
         }
+    }
+
+    return false;
+}
+
+
+
+
 
 		public void MinigameInput(Vector2 cell)
 		{
@@ -299,6 +380,24 @@ namespace Blok3Game.Engine.GameObjects
 				if(obj != null)
 				obj.Reset();
 			}
+		}
+
+		public void PlaceTestCube()
+		{
+			int testX = 3; 
+			int testY = 1;    
+
+			Cube testCube = new Cube();
+			testCube.OwnerName = "erer";
+
+			CellUpdatePacket testCubePacket = new CellUpdatePacket(
+				SocketClient.Instance.RoomId,
+				new Vector2(testX, testY),
+				0,
+				"erer"  
+			);
+
+			SocketClient.Instance.SendDataPacket(testCubePacket);
 		}
     }
 }

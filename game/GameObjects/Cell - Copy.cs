@@ -12,6 +12,7 @@ namespace Blok3Game.GameObjects
 {
     public class Cube : GameObject
     {
+        public string OwnerName { get; set; }
         public Cube() 
         {
             this.position = new Vector2(25, 25); 
@@ -24,6 +25,7 @@ namespace Blok3Game.GameObjects
 
     public class Cube2 : GameObject
     {
+        public string OwnerName { get; set; }
         public Cube2() 
         {
             this.position = new Vector2(25, 25); 
@@ -36,6 +38,7 @@ namespace Blok3Game.GameObjects
 
     public class Cube3 : GameObject
     {
+        public string OwnerName { get; set; }
         public Cube3() 
         {
             this.position = new Vector2(25, 25); 

@@ -30,7 +30,5 @@ namespace Blok3Game.Engine.Helpers
 
             return obj;
         }
-
-
     }
 }

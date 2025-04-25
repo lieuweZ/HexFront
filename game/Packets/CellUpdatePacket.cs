@@ -13,16 +13,18 @@ namespace Blok3Game.Packets
         public string cell { get; set; }
         public string piece { get; set; }
         public string roomId { get; set; }
+        public string userName { get; set; }
         public CellUpdatePacket() {
             EventName = "piece update";
         }
 
-        public CellUpdatePacket(string RoomId, Vector2 pos, int type)
+        public CellUpdatePacket(string RoomId, Vector2 pos, int type, string name)
         {
             EventName = "piece update";
             roomId = RoomId;
             cell = pos.X + " " + pos.Y;
             this.piece = type + "";
+            this.userName = name;
         }
     }
 }

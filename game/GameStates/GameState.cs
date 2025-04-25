@@ -54,14 +54,35 @@ namespace Blok3Game.GameStates
             }
         }
 
+        public void DebugLogAllCubes()
+		{
+			for (int x = 0; x < grid.Columns; x++)
+			{
+				for (int y = 0; y < grid.Rows; y++)
+				{
+					Cell cell = grid.Get(x, y) as Cell;
+					if (cell?.Obj != null)
+					{
+						string owner = "Unknown";
+						if (cell.Obj is Cube cube) owner = cube.OwnerName;
+						else if (cell.Obj is Cube2 cube2) owner = cube2.OwnerName;
+						else if (cell.Obj is Cube3 cube3) owner = cube3.OwnerName;
+
+						Console.WriteLine($"Cube at ({x},{y}) is owned by: {owner}");
+					}
+				}
+			}
+		}
+
         public void ReceivedData(object i)
         {
+            DebugLogAllCubes();
             CellUpdatePacket pack = (CellUpdatePacket)i;
             PieceList pieces = new PieceList();
-            string[] pos = pack.cell.Split(" ");
+            string[] pos = pack.cell.Split(" ");    
 
 
-            grid.SetCellPiece(new Vector2(int.Parse(pos[0]), int.Parse(pos[1])), pieces.CreateFromId(int.Parse(pack.piece)));
+            grid.SetCellPiece(new Vector2(int.Parse(pos[0]), int.Parse(pos[1])), pieces.CreateFromId(int.Parse(pack.piece)), pack.userName);
 
             pack = null;
         }
