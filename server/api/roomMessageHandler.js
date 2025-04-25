@@ -84,14 +84,21 @@ class RoomMessageHandler extends MessageHandler {
 			const roomId = data.roomId;
 			const pos = data.cell;
 			const piecetype = data.piece;
+			const name = data.playerName;
 
-			this.UpdateCell(socket, roomId, pos, piecetype);
+			this.UpdateCell(socket, roomId, pos, piecetype, name);
 		});
 	}
 
-	UpdateCell(socket, roomId,position, piecdata) {
+	UpdateCell(socket, roomId,position, piecdata, name) {
 		if (this._rooms[roomId]) {
 			const players = this._rooms[roomId].players;
+
+
+			if(this._rooms[roomId].lastplacer != name)
+			{
+			this._rooms[roomId].lastplacer = name;
+			
 
 			for (let i = 0; i < players.length; i++) {
 				
@@ -105,6 +112,7 @@ class RoomMessageHandler extends MessageHandler {
 			//see the #handleDisconnect function.
 			//socket.roomId = roomId;
 			//socket.playerName = playerName;
+			}
 		}
 	}
 
