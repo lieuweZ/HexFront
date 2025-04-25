@@ -92,7 +92,9 @@ namespace Blok3Game.Engine.GameObjects
 
 		public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
 		{
-			if (!visible)
+            DrawBackground(gameTime, spriteBatch);
+
+            if (!visible)
 			{
 				return;
 			}
@@ -106,6 +108,11 @@ namespace Blok3Game.Engine.GameObjects
 				obj.Draw(gameTime, spriteBatch);
 			}
 		}
+
+		public virtual void DrawBackground(GameTime gameTime, SpriteBatch spriteBatch)
+		{
+            
+        }
 
 		public override void Reset()
 		{
