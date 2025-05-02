@@ -1,4 +1,7 @@
 using Blok3Game.Engine.GameObjects;
+using Blok3Game.Engine.SocketIOClient;
+using Blok3Game.GameStates;
+using Blok3Game.Packets;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -42,6 +45,11 @@ namespace Blok3Game.GameObjects
 
         private static void endTurn()
         {
+            SocketClient.Instance.SendDataPacket(new TurnChangedPacket()
+            {
+                roomId = SocketClient.Instance.RoomId,
+                playerName = GameState.Username
+            });
             myTurn = !myTurn;
         }
 

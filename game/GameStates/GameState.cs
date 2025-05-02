@@ -1,14 +1,13 @@
 ﻿using Blok3Game.Engine.GameObjects;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Blok3Game.Engine.Helpers;
 using Blok3Game.Engine.SocketIOClient;
 using Blok3Game.GameObjects;
 using Blok3Game.Packets;
 using System;
 using System.Collections.Generic;
-using static System.Net.Mime.MediaTypeNames;
+using Blok3Game.Engine.UI;
 
 namespace Blok3Game.GameStates
 {
@@ -18,6 +17,10 @@ namespace Blok3Game.GameStates
         private Player player;
         private TextGameObject playerNameText;
         private List<TextGameObject> resourceTexts;
+        private Button endTurnButton;
+        private TextGameObject currentTurnText;
+        private string currentTurnPlayerName = "";
+
         public static string Username = "";
 
         public GameState() : base()
@@ -25,6 +28,8 @@ namespace Blok3Game.GameStates
             grid = new GameObjectGrid(8, 8);
             Add(grid);
             SocketClient.Instance.SubscribeToDataPacket<CellUpdatePacket>(RecievedData);
+            SocketClient.Instance.SubscribeToDataPacket<TurnChangedPacket>(OnTurnChanged);
+
 
             player = new Player("Alice");
             Add(player);
@@ -33,6 +38,19 @@ namespace Blok3Game.GameStates
             playerNameText.Text = "";
             playerNameText.Position = new Vector2(10, 10);
             Add(playerNameText);
+
+            currentTurnText = new TextGameObject("Fonts/SpriteFont", 100);
+            currentTurnText.Position = new Vector2(GameEnvironment.Screen.X / 2, 10);
+            currentTurnText.Text = "Current Turn: ";
+            Add(currentTurnText);
+
+
+            endTurnButton = new Button(new Vector2(10, 150), 0.05f, "Button_Big@1x4")
+            {
+                Text = "End Turn",
+            };
+            endTurnButton.Clicked += OnButtonClicked;
+            Add(endTurnButton);
 
             resourceTexts = new List<TextGameObject>();
             float yOffset = 40;
@@ -49,16 +67,12 @@ namespace Blok3Game.GameStates
 
         public void RecievedData(object i)
         {
-            CellUpdatePacket pack = (CellUpdatePacket)i;
-            PieceList pieces = new PieceList();
-            string[] pos = pack.cell.Split(" ");
-
-
-
-            grid.SetCellPiece(new Vector2(int.Parse(pos[0]), int.Parse(pos[1])), pieces.CreateFromId(int.Parse(pack.piece)));
-
-
-            pack = null;
+            if (i is CellUpdatePacket piecePacket)
+            {
+                PieceList pieces = new PieceList();
+                string[] pos = piecePacket.cell.Split(" ");
+                grid.SetCellPiece(new Vector2(int.Parse(pos[0]), int.Parse(pos[1])), pieces.CreateFromId(int.Parse(piecePacket.piece)));
+            }
         }
 
 
@@ -67,6 +81,7 @@ namespace Blok3Game.GameStates
             base.Update(gameTime);
 
             playerNameText.Text = $"Name: {player.Name}";
+            currentTurnText.Text = $"Current Turn: {currentTurnPlayerName}";
 
             for (int i = 0; i < player.resources.Count; i++)
             {
@@ -77,8 +92,8 @@ namespace Blok3Game.GameStates
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            if(!playerNameText.Text.Equals(GameState.Username))
-            playerNameText.Text = GameState.Username;
+            if (!playerNameText.Text.Equals(Username))
+                playerNameText.Text = Username;
             DrawingHelper.FillRectangle(
                 new Rectangle(0, 0, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height),
                 spriteBatch,
@@ -87,5 +102,33 @@ namespace Blok3Game.GameStates
 
             base.Draw(gameTime, spriteBatch);
         }
+
+        private void OnTurnChanged(dynamic data)
+        {
+            string playerName = data.playerName.ToString();
+            currentTurnPlayerName = playerName;
+
+            if (playerName == Username)
+                Player.myTurn = true;
+            else
+                Player.myTurn = false;
+        }
+
+        private void OnButtonClicked(UIElement element)
+        {
+            if (element == endTurnButton && Player.myTurn)
+            {
+                Console.WriteLine("End Turn button clicked.");
+
+                SocketClient.Instance.SendDataPacket(new TurnChangedPacket()
+                {
+                    roomId = SocketClient.Instance.RoomId,
+                    playerName = Username
+                });
+
+                Player.myTurn = false;
+            }
+        }
+
     }
 }
