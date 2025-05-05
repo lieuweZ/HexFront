@@ -167,7 +167,81 @@ Deze grid kan ook een indicator geven voor wanneer de muis in een cell is.<br>
 De cell is 1 van de zeshoeken in de grid.<br>
 
 ## CHECK
-Voor het Check gedeelte was er een eerst een playtest gedaan van wat er in het spel was toen. De persoon keek naar de hoofde menu en teste het ingebouwde minigame.<br>
+Voor de check hebben we een gdd peer review gedaan en dit is wat we hebben gekregen
+
+# GDD: Peer Review Formulier
+
+**Titel game: Hexfront**  <br>
+**Gemaakt door: Twister** <br>
+**Gereviewd door: D.E.A.N** <br>
+
+---
+
+### **Identiteit**  
+- Is de titel van de game pakkend en passend?  
+- Is de teamnaam uniek en relevant voor hun concept?  
+- Zijn de rollen van de teamleden duidelijk verdeeld?  
+
+> _[De titel is passend, want het het gaat over hexen en Front is een oorlogs term. De teamnaam is uniek, maar niet relevant voor hun concept. Nee, want iedereen werkt aan alles.]_
+
+---
+
+### **Core Concept**  
+- Is het duidelijk waar de game over gaat?  
+- Is het concept origineel of herkenbaar?  
+- Spreekt het idee aan? Waarom wel/niet?  
+
+> _[Ja, want het wordt duidelijk beschreven in de GDD. Het is origineel, maar het neemt wel duidelijke inspiratie van andere games. Nee, want de game zou makkelijk te begrijpen zijn en de sessies zijn kort (wij hebben voorkeur voor langere sesssies)]_
+
+---
+
+### **Inspiratie Analyse**  
+- Zijn de inspiratiebronnen duidelijk en goed onderbouwd?  
+- Wordt er uitgelegd hoe deze inspiratie in de game wordt verwerkt?  
+- Is er een eigen draai aan bestaande concepten gegeven?  
+
+> _[Niet duidelijk, want er zijn geen fotos bij de inspiratiebronnen. Ja behalve de stijl van de game. Weersveranderingen zijn uniek alleen de rest is wat je verwacht in een Risk geinspireerde game.]_
+
+---
+
+### **Formal Elements**  
+- Is het doel van de game duidelijk?  
+- Is het duidelijk hoe de speler interaceert met het spel?  
+- Zijn de procedures en regels logisch en goed uitgewerkt?  
+
+> _[Het doel is niet perse duidelijk, want er wordt gezegd "Bouw een koninkrijk, leid je troepen, en vernietig het kasteel van je vijand" alleen hoe doe je dat precies? Nee, het is niet duidelijk hoe de speler interacteert met het spel. Geen uitleg gegeven.]_
+
+---
+
+### **Moodboard**  
+- Geeft het moodboard een duidelijke indruk van de sfeer?  
+- Past de gekozen stijl bij het core concept?  
+- Sluiten de kleuren, vormen en beelden goed op elkaar aan?  
+
+> _[Er is geen moodboard. Ja de stijl past erbij, want de inspiratie bron ziet er heel cozy uit. Niet van toepassing (geen moodboard)]_
+
+---
+
+### **Schetsen en/of Paper Prototype**  
+- Geven de schetsen een goed beeld van de levels en gameplay?  
+- Zijn de mechanics helder?  
+- Lijkt het ontwerp speelbaar en begrijpelijk?  
+
+> _[Niet van toepassing. Mechanics niet goed uitgelegd. Er is geen ontwerp waardoor het niet speelbaar klinkt en het is niet echt heel duidelijk.]_
+
+---
+
+### Algemene Feedback  
+- **Wat werkt goed in dit Game Design Document?**  
+  > _[Het logo. De Hexagon grid. De icoontjes per deelstuk maken de deelstukken duidelijk.]_
+- **Welke drie concrete verbeterpunten zou je dit team aanraden?**  
+  > _[Alles duidelijker uitleggen. Afbeeldingen gebruiken. Wat er minimaal in de GDD moet er in doen (formal elements missen).]_
+- **Zijn er algemene inconsistenties of onduidelijkheden waar op gelet moet worden?**  
+  > _[Het logo heeft meer aandacht gekregen dan het document.]_
+
+### Playtest
+
+Voor het Check gedeelte was er een playtest gedaan van wat er in het spel was toen. De persoon keek naar de hoofde menu en teste het ingebouwde minigame.<br>
 De feedback wat gegeven was door de persoon is.
 Feedback op huidige development
 - Interessant;
