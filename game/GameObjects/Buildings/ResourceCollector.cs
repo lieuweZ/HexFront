@@ -1,5 +1,12 @@
 using Blok3Game.GameObjects;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Blok3Game.Engine.Helpers;
 
 namespace Blok3Game.Engine.GameObjects
 {
@@ -24,5 +31,9 @@ namespace Blok3Game.Engine.GameObjects
             CollectResource();
         }
 
+        public override void Draw(Vector2 displacement, GameTime gameTime, SpriteBatch spriteBatch)
+        {           
+            DrawingHelper.FillRectangle(new Rectangle((int)(displacement.X - this.position.X / 2), (int)(displacement.Y - this.position.Y / 2), 25, 25), spriteBatch, Color.Black);
+        }
     }
 }

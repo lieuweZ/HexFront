@@ -339,8 +339,8 @@ namespace Blok3Game.Engine.GameObjects
 		}
 
 
-		private bool CheckIfAvailable()
-		{
+		private bool CheckIfAvailable(
+			
 			string ownerName = GameState.Username;
 
 			foreach (GameObject obj in grid)
