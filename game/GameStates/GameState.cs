@@ -82,7 +82,7 @@ namespace Blok3Game.GameStates
             string[] pos = pack.cell.Split(" ");    
 
 
-            grid.SetCellPiece(new Vector2(int.Parse(pos[0]), int.Parse(pos[1])), pieces.CreateFromId(int.Parse(pack.piece)), pack.userName);
+            grid.SetCellPiece(new Vector2(int.Parse(pos[0]), int.Parse(pos[1])), pieces.CreateFromId(int.Parse(pack.piece)), pack.playerName);
 
             pack = null;
         }

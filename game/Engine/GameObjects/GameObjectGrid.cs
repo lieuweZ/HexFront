@@ -1,4 +1,4 @@
-﻿using BaseProject;
+using BaseProject;
 using Blok3Game.Engine.Helpers;
 using Blok3Game.Engine.JSON;
 using Blok3Game.Engine.SocketIOClient;
@@ -158,8 +158,6 @@ namespace Blok3Game.Engine.GameObjects
 				prevCellScale = curCellScale;
             }
 
-
-
             foreach (GameObject obj in grid)
 			{
                 if (obj != null)
@@ -266,12 +264,12 @@ namespace Blok3Game.Engine.GameObjects
 			SocketClient.Instance.SendDataPacket(pack);
         }
 
-		public void SetCellPiece(Vector2 cell, GameObject box, string userName)
+		public void SetCellPiece(Vector2 cell, GameObject box, string playerName)
 		{
 			Cell cl = (Cell)(this.Get((int)cell.X, (int)cell.Y));
 			if (cl.Obj == null)
 			{
-				string ownerName = userName;
+				string ownerName = playerName;
 
 				if (box is Cube cube)
 				{
@@ -289,62 +287,104 @@ namespace Blok3Game.Engine.GameObjects
 				cl.SetObject(box);
 			}
 		}
-private bool CanPlaceAt(Vector2 pos)
-{
-    int x = (int)pos.X;
-    int y = (int)pos.Y;
 
-    Cell current = Get(x, y) as Cell;
-    if (current == null || current.Obj != null)
-        return false;
+		private bool CanPlaceAt(Vector2 pos)
+		{
+			int x = (int)pos.X;
+			int y = (int)pos.Y;
 
-    Vector2[] directions = new Vector2[]
-    {
-        new Vector2(0, -1), 
-        new Vector2(+1, -1),  
-        new Vector2(+1, 0), 
-        new Vector2(-1, +1), 
-        new Vector2(0, +1),   
-        new Vector2(-1, 0),  
-    };
+			Cell current = Get(x, y) as Cell;
+			if (current == null || current.Obj != null)
+			{
+				return false;
+			}
 
-    Vector2[] selectedDirections = (x % 2 == 0) ? directions : directions;
+			if (CheckIfAvailable())
+			{
+				return true;
+			}
 
-    foreach (Vector2 dir in selectedDirections)
-    {
-        int nx = x + (int)dir.X;
-        int ny = y + (int)dir.Y;
+			Vector2[] selectedDirections = GetNeighbors(x,y);
 
-        if (nx == x && ny == y)
-            continue;
+			foreach (Vector2 dir in selectedDirections)
+			{
+				int nx = x + (int)dir.X;
+				int ny = y + (int)dir.Y;
 
-        Cell neighbor = Get(nx, ny) as Cell;
+				if (nx == x && ny == y)
+				{
+					continue;
+				}
 
-        Console.WriteLine($"Checking neighbor at ({nx}, {ny})");
+				Cell neighbor = Get(nx, ny) as Cell;
 
-        if (neighbor != null && neighbor.Obj != null)
-        {
-            string ownerName = GameState.Username;
-            var obj = neighbor.Obj;
-            bool isOwned =
-                (obj is Cube cube && cube.OwnerName == ownerName) ||
-                (obj is Cube2 cube2 && cube2.OwnerName == ownerName) ||
-                (obj is Cube3 cube3 && cube3.OwnerName == ownerName);
+				if (neighbor != null && neighbor.Obj != null)
+				{
+					string ownerName = GameState.Username;
+					var obj = neighbor.Obj;
+					bool isOwned =
+						(obj is Cube cube && cube.OwnerName == ownerName) ||
+						(obj is Cube2 cube2 && cube2.OwnerName == ownerName) ||
+						(obj is Cube3 cube3 && cube3.OwnerName == ownerName);
 
-            if (isOwned)
-            {
-                Console.WriteLine($"Cube at ({nx}, {ny}) is owned by: {ownerName}");
-                return true; 
-            }
-        }
-    }
+					if (isOwned)
+					{
+						Console.WriteLine($"Cube at ({nx}, {ny}) is owned by: {ownerName}");
+						return true; 
+					}
+				}
+			}
 
-    return false;
-}
+			return false;
+		}
 
 
+		private bool CheckIfAvailable()
+		{
+			string ownerName = GameState.Username;
 
+			foreach (GameObject obj in grid)
+			{
+				if (obj is Cell cell && cell.Obj != null)
+				{
+					var placedObj = cell.Obj;
 
+					if ((placedObj is Cube cube && cube.OwnerName == ownerName) ||
+						(placedObj is Cube2 cube2 && cube2.OwnerName == ownerName) ||
+						(placedObj is Cube3 cube3 && cube3.OwnerName == ownerName))
+					{
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+
+		// Use this function to return a Vector2 array of all possible neighbors (including non-existent ones) for the given x and y values.
+		private Vector2[] GetNeighbors(int x, int y)
+		{
+			Vector2[] directionsEven = new Vector2[]
+			{
+				new Vector2(-1,  0), // West
+				new Vector2(+1,  0), // East
+				new Vector2( 0, +1), // South-West
+				new Vector2(+1, +1), // South-East
+				new Vector2( 0, -1), // North-West
+				new Vector2(+1, -1), // North-East
+			};
+
+			Vector2[] directionsOdd = new Vector2[]
+			{
+				new Vector2(-1,  0), // West
+				new Vector2(+1,  0), // East
+				new Vector2(-1, +1), // South-West
+				new Vector2( 0, +1), // South-East
+				new Vector2(-1, -1), // North-West
+				new Vector2( 0, -1), // North-East
+			};
+
+			return (y % 2 == 0) ? directionsEven : directionsOdd;
+		}
 
 		public void MinigameInput(Vector2 cell)
 		{
