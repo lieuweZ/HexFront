@@ -103,7 +103,7 @@ class RoomMessageHandler extends MessageHandler {
 
 			for (let i = 0; i < players.length; i++) {
 				
-				socket.emit('piece update', {roomId:roomId, cell: position, piece: piecdata});
+				socket.emit('piece update', {roomId:roomId, cell: position, piece: piecdata,playerName : name});
 			}
 			//send a message to all players in the room that a new player has joined.
 			//since the socket is now subscribed to the room, it will also receive the message.

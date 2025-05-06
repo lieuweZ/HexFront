@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>8</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>160</x>
+      <y>0</y>
+      <w>424</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>IGameLoopObject
+--
+
+--
++HandleInput(InputHelper inputHelper)
++Update(GameTime gameTime)
++Draw(GameTime gameTime, SpriteBatch spriteBatch)
++Draw(Vector2 displacement, GameTime gameTime, SpriteBatch spriteBatch)
++DebugDraw(GameTime gameTime, SpriteBatch spriteBatch)
++Reset()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>248</x>
+      <y>176</y>
+      <w>280</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>GameObject
+--
+#parent : GameObject
+#position :Vector2
+#velocity :Vector2
+#layer : int
+#id : string
+#visible : bool
+--
++Update(GameObject Object, GameTime gameTime)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>320</x>
+      <y>136</y>
+      <w>24</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>144</x>
+      <y>440</y>
+      <w>320</w>
+      <h>352</h>
+    </coordinates>
+    <panel_attributes>GameObjectGrid
+--
+#grid : GameObject[,]
+#cellWidth : int
+#cellHeight : int
++MousePos : Vector2
++MouseLeftState : bool
+-prevCellScale : int
+-curCellScale : int
++Interactible : int
+-ignoreNumber : int
+-rand : Random;
++updated : bool;
+--
++Add(GameObject obj, int x, int y)
++Get(int x, int y)
++GetAnchorPosition(GameObject s)
++HandleInput(InputHelper inputHelper)
++Update(GameTime gameTime)
++Draw(GameTime gameTime, SpriteBatch spriteBatch)
++GetHexagonPos(int i, int j)
++DebugDraw(GameTime gameTime, SpriteBatch spriteBatch)
++GridMouseInput(Vector2 cell)
++PlacePiece(Vector2 pos, int id)
++SetCellPiece(Vector2 cell, GameObject box)
+-MinigameInput(Vector2 cell)
++Reset()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>264</x>
+      <y>304</y>
+      <w>24</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>792</x>
+      <y>296</y>
+      <w>168</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>CellType
+--
+-tileID : int
+-Color : uint 
+-Passable : bool 
+-Damageable : bool
+--
++getTileId()
++GetColor()
++GetPassable()
++CanCauseDamage()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>528</x>
+      <y>440</y>
+      <w>168</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>Cell
+--
++Obj : GameObject
++Resource : ResourceType
++cell : CellType
++GlowTime : int
+--
++SetObject(GameObject obj)
++ClearObject()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>384</x>
+      <y>304</y>
+      <w>240</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0;280.0;40.0;280.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>456</x>
+      <y>472</y>
+      <w>88</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=*
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;90.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>624</x>
+      <y>344</y>
+      <w>184</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;120.0;10.0;10.0;210.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>800</x>
+      <y>536</y>
+      <w>408</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>ResourceType
+--
++Id : int
++Amount : int
++Color : int
++Name : string
+--
++Draw(Vector2 displacement, GameTime gameTime, SpriteBatch spriteBatch)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>632</x>
+      <y>560</y>
+      <w>184</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0;210.0;70.0</additional_attributes>
+  </element>
+</diagram>
