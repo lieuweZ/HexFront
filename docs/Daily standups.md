@@ -72,3 +72,13 @@ Daamin. gewerkt aan de player UI. Retrspective. Geen obstakels
 nicolaas. Gewerkt aan de selecteren van pieces en pieces in grid systeem zetten. Pieces afmaken en werken aan de retrospective. Geen obstakels
 
 Lehan. De multi player laten werken. De retrospective. geen obstakels.
+
+##### 2025 05 06
+
+Lieuwe. Niks. Sprint planning kijken en mogelijk iets toevoegen aan het sprint planning.EXpert meeting.
+
+Daamin. Gewerkt aan de player turns een turn timer toegevoet. De bugs oplossen. Expert meeting hebben.
+
+nicolaas. Niet veel gedaan verder gewerkt aan de pieces. De sprint planning checken en expert meetings ervaren, verder werken aan de speler verdeling. Geen obstakels.
+
+Lehan. gewerkt aan de materiaal voor de exeprt meetings. Team leden helpen en expert meeting. geen obstakels.
