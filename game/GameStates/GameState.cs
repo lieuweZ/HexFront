@@ -107,7 +107,7 @@ namespace Blok3Game.GameStates
         {
             string playerName = data.playerName.ToString();
             currentTurnPlayerName = playerName;
-
+            GameEnvironment.AssetManager.AudioManager.PlaySoundEffect("your_turn");
             if (playerName == Username)
                 Player.myTurn = true;
             else

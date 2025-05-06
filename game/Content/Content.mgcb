@@ -25,6 +25,12 @@
 /processorParam:Quality=Best
 /build:Audio/AudioEffects/button_cancel.wav
 
+#begin Audio/AudioEffects/your_turn.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/AudioEffects/your_turn.mp3
+
 #begin Audio/Music/main_menu.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
