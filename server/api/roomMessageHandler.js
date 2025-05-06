@@ -170,6 +170,7 @@ class RoomMessageHandler extends MessageHandler {
       this._rooms[roomId].players.push({
         name: playerName,
         userId: socket.userId,
+        role: 0,
       });
 
       const enterRoomData = {
@@ -185,6 +186,9 @@ class RoomMessageHandler extends MessageHandler {
       socket.playerName = playerName;
 
       if (this._rooms[roomId].players.length === 2) {
+        this._rooms[roomId].players[0].role = 1;
+        this._rooms[roomId].players[1].role = 2;
+
         this._rooms[roomId].currentTurnPlayer =
           this._rooms[roomId].players[0].name;
         console.log(
@@ -193,7 +197,7 @@ class RoomMessageHandler extends MessageHandler {
 
         this._io.to(roomId).emit("turn changed", {
           roomId: roomId,
-          nextPlayer: this._rooms[roomId].currentTurnPlayer,
+          playerName: this._rooms[roomId].currentTurnPlayer,
         });
       }
     }
