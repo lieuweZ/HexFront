@@ -18,7 +18,7 @@ Een spel gemaakt door Twister, een gedreven team dat werkt aan indiegames.
 - Hexagon Grid Design: As Far As The Eye, Dorfromantik;
 - Gameplay: Elementen uit Risk.
 
-[DotAge](https://www.nintendo.com/eu/media/images/assets/nintendo_switch_games/dotage/2x1_Dotage_image1600w.jpg){width=500}
+![Img](https://www.nintendo.com/eu/media/images/assets/nintendo_switch_games/dotage/2x1_Dotage_image1600w.jpg){width=500}
 
 ### 🧩 Interesting Mechanics
 - Gebied verovering (hex-tiles) middels gebouwen en units;
