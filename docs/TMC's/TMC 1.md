@@ -253,6 +253,4 @@ Feedback op huidige development
 - Gele uitlining duidelijk waar je op staat;
 - Goede overal impressie;
 - Mooie design;
-Er werd een peer review gedaan doormiddle van het vragen aan een andere groep om te kijken naar document zoals de GDD.
-De groep die hiernaa keek had als oordeel gegeven
 
