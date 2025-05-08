@@ -18,7 +18,6 @@ namespace Blok3Game.Engine.Helpers
             Objects[0] = typeof(Cube);
             Objects[1] = typeof(Cube2);
             Objects[2] = typeof(Cube3);
-            Objects[3] = typeof(ResourceCollector);
         }
 
         public GameObject CreateFromId(int id)

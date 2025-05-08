@@ -31,11 +31,11 @@ namespace Blok3Game.GameStates
 
             grid = new GameObjectGrid(8, 8);
             Add(grid);
-            SocketClient.Instance.SubscribeToDataPacket<CellUpdatePacket>(ReceivedData);
-            SocketClient.Instance.SubscribeToDataPacket<TurnChangedPacket>(OnTurnChanged);
 
             grid.selector = selector;
-
+            
+            SocketClient.Instance.SubscribeToDataPacket<CellUpdatePacket>(ReceivedData);
+            SocketClient.Instance.SubscribeToDataPacket<TurnChangedPacket>(OnTurnChanged);
 
             player = new Player("Alice");
             Add(player);
@@ -71,25 +71,7 @@ namespace Blok3Game.GameStates
             }
         }
 
-        public void DebugLogAllCubes()
-		{
-			for (int x = 0; x < grid.Columns; x++)
-			{
-				for (int y = 0; y < grid.Rows; y++)
-				{
-					Cell cell = grid.Get(x, y) as Cell;
-					if (cell?.Obj != null)
-					{
-						string owner = "Unknown";
-						if (cell.Obj is Cube cube) owner = cube.OwnerName;
-						else if (cell.Obj is Cube2 cube2) owner = cube2.OwnerName;
-						else if (cell.Obj is Cube3 cube3) owner = cube3.OwnerName;
 
-						Console.WriteLine($"Cube at ({x},{y}) is owned by: {owner}");
-					}
-				}
-			}
-		}
 
         public void ReceivedData(object i)
         {
@@ -98,6 +80,8 @@ namespace Blok3Game.GameStates
                 PieceList pieces = new PieceList();
                 string[] pos = piecePacket.cell.Split(" ");
                 grid.SetCellPiece(new Vector2(int.Parse(pos[0]), int.Parse(pos[1])), pieces.CreateFromId(int.Parse(piecePacket.piece)), piecePacket.playerName);
+
+                piecePacket = null;
             }
         }
 

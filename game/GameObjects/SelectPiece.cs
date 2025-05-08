@@ -23,13 +23,10 @@ namespace Blok3Game.Engine.GameObjects
             get => isSelected;
             set => isSelected = value;
         }
-        private Func<GameObject> pieceFac;
-
         public SelectPiece(Vector2 position, int width, int height, int id) : base()
         {
             ID = id;
             this.tangle = new Rectangle((int)position.X, (int)position.Y, width, height);
-        //    pieceFac = fac;
         }
 
         public override void HandleInput(InputHelper inputHelper)

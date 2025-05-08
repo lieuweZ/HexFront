@@ -136,12 +136,6 @@ namespace Blok3Game.Engine.GameObjects
 			MouseLeftState = inputHelper.MouseLeftButtonPressed;
 			}
 
-			KeyboardState keyboardState = Keyboard.GetState();
-			if (keyboardState.IsKeyDown(Keys.P))
-			{
-				PlaceTestCube();
-			}
-
             foreach (GameObject obj in grid)
 			{
                 if (obj != null)
@@ -267,26 +261,28 @@ namespace Blok3Game.Engine.GameObjects
 		public void SetCellPiece(Vector2 cell, GameObject box, string playerName)
 		{
 			Cell cl = (Cell)(this.Get((int)cell.X, (int)cell.Y));
-			if (cl.Obj == null)
+
+			if (cl.Obj != null)
 			{
-				string ownerName = playerName;
-
-				if (box is Cube cube)
-				{
-					cube.OwnerName = ownerName;
-				}
-				else if (box is Cube2 cube2)
-				{
-					cube2.OwnerName = ownerName;
-				}
-				else if (box is Cube3 cube3)
-				{
-					cube3.OwnerName = ownerName;
-				}
-
-				cl.SetObject(box);
+				return;
 			}
+
+			if (box is Cube cube)
+			{
+				cube.OwnerName = playerName;
+			}
+			else if (box is Cube2 cube2)
+			{
+				cube2.OwnerName = playerName;
+			}
+			else if (box is Cube3 cube3)
+			{
+				cube3.OwnerName = playerName;
+			}
+
+			cl.SetObject(box);
 		}
+
 
 		private bool CanPlaceAt(Vector2 pos)
 		{
@@ -294,6 +290,7 @@ namespace Blok3Game.Engine.GameObjects
 			int y = (int)pos.Y;
 
 			Cell current = Get(x, y) as Cell;
+
 			if (current == null || current.Obj != null)
 			{
 				return false;
@@ -329,7 +326,6 @@ namespace Blok3Game.Engine.GameObjects
 
 					if (isOwned)
 					{
-						Console.WriteLine($"Cube at ({nx}, {ny}) is owned by: {ownerName}");
 						return true; 
 					}
 				}
@@ -339,8 +335,8 @@ namespace Blok3Game.Engine.GameObjects
 		}
 
 
-		private bool CheckIfAvailable(
-			
+		private bool CheckIfAvailable()
+		{
 			string ownerName = GameState.Username;
 
 			foreach (GameObject obj in grid)
@@ -359,6 +355,7 @@ namespace Blok3Game.Engine.GameObjects
 			}
 			return true;
 		}
+
 
 		// Use this function to return a Vector2 array of all possible neighbors (including non-existent ones) for the given x and y values.
 		private Vector2[] GetNeighbors(int x, int y)
@@ -420,24 +417,6 @@ namespace Blok3Game.Engine.GameObjects
 				if(obj != null)
 				obj.Reset();
 			}
-		}
-
-		public void PlaceTestCube()
-		{
-			int testX = 3; 
-			int testY = 1;    
-
-			Cube testCube = new Cube();
-			testCube.OwnerName = "erer";
-
-			CellUpdatePacket testCubePacket = new CellUpdatePacket(
-				SocketClient.Instance.RoomId,
-				new Vector2(testX, testY),
-				0,
-				"erer"  
-			);
-
-			SocketClient.Instance.SendDataPacket(testCubePacket);
 		}
     }
 }
