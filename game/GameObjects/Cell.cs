@@ -66,9 +66,6 @@ namespace Blok3Game.GameObjects
             {
                 Obj.Draw(this.position + displacementhalf, gameTime, spriteBatch);
             }
-
-            
-            
             
             //DrawingHelper.FillRectangle(new Rectangle((int)this.position.X, (int)this.position.Y, 25, 25), spriteBatch, Color.Blue);
         }
