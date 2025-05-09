@@ -3,12 +3,12 @@
 
 
 ## Selectie
-Voor deze retrospective was er gekozen voor het +△ methode.<br>
-Deze werd gekozen omdat deze meer simpler leek en niet teveel extras heeft zoals tekeningen met veel detail.
+Voor deze retrospective is gekozen voor het +△ methode.<br>
+Deze methode werd gekozen omdat deze meer eenvoudiger leek en niet te veel extra's bevat, zoals tekeningen die meer detail verergeren.
 
 ## Uitvoering
 #### Voorbereiding
-Hiervoor hadden we het getekent op de website Magma, deze was gekozen omdat het dan makelijker was om samen te tekenen aan het bord.<br>
+Hiervoor hadden we de benodigde tekeningen op de website Magma getekend, deze was gekozen omdat het dan makelijker was om samen te tekenen aan het bord.<br>
 Het tabel was eerst na getekent van de spotify retro kit. <br>
 
 #### Invullen
@@ -39,7 +39,7 @@ Samenwerking : Weinig tijd om aan het project te werken, buiten school niet veel
 User Stories : Scope alsnog te groot voor veel user stories, te veel afhankelijkheden. Belangrijkste gedeelte (kunnen spelen in turns) niet in user stories gezet. Nicolaas<br>
 
 ##### Uitkomst
-![table](/docs/images/retrospective.jpg "Retrospective")<br>
+![table](/docs/images/retrospective.jpg)<br>
 
 ##### Groupering
 
@@ -55,7 +55,7 @@ Nadat deze onderdeel afgerond was begonnen we met stemmen.
 Voor het stemmen hadden we dot voting gedaan.
 Met deze process hadt iedereen in het team gestemt op 2 onder delen die ze wilden op verbeteren.
 #### Uitkomst
-![table](/docs/images/retrospective2.jpg "Retrospective")<br>
+![table](/docs/images/retrospective2.jpg)<br>
 
 ##### Verbeteren
 Toen het stemmen process klaar was hadden we toen overlegt over hoe het verbetert moet worden.
@@ -72,4 +72,4 @@ Voor de 3 onderdelen hadden we opgreschreven,
 - UserStory scopes meer specifiek maken.
 - Dailystandups meer frequent te houden op een woensdag.
 #### Uitkomst
-![table](/docs/images/retrospective3.png "Retrospective")<br>
+![table](/docs/images/retrospective3.png)<br>
