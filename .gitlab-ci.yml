@@ -19,3 +19,23 @@ pages:
     - public
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+stages:
+  - deploy
+
+deploy_to_itch:
+  image: python:3.9-slim
+  stage: deploy
+  before_script:
+    - apt update && apt install -y git wget unzip
+    - wget -q https://broth.itch.ovh/butler/linux-amd64/head/archive/default -O butler.zip
+    - unzip butler.zip -d /usr/local/bin/
+    - chmod +x /usr/local/bin/butler
+  script:
+    - butler push game "$itch_user/$itch_project_name:windows" --if-changed
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "release" && $CI_COMMIT_TAG'
+  only:
+    - tags
+  tags:
+    - hva
