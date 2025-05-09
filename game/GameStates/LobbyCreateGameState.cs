@@ -1,8 +1,10 @@
 ﻿using Blok3Game.Engine.AssetHandler;
+using Blok3Game.Engine.Helpers;
 using Blok3Game.Engine.JSON;
 using Blok3Game.Engine.SocketIOClient;
 using Blok3Game.Engine.UI;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Blok3Game.GameStates
 {
@@ -40,6 +42,11 @@ namespace Blok3Game.GameStates
                 nextScreenName = GameStateManager.LOBBY_WAIT_FOR_PLAYERS_STATE;
                 Animate(AnimationState.MovingOffscreenInactive);
             }
+        }
+
+        public override void DrawBackground(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            DrawingHelper.FillRectangle(new Rectangle(0, 0, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height), spriteBatch, new Color(DrawingHelper.GetColorCGA(12)));
         }
 
         protected override void HandleIncomingMessages()

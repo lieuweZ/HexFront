@@ -1,4 +1,5 @@
 ﻿using Blok3Game.Engine.JSON;
+using Blok3Game.GameStates;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ namespace Blok3Game.Packets
         public string cell { get; set; }
         public string piece { get; set; }
         public string roomId { get; set; }
+
+        public string playerName { get; set; }
         public CellUpdatePacket() {
             EventName = "piece update";
         }
@@ -23,6 +26,7 @@ namespace Blok3Game.Packets
             roomId = RoomId;
             cell = pos.X + " " + pos.Y;
             this.piece = type + "";
+            playerName = GameState.Username;
         }
     }
 }

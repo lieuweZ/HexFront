@@ -75,8 +75,9 @@ namespace Blok3Game.GameStates
             }
         }
 
-        public override void Draw(GameTime gameTime, Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            if(!playerNameText.Text.Equals(GameState.Username))
             playerNameText.Text = GameState.Username;
             DrawingHelper.FillRectangle(
                 new Rectangle(0, 0, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height),

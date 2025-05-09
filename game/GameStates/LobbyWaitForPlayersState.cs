@@ -5,6 +5,8 @@ using Blok3Game.Engine.UI;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Blok3Game.Engine.GameObjects;
+using Blok3Game.Engine.Helpers;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Blok3Game.GameStates
 {
@@ -78,6 +80,11 @@ namespace Blok3Game.GameStates
             { 
                 RemovePlayer(userId);            
             }
+        }
+
+        public override void DrawBackground(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            DrawingHelper.FillRectangle(new Rectangle(0, 0, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height), spriteBatch, new Color(DrawingHelper.GetColorCGA(12)));
         }
 
         private void OnPlayerDisconnected(PlayerDisconnectedData playerDisconnectedData)
