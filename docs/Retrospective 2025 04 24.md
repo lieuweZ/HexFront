@@ -39,7 +39,7 @@ Samenwerking : Weinig tijd om aan het project te werken, buiten school niet veel
 User Stories : Scope alsnog te groot voor veel user stories, te veel afhankelijkheden. Belangrijkste gedeelte (kunnen spelen in turns) niet in user stories gezet. Nicolaas<br>
 
 ##### Uitkomst
-![table](/docs/images/retrospective.jpg)<br>
+![table](./images/retrospective.jpg)
 
 ##### Groupering
 
@@ -55,7 +55,7 @@ Nadat deze onderdeel afgerond was begonnen we met stemmen.
 Voor het stemmen hadden we dot voting gedaan.
 Met deze process hadt iedereen in het team gestemt op 2 onder delen die ze wilden op verbeteren.
 #### Uitkomst
-![table](/docs/images/retrospective2.jpg)<br>
+![table](./images/retrospective2.jpg)
 
 ##### Verbeteren
 Toen het stemmen process klaar was hadden we toen overlegt over hoe het verbetert moet worden.
@@ -72,4 +72,4 @@ Voor de 3 onderdelen hadden we opgreschreven,
 - UserStory scopes meer specifiek maken.
 - Dailystandups meer frequent te houden op een woensdag.
 #### Uitkomst
-![table](/docs/images/retrospective3.png)<br>
+![table](./images/retrospective3.png)
