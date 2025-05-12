@@ -20,11 +20,15 @@ namespace Blok3Game.GameStates
         private List<TextGameObject> resourceTexts;
         public static string Username = "";
 
+        private TextGameObject chatText;
+        private Rectangle chatBorder;
+
         public GameState() : base()
         {
             grid = new GameObjectGrid(8, 8);
             Add(grid);
             SocketClient.Instance.SubscribeToDataPacket<CellUpdatePacket>(RecievedData);
+            SocketClient.Instance.SubscribeToDataPacket<ChatMessagePacket>(RecievedMsg);
 
             player = new Player("Alice");
             Add(player);
@@ -45,6 +49,21 @@ namespace Blok3Game.GameStates
                 resourceTexts.Add(resText);
                 yOffset += 25;
             }
+
+            chatText = new TextGameObject("Fonts/SpriteFont", 100);
+            chatText.Position = new Vector2(10, 50);
+            chatText.Text = "";
+            Add(chatText);
+        }
+
+        public void RecievedMsg(object i)
+        {
+            ChatMessagePacket pack = (ChatMessagePacket)i;
+            PieceList pieces = new PieceList();
+            string msg = pack.sender + " : " + pack.message;
+
+            chatText.Text = msg;
+
         }
 
         public void RecievedData(object i)

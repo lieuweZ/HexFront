@@ -17,6 +17,7 @@ namespace Blok3Game.GameStates
         private readonly Button Quit;
         private Texture2D mainMenuBackground;
         private Rectangle borders;
+
         public MainMenuState() : base()
         {
             // mainMenuBackground = GameEnvironment.AssetManager.GetSprite("Images/UI/background_bac");
@@ -28,6 +29,7 @@ namespace Blok3Game.GameStates
             grid.Interactible = 2;
 
             Add(grid);
+            //chatBorder
 
             Texture2D buttonTexture = GameEnvironment.AssetManager.GetSprite("Images/UI/Button_Big@1x4");
             float scale = 0.2f;
