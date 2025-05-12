@@ -13,6 +13,7 @@ namespace Blok3Game.GameObjects
     {
         public static bool myTurn = true;
         public static Timer turnTimer;
+        public static double TimePerTurn = 60;
 
         public string Name { get; set; }
         public List<ResourceType> resources;
@@ -36,7 +37,7 @@ namespace Blok3Game.GameObjects
 
             turnTimer = new Timer
             {
-                Interval = 1000 * 60,
+                Interval = 1000 * TimePerTurn,
                 AutoReset = true,
                 Enabled = false
             };
