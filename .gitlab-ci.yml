@@ -21,19 +21,74 @@ pages:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 stages:
+  - setup
+  - build
   - deploy
+image: mcr.microsoft.com/dotnet/sdk:8.0
 
-deploy_to_itch:
-  image: python:3.9-slim
-  stage: deploy
+check-tag:
+  stage: setup
   before_script:
-    - apt update && apt install -y git wget unzip
-    - wget -q https://broth.itch.ovh/butler/linux-amd64/head/archive/default -O butler.zip
-    - unzip butler.zip -d /usr/local/bin/
-    - chmod +x /usr/local/bin/butler
-  script:
-    - butler push game "$itch_user/$itch_project_name:windows" --if-changed
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "release" && $CI_COMMIT_TAG'
+    - apt-get update -y 
+    - apt-get install -y curl jq
   tags:
     - hva
+  script:
+    - |
+      API_TOKEN="$API_ACCESS_TOKEN"      
+      BRANCH_INFO=$(curl --header "PRIVATE-TOKEN: ${API_TOKEN}" "https://gitlab.fdmci.hva.nl/api/v4/projects/${CI_PROJECT_ID}/repository/commits/${CI_COMMIT_SHA}/refs?type=branch" | jq -r '.')
+      TARGET_BRANCH="release"
+      ACTUAL_BRANCH=$(echo "$BRANCH_INFO" | jq -r '.[] | select(.name == "'$TARGET_BRANCH'") | .name')
+      if [ "$ACTUAL_BRANCH" == "$TARGET_BRANCH" ]; then
+        echo "New tag on release branch pushed, creating new build with name $CI_COMMIT_TAG..."
+      else
+        echo "Tag is added to $ACTUAL_BRANCH. Breaking build operation..."
+        exit 1
+      fi
+  rules: 
+    - if: $CI_COMMIT_TAG
+
+windows-build:
+  stage: build
+  before_script:
+    - apt-get update -y 
+    - apt-get install -y libfreetype6 libpng16-16
+  tags:
+    - hva  
+  dependencies:
+    - check-tag
+  script:
+    - |
+      echo "Building $CI_COMMIT_TAG..."
+      dotnet publish ./game/BaseProject.sln /p:GenerateFullPaths=true /p:PublishSingleFile=true /p:IncludeAllContentForSelfExtract=true "/consoleloggerparameters:NoSummary;ForceNoAlign" -c Release -r win-x64 -o $CI_PROJECT_DIR/build/windows/temp_build
+      cd $CI_PROJECT_DIR/build/windows/temp_build
+  artifacts:
+    paths:
+      - $CI_PROJECT_DIR/build/windows/temp_build/*.exe
+    expire_in: 1 hour
+  rules: 
+    - if: $CI_COMMIT_TAG
+
+butler-push:
+  stage: deploy
+  before_script:
+    - apt-get update -y 
+    - apt-get install -y curl unzip
+  tags:
+    - hva
+  dependencies:
+    - windows-build
+  script:
+    - |
+      cd $CI_PROJECT_DIR/build/windows/temp_build/
+      curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/butler.zip
+      unzip butler.zip
+      ./butler -V
+      ./butler login
+      echo "Uploading build to itch.io with name $CI_COMMIT_TAG..."
+      EXE_FILE=$(ls -1 *.exe | head -n 1)
+      NEW_EXE_NAME="$CI_COMMIT_TAG.exe"
+      mv "$EXE_FILE" "$NEW_EXE_NAME"
+      if [ -f "$NEW_EXE_NAME" ]; then ./butler push "$NEW_EXE_NAME" "$ITCH_USER"/"$ITCH_PROJECT_NAME":"$CI_COMMIT_TAG"; else echo "No exe file found"; fi
+  rules: 
+    - if: $CI_COMMIT_TAG 
