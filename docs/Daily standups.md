@@ -82,3 +82,13 @@ Daamin. Gewerkt aan de player turns een turn timer toegevoet. De bugs oplossen. 
 nicolaas. Niet veel gedaan verder gewerkt aan de pieces. De sprint planning checken en expert meetings ervaren, verder werken aan de speler verdeling. Geen obstakels.
 
 Lehan. gewerkt aan de materiaal voor de exeprt meetings. Team leden helpen en expert meeting. geen obstakels.
+
+##### 2025 05 13
+
+Lieuwe. Movement van pieces gemaakt. Verder werken hieraan. Geen obstakels.
+
+Daamin. Visuele timer toegevoegt. werken aan de resource collector. geen idee hoe om te beginnen.
+
+nicolaas.  Ziek. Center gebouwen laten verschijnen wanneer de spel begint en user stories. Geen obstakels.
+
+Lehan. Het mogelijk gemaakt om chat berichten te stuuren. Het mogelijk maken om berichten te kunnen tiepen. Geen obstakels.
