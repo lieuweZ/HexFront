@@ -1,4 +1,4 @@
-using BaseProject;
+﻿using BaseProject;
 using Blok3Game.Engine.Helpers;
 using Blok3Game.Engine.JSON;
 using Blok3Game.Engine.SocketIOClient;
@@ -9,12 +9,15 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Linq;
 
 namespace Blok3Game.Engine.GameObjects
 {
 	public class GameObjectGrid : GameObject
 	{
 		protected GameObject[,] grid;
+		private Vector2? selectedCellCoord = null;
+		private Cell selectedCell;
 		protected int cellWidth = 82, cellHeight = 82;
 		public Vector2 MousePos;
 		public bool MouseLeftState;
@@ -180,19 +183,17 @@ namespace Blok3Game.Engine.GameObjects
 			return new Vector2(PosX, PosY);
         }
 
-        public override void DebugDraw(GameTime gameTime, SpriteBatch spriteBatch)
-        {
-            int tileScale = curCellScale;
-            for (int i = 0; i < Columns; i++)
+	public override void DebugDraw(GameTime gameTime, SpriteBatch spriteBatch)
+	{
+		int tileScale = curCellScale;
+		for (int i = 0; i < Columns; i++)
+		{
+			for (int j = 0; j < Rows; j++)
 			{
-				for(int j = 0; j < Rows; j++)
-				{
-					Vector2 pos = GetHexagonPos(i, j);
-					int PosX = (int)pos.X;
-					int PosY = (int)pos.Y;
-
-
-                    Color cl = new Color(DrawingHelper.GetColorCGA((i + j * Rows)));
+				Vector2 pos = GetHexagonPos(i, j);
+				int PosX = (int)pos.X;
+				int PosY = (int)pos.Y;
+				Color cl = new Color(DrawingHelper.GetColorCGA((i + j * Rows)));
 
 					if (Interactible == 0 || Interactible == 2)
 					{
@@ -234,24 +235,76 @@ namespace Blok3Game.Engine.GameObjects
 			}
         }
 
-		public void GridMouseInput(Vector2 cell)
-		{
-            if (Interactible == 2)
-			{
-				MinigameInput(cell);
-            } else
-			{
-				int? ID = selector.SelectedPiece?.ID;
-				if (ID != null)
-				{
-					if(CanPlaceAt(cell))
-					{
-						PlacePiece(cell, ID.Value);
-					}
-				}
+public void GridMouseInput(Vector2 cell)
+{
+    if (Interactible == 2)
+    {
+        MinigameInput(cell);
+        return;
+    }
+
+    int x = (int)cell.X;
+    int y = (int)cell.Y;
+    
+    if (x < 0 || x >= Columns || y < 0 || y >= Rows)
+        return;
+
+    Cell clickedCell = Get(x, y) as Cell;
+
+    // If no cell is selected
+    if (selectedCellCoord == null)
+    {
+        if (clickedCell?.Obj != null)
+        {
+            // Select the cell
+            selectedCellCoord = cell;
+            clickedCell.GlowTime = 100; // Highlight
+        }
+        else
+        {
+            // Handle piece placement
+            int? ID = selector.SelectedPiece?.ID;
+            if (ID != null && CanPlaceAt(cell))
+            {
+                PlacePiece(cell, ID.Value);
             }
         }
+    }
+    // If a cell is already selected
+    else
+    {
+        Vector2 selected = selectedCellCoord.Value;
+        
+        // Check if clicked cell is a neighbor
+        bool isNeighbor = GetNeighbors((int)selected.X, (int)selected.Y)
+            .Any(dir => x == selected.X + dir.X && y == selected.Y + dir.Y);
 
+        if (isNeighbor && clickedCell?.Obj == null)
+        {
+            // Move the object
+            Cell sourceCell = Get((int)selected.X, (int)selected.Y) as Cell;
+            clickedCell.SetObject(sourceCell.Obj);
+            sourceCell.ClearObject();
+            selectedCellCoord = null;
+        }
+        else if (x == selected.X && y == selected.Y)
+        {
+            // Deselect if clicking same cell
+            selectedCellCoord = null;
+        }
+        else if (clickedCell?.Obj != null)
+        {
+            // Change selection to new cell
+            selectedCellCoord = cell;
+            clickedCell.GlowTime = 100;
+        }
+        else
+        {
+            // Deselect if clicking empty non-neighbor
+            selectedCellCoord = null;
+        }
+    }
+}
 		public void PlacePiece(Vector2 pos, int id)
 		{
 			CellUpdatePacket pack = new CellUpdatePacket(SocketClient.Instance.RoomId, pos, id, GameState.Username);
