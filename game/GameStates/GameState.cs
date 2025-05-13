@@ -149,7 +149,7 @@ namespace Blok3Game.GameStates
             DrawingHelper.FillRectangle(
                 new Rectangle(0, 0, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height),
                 spriteBatch,
-                new Color(DrawingHelper.GetColorCGA(12))
+                new Color(DrawingHelper.GetColorCGA(9))
             );
 
             base.Draw(gameTime, spriteBatch);

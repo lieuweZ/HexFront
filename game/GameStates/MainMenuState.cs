@@ -60,7 +60,7 @@ namespace Blok3Game.GameStates
 
          public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
          {
-            DrawingHelper.FillRectangle(new Rectangle(0, 0, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height), spriteBatch, new Color(DrawingHelper.GetColorCGA(12)));
+            DrawingHelper.FillRectangle(new Rectangle(0, 0, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height), spriteBatch, new Color(DrawingHelper.GetColorCGA(9)));
             base.Draw(gameTime, spriteBatch);
          }
 
