@@ -251,65 +251,68 @@ public void GridMouseInput(Vector2 cell)
 
     Cell clickedCell = Get(x, y) as Cell;
 
-    // If no cell is selected
-    if (selectedCellCoord == null)
+    if (selectedCellCoord == null) 
     {
-        if (clickedCell?.Obj != null)
+        if (clickedCell?.Obj != null) 
         {
-            // Select the cell
-            selectedCellCoord = cell;
-            clickedCell.GlowTime = 100; // Highlight
+            selectedCellCoord = new Vector2(x, y);
+            selectedCell = clickedCell;
         }
-        else
+        else 
         {
-            // Handle piece placement
-            int? ID = selector.SelectedPiece?.ID;
+            int? ID = selector?.SelectedPiece?.ID;
             if (ID != null && CanPlaceAt(cell))
             {
                 PlacePiece(cell, ID.Value);
             }
         }
     }
-    // If a cell is already selected
     else
     {
         Vector2 selected = selectedCellCoord.Value;
-        
-        // Check if clicked cell is a neighbor
-        bool isNeighbor = GetNeighbors((int)selected.X, (int)selected.Y)
-            .Any(dir => x == selected.X + dir.X && y == selected.Y + dir.Y);
+        Vector2[] neighbors = GetNeighbors((int)selected.X, (int)selected.Y);
+        bool isNeighbor = neighbors.Any(n => 
+            x == selected.X + n.X && 
+            y == selected.Y + n.Y);
 
-        if (isNeighbor && clickedCell?.Obj == null)
-        {
-            // Move the object
-            Cell sourceCell = Get((int)selected.X, (int)selected.Y) as Cell;
-            clickedCell.SetObject(sourceCell.Obj);
-            sourceCell.ClearObject();
-            selectedCellCoord = null;
-        }
+	if (isNeighbor && clickedCell?.Obj == null)
+	{
+		// Create and send move packet
+		PieceMovePacket movePacket = new PieceMovePacket(
+			SocketClient.Instance.RoomId,
+			selectedCellCoord.Value,
+			cell
+		);
+		SocketClient.Instance.SendDataPacket(movePacket); // Fixed variable name here
+
+		// Move the piece locally
+		Cell sourceCell = Get((int)selected.X, (int)selected.Y) as Cell;
+		clickedCell.SetObject(sourceCell.Obj);
+		sourceCell.ClearObject();
+		selectedCellCoord = null;
+		selectedCell = null;
+	}
         else if (x == selected.X && y == selected.Y)
         {
-            // Deselect if clicking same cell
             selectedCellCoord = null;
+            selectedCell = null;
         }
         else if (clickedCell?.Obj != null)
         {
-            // Change selection to new cell
-            selectedCellCoord = cell;
-            clickedCell.GlowTime = 100;
+            selectedCellCoord = new Vector2(x, y);
+            selectedCell = clickedCell;
         }
         else
         {
-            // Deselect if clicking empty non-neighbor
             selectedCellCoord = null;
+            selectedCell = null;
         }
     }
+}		public void PlacePiece(Vector2 pos, int id)
+{
+    CellUpdatePacket updatePacket = new CellUpdatePacket(SocketClient.Instance.RoomId, pos, id, GameState.Username);
+    SocketClient.Instance.SendDataPacket(updatePacket);
 }
-		public void PlacePiece(Vector2 pos, int id)
-		{
-			CellUpdatePacket pack = new CellUpdatePacket(SocketClient.Instance.RoomId, pos, id, GameState.Username);
-			SocketClient.Instance.SendDataPacket(pack);
-        }
 
 		public void SetCellPiece(Vector2 cell, GameObject box, string playerName)
 		{
@@ -335,7 +338,6 @@ public void GridMouseInput(Vector2 cell)
 
 			cl.SetObject(box);
 		}
-
 
 		private bool CanPlaceAt(Vector2 pos)
 		{
@@ -407,6 +409,17 @@ public void GridMouseInput(Vector2 cell)
 				}
 			}
 			return true;
+		}
+				public void HandlePieceMove(Vector2 from, Vector2 to)
+		{
+			Cell sourceCell = Get((int)from.X, (int)from.Y) as Cell;
+			Cell targetCell = Get((int)to.X, (int)to.Y) as Cell;
+
+			if (sourceCell?.Obj != null && targetCell?.Obj == null)
+			{
+				targetCell.SetObject(sourceCell.Obj);
+				sourceCell.ClearObject();
+			}
 		}
 
 
