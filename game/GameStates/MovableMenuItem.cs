@@ -2,6 +2,7 @@
 using Blok3Game.Engine.JSON;
 using Blok3Game.Engine.SocketIOClient;
 using Blok3Game.Engine.UI;
+using Blok3Game.GameObjects;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace Blok3Game.GameStates
             MovingInscreenInactive,
             MovingOffscreenInactive,
         }
-        private SpriteGameObject background;
+        private Cube background;
         private const float ANIMATION_SPEED = 20f;
         protected const float BUTTON_SCALE = 0.2f;
 
@@ -138,7 +139,7 @@ namespace Blok3Game.GameStates
 
         private void MoveToCenter()
         {
-            if (Position.Y < (GameEnvironment.Screen.Y - background.Height) / 2)
+            if (Position.Y < (GameEnvironment.Screen.Y - background.size.Y) / 2)
             {
                 Position += Vector2.UnitY * ANIMATION_SPEED;
             }
@@ -151,7 +152,7 @@ namespace Blok3Game.GameStates
 
         private void MoveToTop()
         {
-            if (Position.Y > -background.Height)
+            if (Position.Y > -background.size.Y)
             {
                 Position -= Vector2.UnitY * ANIMATION_SPEED;
             }
@@ -169,12 +170,12 @@ namespace Blok3Game.GameStates
 
         public virtual void CreateBackground()
         {
-            background = new SpriteGameObject("Images/UI/Frame", 0, "background");
-            background.Scale = 0.3f;
-
+            background = new Cube();
+            background.size = new Vector2(GameEnvironment.Screen.X - (GameEnvironment.Screen.X / 4), GameEnvironment.Screen.Y - (GameEnvironment.Screen.Y / 4));
+            background.color = 20;
             //use the width and height of the background to position it in the center of the screen
-            background.Position = new Vector2((GameEnvironment.Screen.X - background.Width) / 2,
-                (GameEnvironment.Screen.Y - background.Height) / 2 - 50);
+            background.Position = new Vector2((GameEnvironment.Screen.X - background.size.X) / 2,
+                (GameEnvironment.Screen.Y - background.size.Y) / 2 - 50);
             Add(background);
         }
 
@@ -182,12 +183,13 @@ namespace Blok3Game.GameStates
         {
             base.Reset();
             animationState = AnimationState.IdleOffscreenInactive;
-            Position = new Vector2(0, -background.Height);
+            Position = new Vector2(0, -background.size.Y);
             Animate(AnimationState.MovingInscreenInactive);
         }
 
         protected TextGameObject CreateText(Vector2 position, string text)
         {
+            position = new Vector2(position.X + (GameEnvironment.Screen.X / 3.428F), position.Y);
             TextGameObject textObject = new TextGameObject("Fonts/SpriteFont", 1, "text");
             textObject.Position = position;
             textObject.Color = Color.Black;
@@ -199,12 +201,14 @@ namespace Blok3Game.GameStates
         protected TextInput CreateTextInputField(Vector2 position, string accompanyingText)
         {
             CreateText(position - Vector2.UnitY * 20, accompanyingText);
+            position = new Vector2(position.X + (GameEnvironment.Screen.X / 3.428F), position.Y);
             TextInput textInput = new TextInput(position, 0.2f);
             AddTextInput(textInput);
             return textInput;
         }
         protected Button CreateButton(Vector2 position, string text, Action<UIElement> onPressed, float scale = BUTTON_SCALE, string imageName = "Button@1x4")
         {
+            position = new Vector2(position.X + (GameEnvironment.Screen.X / 3.428F), position.Y);
             Button button = new Button(position, scale, imageName);
             button.Text = text;
             button.Clicked += onPressed;
