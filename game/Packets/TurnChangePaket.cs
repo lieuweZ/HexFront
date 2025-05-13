@@ -10,10 +10,7 @@ namespace Blok3Game.Packets
         public TurnChangedPacket()
         {
             EventName = "turn changed";
-
         }
-        
-        
     }
 
 
