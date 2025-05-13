@@ -13,6 +13,7 @@ namespace Blok3Game.GameStates
 {
     public class GameState : GameObjectList
     {
+        private Selector selector;
         private GameObjectGrid grid;
         private Player player;
         private TextGameObject playerNameText;
@@ -31,11 +32,16 @@ namespace Blok3Game.GameStates
 
         public GameState() : base()
         {
+            selector = new Selector();
+            Add(selector);
+
             grid = new GameObjectGrid(8, 8);
             Add(grid);
-            SocketClient.Instance.SubscribeToDataPacket<CellUpdatePacket>(RecievedData);
-            SocketClient.Instance.SubscribeToDataPacket<TurnChangedPacket>(OnTurnChanged);
 
+            grid.selector = selector;
+            
+            SocketClient.Instance.SubscribeToDataPacket<CellUpdatePacket>(ReceivedData);
+            SocketClient.Instance.SubscribeToDataPacket<TurnChangedPacket>(OnTurnChanged);
 
             player = new Player("Alice");
             Add(player);
@@ -78,13 +84,17 @@ namespace Blok3Game.GameStates
             }
         }
 
-        public void RecievedData(object i)
+
+
+        public void ReceivedData(object i)
         {
             if (i is CellUpdatePacket piecePacket)
             {
                 PieceList pieces = new PieceList();
                 string[] pos = piecePacket.cell.Split(" ");
-                grid.SetCellPiece(new Vector2(int.Parse(pos[0]), int.Parse(pos[1])), pieces.CreateFromId(int.Parse(piecePacket.piece)));
+                grid.SetCellPiece(new Vector2(int.Parse(pos[0]), int.Parse(pos[1])), pieces.CreateFromId(int.Parse(piecePacket.piece)), piecePacket.playerName);
+
+                piecePacket = null;
             }
         }
 
