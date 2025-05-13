@@ -7,6 +7,7 @@ namespace Blok3Game.Engine.GameObjects
 {
 	public class PieceObject : SpriteGameObject
 	{
+        private string ownerName {get; set;} // Owner of this piece
         public string Type {get; private set;} // Either Building or Unit
         public int Attack {get; private set;}
         public int Health {get; private set;}
