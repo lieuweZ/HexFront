@@ -1,8 +1,10 @@
 ﻿using System;
 using BaseProject;
 using Blok3Game.Engine.AssetHandler;
+using Blok3Game.Engine.GameObjects;
 using Blok3Game.Engine.Helpers;
 using Blok3Game.Engine.SocketIOClient;
+using Blok3Game.Engine.UI;
 using Blok3Game.Packets;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -131,11 +133,6 @@ public class GameEnvironment : Game
         if (inputHelper.KeyPressed(Keys.F11))
         {
             FullScreen = !FullScreen;
-        }
-        if (inputHelper.KeyPressed(Keys.C))
-        {
-            ChatMessagePacket pack = new ChatMessagePacket("Hello");
-            SocketClient.Instance.SendDataPacket(pack);
         }
 
         /*if (inputHelper.KeyPressed(Keys.F2))

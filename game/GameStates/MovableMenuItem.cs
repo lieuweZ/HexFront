@@ -167,7 +167,7 @@ namespace Blok3Game.GameStates
             this.animationState = animationState;
         }
 
-        private void CreateBackground()
+        public virtual void CreateBackground()
         {
             background = new SpriteGameObject("Images/UI/Frame", 0, "background");
             background.Scale = 0.3f;

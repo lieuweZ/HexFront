@@ -105,10 +105,10 @@ class RoomMessageHandler extends MessageHandler {
 			const players = this._rooms[roomId].players;
 			
 
-			for (let i = 0; i < players.length; i++) {
+			/*for (let i = 0; i < players.length; i++) {
 				
 				socket.emit('chat msg', {roomId:roomId, sender: name, message: message});
-			}
+			}*/
 			//send a message to all players in the room that a new player has joined.
 			//since the socket is now subscribed to the room, it will also receive the message.
 			this._io.to(roomId).emit('chat msg', {roomId:roomId, sender: name, message: message});
