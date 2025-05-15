@@ -256,9 +256,18 @@ public void GridMouseInput(Vector2 cell)
     {
         if (clickedCell?.Obj != null)
         {
-            // Select the cell
-            selectedCellCoord = cell;
-            clickedCell.GlowTime = 100; // Highlight
+            // Check if the piece belongs to the current player
+            bool isOwnPiece = false;
+            if (clickedCell.Obj is Cube cube) isOwnPiece = cube.OwnerName == GameState.Username;
+            else if (clickedCell.Obj is Cube2 cube2) isOwnPiece = cube2.OwnerName == GameState.Username;
+            else if (clickedCell.Obj is Cube3 cube3) isOwnPiece = cube3.OwnerName == GameState.Username;
+
+            // Only select if it's the player's own piece
+            if (isOwnPiece)
+            {
+                selectedCellCoord = cell;
+                clickedCell.GlowTime = 100; // Highlight
+            }
         }
         else
         {
@@ -294,9 +303,22 @@ public void GridMouseInput(Vector2 cell)
         }
         else if (clickedCell?.Obj != null)
         {
-            // Change selection to new cell
-            selectedCellCoord = cell;
-            clickedCell.GlowTime = 100;
+            // Check if the new piece belongs to the current player
+            bool isOwnPiece = false;
+            if (clickedCell.Obj is Cube cube) isOwnPiece = cube.OwnerName == GameState.Username;
+            else if (clickedCell.Obj is Cube2 cube2) isOwnPiece = cube2.OwnerName == GameState.Username;
+            else if (clickedCell.Obj is Cube3 cube3) isOwnPiece = cube3.OwnerName == GameState.Username;
+
+            // Change selection to new cell only if it's the player's own piece
+            if (isOwnPiece)
+            {
+                selectedCellCoord = cell;
+                clickedCell.GlowTime = 100;
+            }
+            else
+            {
+                selectedCellCoord = null;
+            }
         }
         else
         {
@@ -383,7 +405,6 @@ public void GridMouseInput(Vector2 cell)
 					}
 				}
 			}
-
 			return false;
 		}
 
