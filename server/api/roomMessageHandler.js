@@ -132,7 +132,7 @@ class RoomMessageHandler extends MessageHandler {
 
 		//send a message to all players in the room that a new player has joined.
 		//since the socket is now subscribed to the room, it will also receive the message.
-		this._io.to(roomId).emit("piece update", {
+		this._io.to(roomId).emit("cell update", {
 			roomId: roomId,
 			cell: position,
 			piece: piecdata,
