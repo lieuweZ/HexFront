@@ -92,3 +92,13 @@ Daamin. Visuele timer toegevoegt. werken aan de resource collector. geen idee ho
 nicolaas.  Ziek. Center gebouwen laten verschijnen wanneer de spel begint en user stories. Geen obstakels.
 
 Lehan. Het mogelijk gemaakt om chat berichten te stuuren. Het mogelijk maken om berichten te kunnen tiepen. Geen obstakels.
+
+##### 2025 05 15
+
+Lieuwe. gewerkt aan de unit movement. unit movement afmaken. Geen obstakels.
+
+Daamin. niks. Verder resources op het bord zetten en resource collector. Geen obstakels.
+
+nicolaas. weinig gedaan. Kijken welke user stories af moet en voorbereiden voor de check. Geen obstakels.
+
+Lehan. was online geweest om mogelijk vragen antwoorden. Branches te mergen. Geen obstakels.
