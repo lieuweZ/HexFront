@@ -2,10 +2,13 @@ const MySqlDatabase = require("./framework/utils/mySqlDatabase");
 const GameMessageHandler = require("./api/gameMessageHandler");
 const RoomMessageHandler = require("./api/roomMessageHandler");
 
+const DatabaseHandler = require("./api/databaseHandler");
+
 class SocketConnectionListener {
 	#databaseConnector;
 	#roomMessageHandler;
 	#gameMessageHandler;
+	#DatabaseHandler = null;
 	
 	#io = null;
 	#rooms = { };
@@ -20,6 +23,7 @@ class SocketConnectionListener {
 		
 		this.#roomMessageHandler = new RoomMessageHandler(this.#io, this.#databaseConnector, this.#rooms);
 		this.#gameMessageHandler = new GameMessageHandler(this.#io, this.#databaseConnector, this.#rooms);
+		this.#DatabaseHandler = new DatabaseHandler(this.#io, this.#databaseConnector, this.#rooms);
 
 		this.#handleSocketSession();
 		this.#handleIncomingConnections();
@@ -81,6 +85,7 @@ class SocketConnectionListener {
 			
 			this.#roomMessageHandler.handleIncomingMessages(socket);
 			this.#gameMessageHandler.handleIncomingMessages(socket);
+			this.#DatabaseHandler.handleIncomingMessages(socket);
 
 			socket.emit("session established", {
 				sessionId: socket.sessionId,

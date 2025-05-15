@@ -25,6 +25,9 @@ namespace Blok3Game.GameStates
             grid = new GameObjectGrid(8, 8);
             Add(grid);
             SocketClient.Instance.SubscribeToDataPacket<CellUpdatePacket>(RecievedData);
+            SocketClient.Instance.SubscribeToDataPacket<CellTypePacket>(RecievedCellData);
+
+            SocketClient.Instance.SubscribeToDataPacket<CellEffectPacket> (RecievedCellEffectData);
 
             player = new Player("Alice");
             Add(player);
@@ -59,6 +62,43 @@ namespace Blok3Game.GameStates
 
 
             pack = null;
+        }
+
+        public void RecievedCellData(object i)
+        {
+            CellTypePacket pack = (CellTypePacket)i;
+            PieceList pieces = new PieceList();
+            //string[] pos = pack.cell.Split(" ");
+
+            UpdateTile(pack);
+
+            //grid.SetCellPiece(new Vector2(int.Parse(pos[0]), int.Parse(pos[1])), pieces.CreateFromId(int.Parse(pack.piece)));
+        }
+
+        public void RecievedCellEffectData(object i)
+        {
+            CellEffectPacket pack = (CellEffectPacket)i;
+            PieceList pieces = new PieceList();
+            //string[] pos = pack.cell.Split(" ");
+
+            //grid.SetCellPiece(new Vector2(int.Parse(pos[0]), int.Parse(pos[1])), pieces.CreateFromId(int.Parse(pack.piece)));
+        }
+
+        public void UpdateTile(CellTypePacket pack)
+        {
+            for (int x = 0; x < grid.Columns; x++)
+            {
+                for (int y = 0; y < grid.Rows; y++)
+                {
+                    Cell cell = (Cell)grid.Get(x, y);
+                    if (pack.tileID == cell.cell.getTileId())
+                    {
+                        cell.cell = new CellType(pack.tileID, DrawingHelper.GetColorEGA(pack.color), pack.passable, false);
+                    }
+                }
+            }
+
+            grid.updated = true;
         }
 
 

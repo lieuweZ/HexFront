@@ -17,12 +17,12 @@ namespace Blok3Game.Packets
 
         public string playerName { get; set; }
         public CellUpdatePacket() {
-            EventName = "piece update";
+            EventName = "cell update";
         }
 
         public CellUpdatePacket(string RoomId, Vector2 pos, int type)
         {
-            EventName = "piece update";
+            EventName = "cell update";
             roomId = RoomId;
             cell = pos.X + " " + pos.Y;
             this.piece = type + "";

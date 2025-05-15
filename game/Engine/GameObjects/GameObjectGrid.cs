@@ -21,6 +21,7 @@ namespace Blok3Game.Engine.GameObjects
         public int Interactible = 0;
 		private int ignoreNumber = 9;
         private Random rand = new Random();
+        public bool updated;
 
         public GameObjectGrid(int rows, int columns, int layer = 0, string id = "")
 			: base(layer, id)
@@ -149,7 +150,11 @@ namespace Blok3Game.Engine.GameObjects
 				prevCellScale = curCellScale;
             }
 
-
+			if (!updated)
+			{
+				CellTypePacket packet = new CellTypePacket(0);
+				SocketClient.Instance.SendDataPacket(packet);
+			}
 
             foreach (GameObject obj in grid)
 			{
@@ -241,7 +246,7 @@ namespace Blok3Game.Engine.GameObjects
 				MinigameInput(cell);
             } else
 			{
-				PlacePiece(cell, 1);
+                PlacePiece(cell, 1);
             }
         }
 
@@ -265,7 +270,7 @@ namespace Blok3Game.Engine.GameObjects
             cl.SetObject(box);
         }
 
-		public void MinigameInput(Vector2 cell)
+		private void MinigameInput(Vector2 cell)
 		{
             Cube box = new Cube();
             Cell cl = (Cell)(this.Get((int)cell.X, (int)cell.Y));
