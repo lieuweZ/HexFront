@@ -82,7 +82,7 @@ class RoomMessageHandler extends MessageHandler {
 	}
 
 	#handleIncomingCellUpdateMessages(socket) {
-		socket.on('piece update', (data) => {
+		socket.on('cell update', (data) => {
 			const roomId = data.roomId;
 			const pos = data.cell;
 			const piecetype = data.piece;
@@ -132,10 +132,10 @@ class RoomMessageHandler extends MessageHandler {
 
 			for (let i = 0; i < players.length; i++) {
 				
-				socket.emit('piece update', {roomId:roomId, cell: position, piece: piecdata,playerName : name});
+				socket.emit('cell update', {roomId:roomId, cell: position, piece: piecdata,playerName : name});
 			}
 			
-			this._io.to(roomId).emit('piece update', {roomId:roomId, cell: position, piece: piecdata,playerName : name});
+			this._io.to(roomId).emit('cell update', {roomId:roomId, cell: position, piece: piecdata,playerName : name});
 			}
 		}
 	}
