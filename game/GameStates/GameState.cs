@@ -8,6 +8,7 @@ using Blok3Game.Packets;
 using System;
 using System.Collections.Generic;
 using Blok3Game.Engine.UI;
+using Blok3Game.Engine.JSON;
 
 namespace Blok3Game.GameStates
 {
@@ -30,6 +31,7 @@ namespace Blok3Game.GameStates
 
         public static string Username = "";
 
+        public static int Seed { get; set; }
         public GameState() : base()
         {
             selector = new Selector();
@@ -39,9 +41,10 @@ namespace Blok3Game.GameStates
             Add(grid);
 
             grid.selector = selector;
-            
+
             SocketClient.Instance.SubscribeToDataPacket<CellUpdatePacket>(ReceivedData);
             SocketClient.Instance.SubscribeToDataPacket<TurnChangedPacket>(OnTurnChanged);
+            SocketClient.Instance.SubscribeToDataPacket<StartGameData>(onstartgame);
 
             player = new Player("Alice");
             Add(player);
@@ -182,6 +185,10 @@ namespace Blok3Game.GameStates
                 Player.myTurn = false;
             }
         }
+        public void onstartgame(StartGameData data)
+        {
+            this.grid.UpdateCells((int)Seed);
 
+        }
     }
 }

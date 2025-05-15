@@ -24,13 +24,7 @@ namespace Blok3Game.GameObjects
         public Player(string name = "Player 1")
         {
             Name = name;
-            resources = new List<ResourceType>
-            {
-                new ResourceType { Id = 1, Name = "Wood", Amount = 5, Color = 0 },
-                new ResourceType { Id = 2, Name = "Stone", Amount = 3, Color = 1 },
-                new ResourceType { Id = 3, Name = "Gold", Amount = 2, Color = 2 }
-            };
-
+            resources = ResourceList.resources;
             hand = new List<GameObject>();
             centralBuilding = null;
             surrendered = false;
