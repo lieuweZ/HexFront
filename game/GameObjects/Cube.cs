@@ -10,11 +10,11 @@ using Blok3Game.Engine.Helpers;
 
 namespace Blok3Game.GameObjects
 {
-    public class Cube : GameObject
+    public class Cubi : GameObject
     {
         public Vector2 size = new Vector2(0, 0);
         public int color;
-        public Cube() 
+        public Cubi() 
         {
             size = new Vector2(25, 25); 
         }

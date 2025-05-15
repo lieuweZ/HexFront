@@ -18,7 +18,7 @@ namespace Blok3Game.GameStates
             MovingInscreenInactive,
             MovingOffscreenInactive,
         }
-        private Cube background;
+        private Cubi background;
         private const float ANIMATION_SPEED = 20f;
         protected const float BUTTON_SCALE = 0.2f;
 
@@ -170,7 +170,7 @@ namespace Blok3Game.GameStates
 
         public virtual void CreateBackground()
         {
-            background = new Cube();
+            background = new Cubi();
             background.size = new Vector2(GameEnvironment.Screen.X - (GameEnvironment.Screen.X / 4), GameEnvironment.Screen.Y - (GameEnvironment.Screen.Y / 4));
             background.color = 20;
             //use the width and height of the background to position it in the center of the screen

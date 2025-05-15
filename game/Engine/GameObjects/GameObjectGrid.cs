@@ -265,7 +265,7 @@ namespace Blok3Game.Engine.GameObjects
 			SocketClient.Instance.SendDataPacket(pack);
         }
 
-		public void SetCellPiece(Vector2 cell, GameObject box)
+		public void SetCellPiece(Vector2 cell, GameObject box, string playerName)
 		{
 			Cell cl = (Cell)(this.Get((int)cell.X, (int)cell.Y));
 
@@ -363,7 +363,7 @@ namespace Blok3Game.Engine.GameObjects
 
 		private void MinigameInput(Vector2 cell)
 		{
-            BuilderCube box = new BuilderCube();
+            Cube box = new Cube();
             Cell cl = (Cell)(this.Get((int)cell.X, (int)cell.Y));
             cl.SetObject(box);
             for (int i = 0; i < Columns; i++)

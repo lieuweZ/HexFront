@@ -10,10 +10,10 @@ using Blok3Game.Engine.Helpers;
 
 namespace Blok3Game.GameObjects
 {
-    public class BuilderCube : GameObject
+    public class Cube : GameObject
     {
         public string OwnerName { get; set; }
-        public Cube() 
+        public Cube()
         {
             this.position = new Vector2(25, 25); 
         }
