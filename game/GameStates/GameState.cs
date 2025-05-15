@@ -18,12 +18,18 @@ namespace Blok3Game.GameStates
     public class GameState : GameObjectList
     {
         private Selector selector;
-        public static GameObjectGrid grid {get; private set;}
+        public static GameObjectGrid grid { get; private set; }
         private Player player;
         private TextGameObject playerNameText;
         private List<TextGameObject> resourceTexts;
         private Button endTurnButton;
         private TextGameObject currentTurnText;
+        private TextGameObject timerText;
+        private double timeRemaining = Player.TimePerTurn;
+        private double elapsedSinceTurnStart = 0;
+        private Texture2D pieTimerTexture;
+        private Vector2 pieTimerPosition;
+        private float pieTimerRotation;
         private string currentTurnPlayerName = "";
 
         public static string Username = "";
@@ -46,11 +52,11 @@ namespace Blok3Game.GameStates
             Add(grid);
 
             grid.selector = selector;
-            
+
             SocketClient.Instance.SubscribeToDataPacket<CellUpdatePacket>(ReceivedData);
             SocketClient.Instance.SubscribeToDataPacket<CellTypePacket>(RecievedCellData);
 
-            SocketClient.Instance.SubscribeToDataPacket<CellEffectPacket> (RecievedCellEffectData);
+            SocketClient.Instance.SubscribeToDataPacket<CellEffectPacket>(RecievedCellEffectData);
             SocketClient.Instance.SubscribeToDataPacket<ChatMessagePacket>(RecievedMsg);
             SocketClient.Instance.SubscribeToDataPacket<TurnChangedPacket>(OnTurnChanged);
             SocketClient.Instance.SubscribeToDataPacket<StartGameData>(StartGame);
@@ -68,6 +74,13 @@ namespace Blok3Game.GameStates
             currentTurnText.Text = "Current Turn: ";
             Add(currentTurnText);
 
+            timerText = new TextGameObject("Fonts/SpriteFont", 100);
+            timerText.Position = new Vector2(GameEnvironment.Screen.X - 135, 10);
+            timerText.Text = "";
+            Add(timerText);
+
+            pieTimerTexture = GameEnvironment.AssetManager.GetSprite("Images/UI/fill");
+            pieTimerPosition = new Vector2(GameEnvironment.Screen.X - 100, 100);
 
             endTurnButton = new Button(new Vector2(10, 150), 0.05f, "Button_Big@1x4")
             {
@@ -75,7 +88,7 @@ namespace Blok3Game.GameStates
             };
             endTurnButton.Clicked += OnButtonClicked;
             Add(endTurnButton);
-            
+
             resourceTexts = new List<TextGameObject>();
             float yOffset = 40;
             foreach (var res in player.resources)
@@ -99,8 +112,8 @@ namespace Blok3Game.GameStates
             ChatMessagePacket pack = (ChatMessagePacket)i;
             PieceList pieces = new PieceList();
             string msg = pack.sender + " : " + pack.message;
-            if(messages.Count < int.MaxValue)
-            messages.Add(msg);
+            if (messages.Count < int.MaxValue)
+                messages.Add(msg);
             recalculcateMessage();
         }
 
@@ -112,13 +125,14 @@ namespace Blok3Game.GameStates
             string[] msg = messages.ToArray();
             string chat = "";
 
-            if(message > msg_limit)
+            if (message > msg_limit)
             {
                 message = msg_limit;
             }
 
-            for(int i = 0;i < message; i++) {
-                if(i > 0)
+            for (int i = 0; i < message; i++)
+            {
+                if (i > 0)
                 {
                     chat += "\n";
                 }
@@ -191,22 +205,34 @@ namespace Blok3Game.GameStates
                 var res = player.resources[i];
                 resourceTexts[i].Text = $"{res.Name}: {res.Amount}";
             }
+            if (Player.myTurn)
+            {
+                elapsedSinceTurnStart += gameTime.ElapsedGameTime.TotalSeconds;
+                double displayTime = Math.Max(0, timeRemaining - elapsedSinceTurnStart);
+                timerText.Text = $"Time Left: {Math.Ceiling(displayTime)}s";
+                pieTimerRotation = (float)((1 - displayTime / timeRemaining) * MathHelper.TwoPi);
 
-            
+            }
+            else
+            {
+                timerText.Text = "Time Left: 60s";
+            }
+
+
         }
 
         public override void HandleInput(InputHelper inputHelper)
         {
             base.HandleInput(inputHelper);
-            if(playerNameInput != null && playerNameInput.Text != null)
-            if (inputHelper.IsKeyDown(Keys.Enter)  && playerNameInput.Text.Length > 0)
-            {
-                ChatMessagePacket pack = new ChatMessagePacket(playerNameInput.Text);
-                SocketClient.Instance.SendDataPacket(pack);
-                playerNameInput.Clear();
-            }
-        }
+            if (playerNameInput != null && playerNameInput.Text != null)
+                if (inputHelper.IsKeyDown(Keys.Enter) && playerNameInput.Text.Length > 0)
+                {
+                    ChatMessagePacket pack = new ChatMessagePacket(playerNameInput.Text);
+                    SocketClient.Instance.SendDataPacket(pack);
+                    playerNameInput.Clear();
 
+                }
+        }
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             if (!playerNameText.Text.Equals(Username))
@@ -217,6 +243,17 @@ namespace Blok3Game.GameStates
                 new Color(DrawingHelper.GetColorCGA(9))
             );
 
+            spriteBatch.Draw(
+                pieTimerTexture,
+                pieTimerPosition,
+                null,
+                Color.White,
+                pieTimerRotation,
+                new Vector2(pieTimerTexture.Width / 2f, pieTimerTexture.Height / 2f),
+                1f,
+                SpriteEffects.None,
+                0f
+            );
             base.Draw(gameTime, spriteBatch);
         }
 
@@ -224,11 +261,17 @@ namespace Blok3Game.GameStates
         {
             string playerName = data.playerName.ToString();
             currentTurnPlayerName = playerName;
-
+            GameEnvironment.AssetManager.AudioManager.PlaySoundEffect("your_turn");
             if (playerName == Username)
+            {
                 Player.myTurn = true;
+                timeRemaining = Player.TimePerTurn;
+                elapsedSinceTurnStart = 0;
+            }
             else
+            {
                 Player.myTurn = false;
+            }
         }
 
         private void OnButtonClicked(UIElement element)
@@ -257,10 +300,10 @@ namespace Blok3Game.GameStates
                 string role = parts[0];
                 string PlayerName = parts[1];
                 int Column = grid.Columns / 2;
-                int Row =  (grid.Rows - 1) * (Int32.Parse(role) - 1);
+                int Row = (grid.Rows - 1) * (Int32.Parse(role) - 1);
                 Console.WriteLine(PlayerName);
-                grid.SetCellPiece(new Vector2(Column , Row), pieces.CreateFromId(1), PlayerName);
-            }   
+                grid.SetCellPiece(new Vector2(Column, Row), pieces.CreateFromId(1), PlayerName);
+            }
         }
     }
 }
