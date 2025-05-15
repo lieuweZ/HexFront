@@ -16,7 +16,7 @@ class GameMessageHandler extends MessageHandler {
 			//send a message to all players that the game has started.
 			//the client in the specific room can then start the game.
 			//other clients can remove the game from the list of active games.
-			this._io.emit('start game', { roomId: data.roomId });
+			this._io.emit('start game', { roomId: data.roomId, players: this._rooms[data.roomId].players.map(p => `${p.role}:${p.name}`) });
 		});
 	}
 }

@@ -20,7 +20,7 @@ namespace Blok3Game.Packets
             EventName = "cell update";
         }
 
-        public CellUpdatePacket(string RoomId, Vector2 pos, int type)
+        public CellUpdatePacket(string RoomId, Vector2 pos, int type, string name)
         {
             EventName = "cell update";
             roomId = RoomId;

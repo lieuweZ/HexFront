@@ -15,7 +15,7 @@ namespace Blok3Game.GameObjects
 {
     public class Cell : GameObject
     {
-        public GameObject Obj;
+        public GameObject Obj {get; private set;}
         public ResourceType Resource;
         public CellType cell;
         public int GlowTime = 0;

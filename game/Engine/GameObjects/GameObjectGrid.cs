@@ -1,11 +1,13 @@
-﻿using BaseProject;
+using BaseProject;
 using Blok3Game.Engine.Helpers;
 using Blok3Game.Engine.JSON;
 using Blok3Game.Engine.SocketIOClient;
 using Blok3Game.GameObjects;
 using Blok3Game.Packets;
+using Blok3Game.GameStates;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 
 namespace Blok3Game.Engine.GameObjects
@@ -20,6 +22,7 @@ namespace Blok3Game.Engine.GameObjects
         private int curCellScale = HexFront.self.CellScale;
         public int Interactible = 0;
 		private int ignoreNumber = 9;
+		public Selector selector {get; set;}
         private Random rand = new Random();
         public bool updated;
 
@@ -240,35 +243,123 @@ namespace Blok3Game.Engine.GameObjects
 
 		public void GridMouseInput(Vector2 cell)
 		{
-            
             if (Interactible == 2)
 			{
 				MinigameInput(cell);
             } else
 			{
-                PlacePiece(cell, 1);
+				int? ID = selector.SelectedPiece?.ID;
+				if (ID != null)
+				{
+					if(CanPlaceAt(cell))
+					{
+		                PlacePiece(cell, ID.Value);
+					}
+				}
             }
         }
 
 		public void PlacePiece(Vector2 pos, int id)
 		{
-			CellUpdatePacket pack = new CellUpdatePacket(SocketClient.Instance.RoomId, pos, id);
-
-            if (id == 1)
-			{
-                SocketClient.Instance.SendDataPacket(pack);
-            } else
-			{
-                SocketClient.Instance.SendDataPacket(new CellUpdatePacket(SocketClient.Instance.RoomId, pos, 0));
-            }
-            
+			CellUpdatePacket pack = new CellUpdatePacket(SocketClient.Instance.RoomId, pos, id, GameState.Username);
+			SocketClient.Instance.SendDataPacket(pack);
         }
 
 		public void SetCellPiece(Vector2 cell, GameObject box)
 		{
-            Cell cl = (Cell)(this.Get((int)cell.X, (int)cell.Y));
-            cl.SetObject(box);
+			Cell cl = (Cell)(this.Get((int)cell.X, (int)cell.Y));
+
+			if (cl.Obj != null)
+			{
+				return;
+			}
+
+			if (box is Cube cube)
+			{
+				cube.OwnerName = playerName;
+			}
+			else if (box is Cube2 cube2)
+			{
+				cube2.OwnerName = playerName;
+			}
+			else if (box is Cube3 cube3)
+			{
+				cube3.OwnerName = playerName;
+			}
+
+			cl.SetObject(box);
         }
+
+		private bool CanPlaceAt(Vector2 pos)
+		{
+			int x = (int)pos.X;
+			int y = (int)pos.Y;
+
+			Cell current = Get(x, y) as Cell;
+
+			if (current == null || current.Obj != null)
+			{
+				return false;
+			}
+
+			Vector2[] selectedDirections = GetNeighbors(x,y);
+
+			foreach (Vector2 dir in selectedDirections)
+			{
+				int nx = x + (int)dir.X;
+				int ny = y + (int)dir.Y;
+
+				if (nx == x && ny == y)
+				{
+					continue;
+				}
+
+				Cell neighbor = Get(nx, ny) as Cell;
+
+				if (neighbor != null && neighbor.Obj != null)
+				{
+					string ownerName = GameState.Username;
+					var obj = neighbor.Obj;
+					bool isOwned =
+						(obj is Cube cube && cube.OwnerName == ownerName) ||
+						(obj is Cube2 cube2 && cube2.OwnerName == ownerName) ||
+						(obj is Cube3 cube3 && cube3.OwnerName == ownerName);
+
+					if (isOwned)
+					{
+						return true; 
+					}
+				}
+			}
+
+			return false;
+		}
+
+		// Use this function to return a Vector2 array of all possible neighbors (including non-existent ones) for the given x and y values.
+		private Vector2[] GetNeighbors(int x, int y)
+		{
+			Vector2[] directionsEven = new Vector2[]
+			{
+				new Vector2(-1,  0), // West
+				new Vector2(+1,  0), // East
+				new Vector2( 0, +1), // South-West
+				new Vector2(+1, +1), // South-East
+				new Vector2( 0, -1), // North-West
+				new Vector2(+1, -1), // North-East
+			};
+
+			Vector2[] directionsOdd = new Vector2[]
+			{
+				new Vector2(-1,  0), // West
+				new Vector2(+1,  0), // East
+				new Vector2(-1, +1), // South-West
+				new Vector2( 0, +1), // South-East
+				new Vector2(-1, -1), // North-West
+				new Vector2( 0, -1), // North-East
+			};
+
+			return (y % 2 == 0) ? directionsEven : directionsOdd;
+		}
 
 		private void MinigameInput(Vector2 cell)
 		{
