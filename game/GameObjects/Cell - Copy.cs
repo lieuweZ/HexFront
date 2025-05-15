@@ -10,9 +10,9 @@ using Blok3Game.Engine.Helpers;
 
 namespace Blok3Game.GameObjects
 {
-    public class Cube : GameObject
+    public class BuilderCube : GameObject
     {
-        public Cube() 
+        public BuilderCube() 
         {
             this.position = new Vector2(25, 25); 
         }

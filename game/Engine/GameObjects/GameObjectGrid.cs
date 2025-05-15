@@ -272,7 +272,7 @@ namespace Blok3Game.Engine.GameObjects
 
 		private void MinigameInput(Vector2 cell)
 		{
-            Cube box = new Cube();
+            BuilderCube box = new BuilderCube();
             Cell cl = (Cell)(this.Get((int)cell.X, (int)cell.Y));
             cl.SetObject(box);
             for (int i = 0; i < Columns; i++)

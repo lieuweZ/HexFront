@@ -1,6 +1,7 @@
 ﻿using System;
 using BaseProject;
 using Blok3Game.Engine.AssetHandler;
+using Blok3Game.Engine.GameObjects;
 using Blok3Game.Engine.Helpers;
 using Blok3Game.Engine.SocketIOClient;
 using Blok3Game.Packets;

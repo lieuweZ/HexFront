@@ -156,6 +156,11 @@ namespace Blok3Game.Engine.UI
 
             HandleCharacterInput(inputHelper);
         }
+
+        public void Clear()
+        {
+            text.Text = "";
+        }
         public string Text => text.Text;
     }
 }

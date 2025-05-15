@@ -9,6 +9,9 @@ using Blok3Game.Packets;
 using System;
 using System.Collections.Generic;
 using static System.Net.Mime.MediaTypeNames;
+using Blok3Game.Engine.UI;
+using Microsoft.Xna.Framework.Input;
+using System.Transactions;
 
 namespace Blok3Game.GameStates
 {
@@ -20,14 +23,24 @@ namespace Blok3Game.GameStates
         private List<TextGameObject> resourceTexts;
         public static string Username = "";
 
+        private List<string> messages = new List<string>();
+        private TextGameObject chatText;
+        private Rectangle chatBorder;
+        private TextInput playerNameInput;
+
         public GameState() : base()
         {
             grid = new GameObjectGrid(8, 8);
+
+            playerNameInput = new TextInput(new Vector2(0, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 70), 0.1F);
+            Add(playerNameInput);
+
             Add(grid);
             SocketClient.Instance.SubscribeToDataPacket<CellUpdatePacket>(RecievedData);
             SocketClient.Instance.SubscribeToDataPacket<CellTypePacket>(RecievedCellData);
 
             SocketClient.Instance.SubscribeToDataPacket<CellEffectPacket> (RecievedCellEffectData);
+            SocketClient.Instance.SubscribeToDataPacket<ChatMessagePacket>(RecievedMsg);
 
             player = new Player("Alice");
             Add(player);
@@ -48,6 +61,46 @@ namespace Blok3Game.GameStates
                 resourceTexts.Add(resText);
                 yOffset += 25;
             }
+
+            chatText = new TextGameObject("Fonts/SpriteFont", 100);
+            chatText.Position = new Vector2(10, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 250);
+            chatText.Text = "";
+            Add(chatText);
+        }
+
+        public void RecievedMsg(object i)
+        {
+            ChatMessagePacket pack = (ChatMessagePacket)i;
+            PieceList pieces = new PieceList();
+            string msg = pack.sender + " : " + pack.message;
+            if(messages.Count < int.MaxValue)
+            messages.Add(msg);
+            recalculcateMessage();
+        }
+
+        public void recalculcateMessage()
+        {
+
+            int message = messages.Count;
+            int msg_limit = 8;
+            string[] msg = messages.ToArray();
+            string chat = "";
+
+            if(message > msg_limit)
+            {
+                message = msg_limit;
+            }
+
+            for(int i = 0;i < message; i++) {
+                if(i > 0)
+                {
+                    chat += "\n";
+                }
+                chat += msg[((messages.Count - (message)) + i)];
+            }
+
+
+            chatText.Text = chat;
         }
 
         public void RecievedData(object i)
@@ -113,6 +166,20 @@ namespace Blok3Game.GameStates
                 var res = player.resources[i];
                 resourceTexts[i].Text = $"{res.Name}: {res.Amount}";
             }
+
+            
+        }
+
+        public override void HandleInput(InputHelper inputHelper)
+        {
+            base.HandleInput(inputHelper);
+            if(playerNameInput != null && playerNameInput.Text != null)
+            if (inputHelper.IsKeyDown(Keys.Enter)  && playerNameInput.Text.Length > 0)
+            {
+                ChatMessagePacket pack = new ChatMessagePacket(playerNameInput.Text);
+                SocketClient.Instance.SendDataPacket(pack);
+                playerNameInput.Clear();
+            }
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -122,7 +189,7 @@ namespace Blok3Game.GameStates
             DrawingHelper.FillRectangle(
                 new Rectangle(0, 0, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height),
                 spriteBatch,
-                new Color(DrawingHelper.GetColorCGA(12))
+                new Color(DrawingHelper.GetColorCGA(9))
             );
 
             base.Draw(gameTime, spriteBatch);

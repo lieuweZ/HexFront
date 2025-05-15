@@ -17,6 +17,7 @@ namespace Blok3Game.GameStates
         private readonly Button Quit;
         private Texture2D mainMenuBackground;
         private Rectangle borders;
+
         public MainMenuState() : base()
         {
             // mainMenuBackground = GameEnvironment.AssetManager.GetSprite("Images/UI/background_bac");
@@ -28,6 +29,7 @@ namespace Blok3Game.GameStates
             grid.Interactible = 2;
 
             Add(grid);
+            //chatBorder
 
             Texture2D buttonTexture = GameEnvironment.AssetManager.GetSprite("Images/UI/Button_Big@1x4");
             float scale = 0.2f;
@@ -58,7 +60,7 @@ namespace Blok3Game.GameStates
 
          public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
          {
-            DrawingHelper.FillRectangle(new Rectangle(0, 0, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height), spriteBatch, new Color(DrawingHelper.GetColorCGA(12)));
+            DrawingHelper.FillRectangle(new Rectangle(0, 0, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height), spriteBatch, new Color(DrawingHelper.GetColorCGA(9)));
             base.Draw(gameTime, spriteBatch);
          }
 

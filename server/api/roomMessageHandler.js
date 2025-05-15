@@ -13,6 +13,7 @@ class RoomMessageHandler extends MessageHandler {
 		this.#handleIncomingGetActivePlayersInRoomMessages(socket);
 
 		this.#handleIncomingCellUpdateMessages(socket);
+		this.#handleIncomingChatMessages(socket);
 	}
 
 	emitPlayerStateChangeToAllPlayersInRoom(socket, message) {
@@ -89,6 +90,34 @@ class RoomMessageHandler extends MessageHandler {
 
 			this.UpdateCell(socket, roomId, pos, piecetype, name);
 		});
+	}
+
+	#handleIncomingChatMessages(socket) {
+		socket.on('chat msg', (data) => {
+			const roomId = data.roomId;
+
+			this.SendChatMessage(socket, roomId, data.message,  data.sender);
+		});
+	}
+	
+	SendChatMessage(socket, roomId, message, name) {
+		if (this._rooms[roomId]) {
+			const players = this._rooms[roomId].players;
+			
+
+			/*for (let i = 0; i < players.length; i++) {
+				
+				socket.emit('chat msg', {roomId:roomId, sender: name, message: message});
+			}*/
+			//send a message to all players in the room that a new player has joined.
+			//since the socket is now subscribed to the room, it will also receive the message.
+			this._io.to(roomId).emit('chat msg', {roomId:roomId, sender: name, message: message});
+			
+			//store the room id and player name on the socket so that it can be restored if the connection is lost.
+			//see the #handleDisconnect function.
+			//socket.roomId = roomId;
+			//socket.playerName = playerName;
+		}
 	}
 
 	UpdateCell(socket, roomId,position, piecdata, name) {
