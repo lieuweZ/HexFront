@@ -283,7 +283,6 @@ namespace Blok3Game.Engine.GameObjects
 			cl.SetObject(box);
 		}
 
-
 		private bool CanPlaceAt(Vector2 pos)
 		{
 			int x = (int)pos.X;
@@ -294,11 +293,6 @@ namespace Blok3Game.Engine.GameObjects
 			if (current == null || current.Obj != null)
 			{
 				return false;
-			}
-
-			if (CheckIfAvailable())
-			{
-				return true;
 			}
 
 			Vector2[] selectedDirections = GetNeighbors(x,y);
@@ -333,29 +327,6 @@ namespace Blok3Game.Engine.GameObjects
 
 			return false;
 		}
-
-
-		private bool CheckIfAvailable()
-		{
-			string ownerName = GameState.Username;
-
-			foreach (GameObject obj in grid)
-			{
-				if (obj is Cell cell && cell.Obj != null)
-				{
-					var placedObj = cell.Obj;
-
-					if ((placedObj is Cube cube && cube.OwnerName == ownerName) ||
-						(placedObj is Cube2 cube2 && cube2.OwnerName == ownerName) ||
-						(placedObj is Cube3 cube3 && cube3.OwnerName == ownerName))
-					{
-						return false;
-					}
-				}
-			}
-			return true;
-		}
-
 
 		// Use this function to return a Vector2 array of all possible neighbors (including non-existent ones) for the given x and y values.
 		private Vector2[] GetNeighbors(int x, int y)
