@@ -20,6 +20,9 @@ namespace Blok3Game.GameObjects
         public List<GameObject> hand;
         public GameObject centralBuilding;
         public bool surrendered;
+        public List<ResourceCollector> Collectors = new List<ResourceCollector>();
+
+
 
         public Player(string name = "Player 1")
         {
@@ -48,6 +51,19 @@ namespace Blok3Game.GameObjects
             myTurn = !myTurn;
         }
 
+        public void BeginTurn()
+        {
+            foreach (var collector in Collectors)
+            {
+                collector.AtStartTurn();
+            }
+        }
+
+        public void RegisterCollector(ResourceCollector collector)
+        {
+            Collectors.Add(collector);
+        }
+
         private static void OnTimedEvent(object source, ElapsedEventArgs e)
         {
             Console.WriteLine($"Ending turn at {e.SignalTime}");
@@ -56,7 +72,12 @@ namespace Blok3Game.GameObjects
 
         public override void Update(GameTime gameTime)
         {
-            turnTimer.Enabled = myTurn;
+            if (myTurn && !turnTimer.Enabled)
+            {
+                BeginTurn(); // Start turn: collect resources
+                turnTimer.Enabled = true;
+            }
+
             base.Update(gameTime);
         }
     }

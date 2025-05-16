@@ -14,26 +14,43 @@ namespace Blok3Game.Engine.GameObjects
     {
         private Player player;
         private Cell myCell;
-        public ResourceCollector() : base("building", 0, 5, Vector2.Zero, "")
+
+        public ResourceCollector(Player owner, Cell cell)
+            : base("building", 0, 5, Vector2.Zero, "")
         {
-            Position = position;
+            this.player = owner;
+            this.myCell = cell;
+            this.Position = cell.Position;
         }
 
         public void CollectResource()
         {
-            ResourceType resource = myCell.Resource;
-            myCell.Resource.Amount -= 1;
-            player.resources.Add(resource);
+            if (myCell.Resource != null && myCell.Resource.Amount > 0)
+            {
+
+                var target = player.resources.FirstOrDefault(r => r.Id == myCell.Resource.Id);
+                if (target != null && target.Amount > 0)
+                {
+                    target.Amount += 1;
+                    myCell.Resource.Amount -= 1;
+                    Console.WriteLine($"{player.Name} collected 1 {myCell.Resource.Name}. Remaining in cell: {myCell.Resource.Amount}");
+                }
+            }
         }
 
-        public void atStartTurn()
+        public void AtStartTurn()
         {
             CollectResource();
         }
 
         public override void Draw(Vector2 displacement, GameTime gameTime, SpriteBatch spriteBatch)
-        {           
-            DrawingHelper.FillRectangle(new Rectangle((int)(displacement.X - this.position.X / 2), (int)(displacement.Y - this.position.Y / 2), 25, 25), spriteBatch, Color.Black);
+        {
+            DrawingHelper.FillRectangle(
+                new Rectangle((int)(displacement.X - 12), (int)(displacement.Y - 12), 25, 25),
+                spriteBatch,
+                Color.Black
+            );
         }
     }
+
 }
