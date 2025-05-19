@@ -288,14 +288,18 @@ public void GridMouseInput(Vector2 cell)
         bool isNeighbor = GetNeighbors((int)selected.X, (int)selected.Y)
             .Any(dir => x == selected.X + dir.X && y == selected.Y + dir.Y);
 
-        if (isNeighbor && clickedCell?.Obj == null)
-        {
-            // Move the object
-            Cell sourceCell = Get((int)selected.X, (int)selected.Y) as Cell;
-            clickedCell.SetObject(sourceCell.Obj);
-            sourceCell.ClearObject();
-            selectedCellCoord = null;
-        }
+if (isNeighbor && clickedCell?.Obj == null)
+{
+    // Move the object
+    Cell sourceCell = Get((int)selected.X, (int)selected.Y) as Cell;
+    clickedCell.SetObject(sourceCell.Obj);
+    sourceCell.ClearObject();
+    
+    // Send move packet
+    MovePiece(selected, cell);
+    
+    selectedCellCoord = null;
+}
         else if (x == selected.X && y == selected.Y)
         {
             // Deselect if clicking same cell
@@ -326,6 +330,16 @@ public void GridMouseInput(Vector2 cell)
             selectedCellCoord = null;
         }
     }
+}
+public void MovePiece(Vector2 source, Vector2 target)
+{
+    MovePiecePacket packet = new MovePiecePacket(
+        SocketClient.Instance.RoomId,
+        source,
+        target,
+        GameState.Username
+    );
+    SocketClient.Instance.SendDataPacket(packet);
 }
 		public void PlacePiece(Vector2 pos, int id)
 		{

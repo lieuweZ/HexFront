@@ -12,6 +12,7 @@ class RoomMessageHandler extends MessageHandler {
 		this.#handleIncomingGetActivePlayersInRoomMessages(socket);
 
 		this.#handleIncomingCellUpdateMessages(socket);
+		this.#handleIncomingPieceMoveMessages(socket);
 		this.#handleIncomingTurnChanges(socket);
 	}
 
@@ -117,6 +118,34 @@ class RoomMessageHandler extends MessageHandler {
 		}
 		//}
 	}
+	#handleIncomingPieceMoveMessages(socket) {
+	socket.on("piece move", (data) => {
+    const roomId = data.roomId;
+    const sourceCell = data.sourceCell;
+    const targetCell = data.targetCell;
+    const name = data.playerName;
+    this.MovePiece(socket, roomId, sourceCell, targetCell, name);
+	});
+}
+
+MovePiece(socket, roomId, sourceCell, targetCell, name) {
+if (this._rooms[roomId]) {
+    const players = this._rooms[roomId].players;
+    if (this._rooms[roomId].currentTurnPlayer !== name) {
+    console.log(`Not ${name}'s turn!`);
+    return;
+    }
+    
+    // Broadcast the move to all players in the room
+    this._io.to(roomId).emit("piece move", {
+		roomId: roomId,
+		sourceCell: sourceCell,
+		targetCell: targetCell,
+		playerName: name,
+    });
+  }
+}
+
 
 	#handleIncomingTurnChanges(socket) {
 		socket.on("turn changed", (data) => {
