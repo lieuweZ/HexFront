@@ -1,7 +1,6 @@
-using System;
-using Blok3Game.Engine.Helpers;
+using Blok3Game.GameObjects;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+
 
 namespace Blok3Game.Engine.GameObjects
 {
@@ -16,7 +15,7 @@ namespace Blok3Game.Engine.GameObjects
             Type = type;
             Attack = attack;
             Health = health;
-            this.Position = position;
+            Position = position;
         }
 
         public void Update()
@@ -30,7 +29,7 @@ namespace Blok3Game.Engine.GameObjects
 
             return (this.Health - current_health) < 0;
         }
-        public void AtStartTurn()
+        public virtual void AtStartTurn(Cell cell, Player player)
         {
 
         }

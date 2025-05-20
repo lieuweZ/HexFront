@@ -276,9 +276,9 @@ namespace Blok3Game.Engine.GameObjects
 			{
 				cube2.OwnerName = playerName;
 			}
-			else if (box is ResourceCollector resourceCollector)
+			else if (box is PieceObject piece)
 			{
-				resourceCollector.OwnerName = playerName;
+				piece.OwnerName = playerName;
 			}
 
 			cl.SetObject(box);
@@ -323,7 +323,7 @@ namespace Blok3Game.Engine.GameObjects
 					bool isOwned =
 						(obj is Cube cube && cube.OwnerName == ownerName) ||
 						(obj is Cube2 cube2 && cube2.OwnerName == ownerName) ||
-						(obj is ResourceCollector cube3 && cube3.OwnerName == ownerName);
+						(obj is PieceObject piece && piece.OwnerName == ownerName);
 
 					if (isOwned)
 					{

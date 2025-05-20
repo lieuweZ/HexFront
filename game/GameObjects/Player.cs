@@ -54,7 +54,6 @@ namespace Blok3Game.GameObjects
 
         public void BeginTurn()
         {
-            Console.WriteLine("begin turn");
             var grid = GameState.grid;
             for (var x = 0; x <= grid.Columns; x++)
             {
@@ -63,12 +62,11 @@ namespace Blok3Game.GameObjects
                     Cell cl = (Cell)grid.Get(x, y);
                     if (cl is Cell && cl.Obj != null)
                     {
-                        Console.WriteLine(cl);
-                        if (cl.Obj is PieceObject piece && piece.OwnerName == Name)
+                        PieceObject piece = (PieceObject)cl.Obj;
+                        Console.WriteLine(piece.OwnerName);
+                        if (piece.OwnerName == GameState.Username)
                         {
-                            Console.WriteLine("atstarturn");
-
-                            piece.AtStartTurn();
+                            piece.AtStartTurn(cl, this);
                         }
                     }
                 }
@@ -88,10 +86,8 @@ namespace Blok3Game.GameObjects
 
         public override void Update(GameTime gameTime)
         {
-            Console.WriteLine("Before condition");
             if (myTurn && !turnTimer.Enabled)
             {
-                Console.WriteLine("Test");
                 BeginTurn();
                 turnTimer.Enabled = true;
             }

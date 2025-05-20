@@ -2,26 +2,20 @@ using Blok3Game.GameObjects;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Blok3Game.Engine.Helpers;
+using Blok3Game.GameStates;
 
 namespace Blok3Game.Engine.GameObjects
 {
     public class ResourceCollector : PieceObject
     {
-        private Player player;
-        private Cell myCell;
-
-        public string OwnerName { get; set; }
 
         public ResourceCollector() : base("building", 0, 5, Vector2.Zero)
         {
         }
 
-        public void CollectResource()
+        public void CollectResource(Cell myCell, Player player)
         {
             if (myCell.Resource != null && myCell.Resource.Amount > 0)
             {
@@ -31,15 +25,14 @@ namespace Blok3Game.Engine.GameObjects
                 {
                     target.Amount += 1;
                     myCell.Resource.Amount -= 1;
-                    Console.WriteLine($"{player.Name} collected 1 {myCell.Resource.Name}. Remaining in cell: {myCell.Resource.Amount}");
+                    Console.WriteLine($"{GameState.Username} collected 1 {myCell.Resource.Name}. Remaining in cell: {myCell.Resource.Amount}");
                 }
             }
         }
 
-        public void AtStartTurn()
+        public override void AtStartTurn(Cell cell, Player player)
         {
-            Console.WriteLine("dsfs");
-            CollectResource();
+            CollectResource(cell, player);
         }
 
         public override void Draw(Vector2 displacement, GameTime gameTime, SpriteBatch spriteBatch)
