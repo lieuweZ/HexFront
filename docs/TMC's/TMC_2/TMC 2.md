@@ -21,5 +21,5 @@ Deze werkt als volg de Client stuurt het request om iets te plaatsen naar de ser
 Tijdens het maken van de chats systeem was het eerst gedaan dat je een knop drukt deze stuurde in het begin eerst een test bericht.
 Dit werd gedaan om het te testen, toen dit gelukt is werd het mogelijk gemaakt om berichten te kunnen typen.
 Dit werd gedaan door een textinput object te maken wat dan het detecteerd wanneer er eeen knop gedrukt is.
-![Chat](/img/chat1.png)
+![Chat](img/chat1.png)
 ## CHECK
