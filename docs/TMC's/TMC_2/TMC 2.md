@@ -30,4 +30,5 @@ De playtester had als eerste opmerking dat het spel heel onduidelijk was op basi
 Er was niet duidelijk aangeven welke verschillende opties er zijn voor het plaatsen van objecten. 
 Voor de interface wwas er gezegt dat het er goed uitzag er was gezegt over de resources die geen gebruik hebben.
 Het was niet duidelijk welke kant die van de playtester is.
+De chat systeem was goed gedaan en was de favoriete gedeelte.
 
