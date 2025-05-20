@@ -134,7 +134,7 @@ public class GameEnvironment : Game
             FullScreen = !FullScreen;
         }
 
-        if (inputHelper.KeyPressed(Keys.G))
+        /*if (inputHelper.KeyPressed(Keys.G))
         {
             CellTypePacket packet = new CellTypePacket(0);
             SocketClient.Instance.SendDataPacket(packet);
@@ -162,7 +162,7 @@ public class GameEnvironment : Game
         {
             CellDeletePacket packet = new CellDeletePacket(3);
             SocketClient.Instance.SendDataPacket(packet);
-        }
+        }*/
 
         /*if (inputHelper.KeyPressed(Keys.F2))
         {
