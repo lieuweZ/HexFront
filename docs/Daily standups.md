@@ -102,3 +102,13 @@ Daamin. niks. Verder resources op het bord zetten en resource collector. Geen ob
 nicolaas. weinig gedaan. Kijken welke user stories af moet en voorbereiden voor de check. Geen obstakels.
 
 Lehan. was online geweest om mogelijk vragen antwoorden. Branches te mergen. Geen obstakels.
+
+##### 2025 05 20
+
+Lieuwe. unit movement afgemaakt. Quiz en voortgangs evaluatie. Geen obstakels.
+
+Daamin. Aan de TMC gewerkt en resource collectors. De resource collectors plaatsbaar maken en werken aan de TMC. Geen obstakels.
+
+nicolaas. Niks. TMC afmaken. Geen obstakels
+
+Lehan. was online geweest om mogelijk vragen antwoorden. Werken aan de quiz een voortgangs evaluatie. Geen obstakels.
