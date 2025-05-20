@@ -23,3 +23,8 @@ Dit werd gedaan om het te testen, toen dit gelukt is werd het mogelijk gemaakt o
 Dit werd gedaan door een textinput object te maken wat dan het detecteerd wanneer er een toetsenbord knop gedrukt is.
 ![Chat](img/chat1.png)
 ## CHECK
+Voor het check was er besloten om een playtest te doen van het spel.
+Er werd gevraagd aan een student of die de spel kon testen.
+Tijden het playtest heeft 1 persoon genoteerd wat de playtester zei over het spel, de spel werd op een computer gedaan doormiddle van twee vensters te openen.
+De playtester had als eerste opmerking dat het spel heel onduidelijk was op basis van hoe je kan winnen en hoe het spel gespeelt werdt.
+
