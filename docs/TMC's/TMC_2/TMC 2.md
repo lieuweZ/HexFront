@@ -27,4 +27,7 @@ Voor het check was er besloten om een playtest te doen van het spel.
 Er werd gevraagd aan een student of die de spel kon testen.
 Tijden het playtest heeft 1 persoon genoteerd wat de playtester zei over het spel, de spel werd op een computer gedaan doormiddle van twee vensters te openen.
 De playtester had als eerste opmerking dat het spel heel onduidelijk was op basis van hoe je kan winnen en hoe het spel gespeelt werdt.
+Er was niet duidelijk aangeven welke verschillende opties er zijn voor het plaatsen van objecten. 
+Voor de interface wwas er gezegt dat het er goed uitzag er was gezegt over de resources die geen gebruik hebben.
+Het was niet duidelijk welke kant die van de playtester is.
 
