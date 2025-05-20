@@ -15,7 +15,7 @@ namespace Blok3Game.GameStates
     public class GameState : GameObjectList
     {
         private Selector selector;
-        private GameObjectGrid grid;
+        public static GameObjectGrid grid { get; private set; }
         private Player player;
         private TextGameObject playerNameText;
         private List<TextGameObject> resourceTexts;
@@ -187,7 +187,7 @@ namespace Blok3Game.GameStates
         }
         public void onstartgame(StartGameData data)
         {
-            this.grid.UpdateCells((int)Seed);
+            grid.UpdateCells((int)Seed);
 
         }
     }

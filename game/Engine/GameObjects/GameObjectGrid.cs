@@ -276,9 +276,9 @@ namespace Blok3Game.Engine.GameObjects
 			{
 				cube2.OwnerName = playerName;
 			}
-			else if (box is Cube3 cube3)
+			else if (box is ResourceCollector resourceCollector)
 			{
-				cube3.OwnerName = playerName;
+				resourceCollector.OwnerName = playerName;
 			}
 
 			cl.SetObject(box);
@@ -323,7 +323,7 @@ namespace Blok3Game.Engine.GameObjects
 					bool isOwned =
 						(obj is Cube cube && cube.OwnerName == ownerName) ||
 						(obj is Cube2 cube2 && cube2.OwnerName == ownerName) ||
-						(obj is Cube3 cube3 && cube3.OwnerName == ownerName);
+						(obj is ResourceCollector cube3 && cube3.OwnerName == ownerName);
 
 					if (isOwned)
 					{
@@ -348,8 +348,9 @@ namespace Blok3Game.Engine.GameObjects
 
 					if ((placedObj is Cube cube && cube.OwnerName == ownerName) ||
 						(placedObj is Cube2 cube2 && cube2.OwnerName == ownerName) ||
-						(placedObj is Cube3 cube3 && cube3.OwnerName == ownerName))
+						(placedObj is PieceObject piece && piece.OwnerName == ownerName))
 					{
+						Console.WriteLine("gdf");
 						return false;
 					}
 				}

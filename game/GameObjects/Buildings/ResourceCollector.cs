@@ -15,12 +15,10 @@ namespace Blok3Game.Engine.GameObjects
         private Player player;
         private Cell myCell;
 
-        public ResourceCollector(Player owner, Cell cell)
-            : base("building", 0, 5, Vector2.Zero, "")
+        public string OwnerName { get; set; }
+
+        public ResourceCollector() : base("building", 0, 5, Vector2.Zero)
         {
-            this.player = owner;
-            this.myCell = cell;
-            this.Position = cell.Position;
         }
 
         public void CollectResource()
@@ -29,7 +27,7 @@ namespace Blok3Game.Engine.GameObjects
             {
 
                 var target = player.resources.FirstOrDefault(r => r.Id == myCell.Resource.Id);
-                if (target != null && target.Amount > 0)
+                if (target != null)
                 {
                     target.Amount += 1;
                     myCell.Resource.Amount -= 1;
@@ -40,17 +38,15 @@ namespace Blok3Game.Engine.GameObjects
 
         public void AtStartTurn()
         {
+            Console.WriteLine("dsfs");
             CollectResource();
         }
 
         public override void Draw(Vector2 displacement, GameTime gameTime, SpriteBatch spriteBatch)
         {
-            DrawingHelper.FillRectangle(
-                new Rectangle((int)(displacement.X - 12), (int)(displacement.Y - 12), 25, 25),
-                spriteBatch,
-                Color.Black
-            );
+            DrawingHelper.FillRectangle(new Rectangle((int)(displacement.X - this.position.X / 2), (int)(displacement.Y - this.position.Y / 2), 25, 25), spriteBatch, Color.Orange);
         }
+
     }
 
 }

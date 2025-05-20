@@ -36,7 +36,7 @@ namespace Blok3Game.GameObjects
             {
                 Interval = 1000 * TimePerTurn,
                 AutoReset = true,
-                Enabled = false
+                Enabled = true
             };
             turnTimer.Elapsed += OnTimedEvent;
         }
@@ -49,13 +49,29 @@ namespace Blok3Game.GameObjects
                 playerName = GameState.Username
             });
             myTurn = !myTurn;
+            turnTimer.Enabled = false;
         }
 
         public void BeginTurn()
         {
-            foreach (var collector in Collectors)
+            Console.WriteLine("begin turn");
+            var grid = GameState.grid;
+            for (var x = 0; x <= grid.Columns; x++)
             {
-                collector.AtStartTurn();
+                for (var y = 0; y <= grid.Rows; y++)
+                {
+                    Cell cl = (Cell)grid.Get(x, y);
+                    if (cl is Cell && cl.Obj != null)
+                    {
+                        Console.WriteLine(cl);
+                        if (cl.Obj is PieceObject piece && piece.OwnerName == Name)
+                        {
+                            Console.WriteLine("atstarturn");
+
+                            piece.AtStartTurn();
+                        }
+                    }
+                }
             }
         }
 
@@ -72,9 +88,11 @@ namespace Blok3Game.GameObjects
 
         public override void Update(GameTime gameTime)
         {
+            Console.WriteLine("Before condition");
             if (myTurn && !turnTimer.Enabled)
             {
-                BeginTurn(); // Start turn: collect resources
+                Console.WriteLine("Test");
+                BeginTurn();
                 turnTimer.Enabled = true;
             }
 
