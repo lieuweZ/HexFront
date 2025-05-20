@@ -163,6 +163,7 @@ namespace Blok3Game.GameStates
                 Player.myTurn = true;
                 timeRemaining = Player.TimePerTurn;
                 elapsedSinceTurnStart = 0;
+                player.BeginTurn();
             }
             else
             {

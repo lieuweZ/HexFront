@@ -36,7 +36,7 @@ namespace Blok3Game.GameObjects
             {
                 Interval = 1000 * TimePerTurn,
                 AutoReset = true,
-                Enabled = true
+                Enabled = false
             };
             turnTimer.Elapsed += OnTimedEvent;
         }
@@ -49,7 +49,6 @@ namespace Blok3Game.GameObjects
                 playerName = GameState.Username
             });
             myTurn = !myTurn;
-            turnTimer.Enabled = false;
         }
 
         public void BeginTurn()
@@ -62,9 +61,7 @@ namespace Blok3Game.GameObjects
                     Cell cl = (Cell)grid.Get(x, y);
                     if (cl is Cell && cl.Obj != null)
                     {
-                        PieceObject piece = (PieceObject)cl.Obj;
-                        Console.WriteLine(piece.OwnerName);
-                        if (piece.OwnerName == GameState.Username)
+                        if (cl.Obj is PieceObject piece && piece.OwnerName == GameState.Username)
                         {
                             piece.AtStartTurn(cl, this);
                         }
@@ -86,12 +83,6 @@ namespace Blok3Game.GameObjects
 
         public override void Update(GameTime gameTime)
         {
-            if (myTurn && !turnTimer.Enabled)
-            {
-                BeginTurn();
-                turnTimer.Enabled = true;
-            }
-
             base.Update(gameTime);
         }
     }
