@@ -20,7 +20,7 @@ Deze werkt als volg de Client stuurt het request om iets te plaatsen naar de ser
 ### Chat
 Tijdens het maken van de chats systeem was het eerst gedaan dat je een knop drukt deze stuurde in het begin eerst een test bericht.
 Dit werd gedaan om het te testen, toen dit gelukt is werd het mogelijk gemaakt om berichten te kunnen typen.
-Dit werd gedaan door een textinput object te maken wat dan het detecteerd wanneer er een toetsenbord knop gedrukt is.
+Dit werd gedaan door een textinput object te maken wat dan het detecteerd wanneer er een toetsenbord knop gedrukt is. <br>
 ![Chat](img/chat1.png)
 ## CHECK
 Voor het check was er besloten om een playtest te doen van het spel.
@@ -30,5 +30,5 @@ De playtester had als eerste opmerking dat het spel heel onduidelijk was op basi
 Er was niet duidelijk aangeven welke verschillende opties er zijn voor het plaatsen van objecten. 
 Voor de interface wwas er gezegt dat het er goed uitzag er was gezegt over de resources die geen gebruik hebben.
 Het was niet duidelijk welke kant die van de playtester is.
-De chat systeem was goed gedaan en was de favoriete gedeelte.
+De chat systeem was goed gedaan en was de favoriete gedeelte van de play tester.
 
