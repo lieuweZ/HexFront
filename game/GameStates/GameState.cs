@@ -35,7 +35,9 @@ namespace Blok3Game.GameStates
             grid.selector = selector;
             
             SocketClient.Instance.SubscribeToDataPacket<CellUpdatePacket>(ReceivedData);
+            SocketClient.Instance.SubscribeToDataPacket<MovePiecePacket>(OnMovePieceReceived);
             SocketClient.Instance.SubscribeToDataPacket<TurnChangedPacket>(OnTurnChanged);
+            
 
             player = new Player("Alice");
             Add(player);
@@ -140,5 +142,16 @@ namespace Blok3Game.GameStates
             }
         }
 
+        private void OnMovePieceReceived(object data)
+        {
+            if (data is MovePiecePacket movePacket)
+            {
+                
+                // Handle ALL moves, not just remote ones
+                Vector2 source = movePacket.GetSourceCell();
+                Vector2 target = movePacket.GetTargetCell();
+                grid.HandleRemoteMove(source, target);
+            }
+        }
     }
 }

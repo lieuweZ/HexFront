@@ -237,6 +237,13 @@ namespace Blok3Game.Engine.GameObjects
 
 public void GridMouseInput(Vector2 cell)
 {
+    // Check if it's the player's turn
+    if (!Player.myTurn)
+    {
+        Console.WriteLine("Cannot interact - not your turn");
+        return;
+    }
+
     if (Interactible == 2)
     {
         MinigameInput(cell);
@@ -294,12 +301,11 @@ if (isNeighbor && clickedCell?.Obj == null)
     Cell sourceCell = Get((int)selected.X, (int)selected.Y) as Cell;
     clickedCell.SetObject(sourceCell.Obj);
     sourceCell.ClearObject();
-    
     // Send move packet
     MovePiece(selected, cell);
-    
     selectedCellCoord = null;
 }
+
         else if (x == selected.X && y == selected.Y)
         {
             // Deselect if clicking same cell
@@ -333,17 +339,48 @@ if (isNeighbor && clickedCell?.Obj == null)
 }
 public void MovePiece(Vector2 source, Vector2 target)
 {
+
+
     MovePiecePacket packet = new MovePiecePacket(
         SocketClient.Instance.RoomId,
         source,
         target,
         GameState.Username
     );
+    
     SocketClient.Instance.SendDataPacket(packet);
+
 }
+
+public void HandleRemoteMove(Vector2 source, Vector2 target)
+{
+    
+    Cell sourceCell = Get((int)source.X, (int)source.Y) as Cell;
+    Cell targetCell = Get((int)target.X, (int)target.Y) as Cell;
+
+    if (sourceCell?.Obj != null && targetCell != null)
+    {
+        GameObject piece = sourceCell.Obj;
+        sourceCell.ClearObject();
+        targetCell.SetObject(piece);
+    }
+}
+
 		public void PlacePiece(Vector2 pos, int id)
 		{
-			CellUpdatePacket pack = new CellUpdatePacket(SocketClient.Instance.RoomId, pos, id, GameState.Username);
+			// Check if it's the player's turn
+			if (!Player.myTurn)
+			{
+				Console.WriteLine("Cannot place piece - not your turn");
+				return;
+			}
+
+			CellUpdatePacket pack = new CellUpdatePacket(
+				SocketClient.Instance.RoomId, 
+				pos, 
+				id, 
+				GameState.Username
+			);
 			SocketClient.Instance.SendDataPacket(pack);
         }
 

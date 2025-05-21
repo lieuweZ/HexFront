@@ -129,21 +129,27 @@ class RoomMessageHandler extends MessageHandler {
 }
 
 MovePiece(socket, roomId, sourceCell, targetCell, name) {
-if (this._rooms[roomId]) {
-    const players = this._rooms[roomId].players;
-    if (this._rooms[roomId].currentTurnPlayer !== name) {
-    console.log(`Not ${name}'s turn!`);
-    return;
-    }
+    console.log(`[MovePiece] Request from ${name} in room ${roomId}`);
+    console.log(`[MovePiece] From: ${sourceCell} To: ${targetCell}`);
     
-    // Broadcast the move to all players in the room
-    this._io.to(roomId).emit("piece move", {
-		roomId: roomId,
-		sourceCell: sourceCell,
-		targetCell: targetCell,
-		playerName: name,
-    });
-  }
+    if (this._rooms[roomId]) {
+        const players = this._rooms[roomId].players;
+        
+        if (this._rooms[roomId].currentTurnPlayer !== name) {
+            console.log(`[MovePiece] Rejected - Not ${name}'s turn!`);
+            return;
+        }
+        
+        console.log(`[MovePiece] Broadcasting move to room ${roomId}`);
+        this._io.to(roomId).emit("piece move", {
+            roomId: roomId,
+            sourceCell: sourceCell,
+            targetCell: targetCell,
+            playerName: name
+        });
+    } else {
+        console.log(`[MovePiece] Error - Room ${roomId} not found`);
+    }
 }
 
 
