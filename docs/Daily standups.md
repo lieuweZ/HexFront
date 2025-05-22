@@ -82,3 +82,43 @@ Daamin. Gewerkt aan de player turns een turn timer toegevoet. De bugs oplossen. 
 nicolaas. Niet veel gedaan verder gewerkt aan de pieces. De sprint planning checken en expert meetings ervaren, verder werken aan de speler verdeling. Geen obstakels.
 
 Lehan. gewerkt aan de materiaal voor de exeprt meetings. Team leden helpen en expert meeting. geen obstakels.
+
+##### 2025 05 13
+
+Lieuwe. Movement van pieces gemaakt. Verder werken hieraan. Geen obstakels.
+
+Daamin. Visuele timer toegevoegt. werken aan de resource collector. geen idee hoe om te beginnen.
+
+nicolaas.  Ziek. Center gebouwen laten verschijnen wanneer de spel begint en user stories. Geen obstakels.
+
+Lehan. Het mogelijk gemaakt om chat berichten te stuuren. Het mogelijk maken om berichten te kunnen tiepen. Geen obstakels.
+
+##### 2025 05 15
+
+Lieuwe. gewerkt aan de unit movement. unit movement afmaken. Geen obstakels.
+
+Daamin. niks. Verder resources op het bord zetten en resource collector. Geen obstakels.
+
+nicolaas. weinig gedaan. Kijken welke user stories af moet en voorbereiden voor de check. Geen obstakels.
+
+Lehan. was online geweest om mogelijk vragen antwoorden. Branches te mergen. Geen obstakels.
+
+##### 2025 05 20
+
+Lieuwe. unit movement afgemaakt. Quiz en voortgangs evaluatie. Geen obstakels.
+
+Daamin. Aan de TMC gewerkt en resource collectors. De resource collectors plaatsbaar maken en werken aan de TMC. Geen obstakels.
+
+nicolaas. Niks. TMC afmaken. Geen obstakels
+
+Lehan. was online geweest om mogelijk vragen antwoorden. Werken aan de quiz een voortgangs evaluatie. Geen obstakels.
+
+##### 2025 05 22
+
+Lieuwe. Game server te laten werken. TMC en retrospective maken de server proberen te laten werken. Mogelijkheid dat de leraar er niet is.
+
+Daamin. Niks gedaan aan het spel. Mergen en de retrospective. Node js probleem.
+
+nicolaas. Movement opgelost van de units. retrospective en mergen van de code. Niet genoeg tijd.
+
+Lehan. Gewerkt aan de tmc. retrospective. minder geduld.
