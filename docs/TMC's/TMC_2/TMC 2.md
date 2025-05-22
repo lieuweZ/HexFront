@@ -11,6 +11,9 @@ Door een tijdslimiet per beurt te hanteren, zorgen we voor een constante druk en
 
 De spelstructuur dwingt spelers om per beurt een concrete actie te ondernemen binnen de beschikbare tijd. Hierdoor blijven doelen per beurt helder en behapbaar.
 
+"They felt somewhat stressed, but not too relaxed. This helped narrow their attention to the task at hand" Hu, Liru & Jacobson, Michael & Zhang, Baohui. (2019).
+Uit een onderzoek over flow en invloed erop. Bleek dat mensen vaker in een flow komen als ze een beetje druk in vorm van tijd ervaren. Dat zorgt ervoor dat speler minder afgeleid kan worden, omdat dat ze maar een bepaalde tijd hebben om de taak te doen.
+
 ### Communicatie
 Er werd bedacht om een soort Communicatie systeem te maken waardoor beide spelers met elkaar kunnen spelen.
 Dit werd bedacht want je kan niet altijd met de speler communceren als die in een andere land of gebouw is.
@@ -31,4 +34,7 @@ Er was niet duidelijk aangeven welke verschillende opties er zijn voor het plaat
 Voor de interface wwas er gezegt dat het er goed uitzag er was gezegt over de resources die geen gebruik hebben.
 Het was niet duidelijk welke kant die van de playtester is.
 De chat systeem was goed gedaan en was de favoriete gedeelte van de play tester.
+
+## Bronnen
+Hu, Liru & Jacobson, Michael & Zhang, Baohui. (2019). The Impact of Time Constraints on Flow Experience in an Educational Game.(https://www.researchgate.net/publication/334450413_The_Impact_of_Time_Constraints_on_Flow_Experience_in_an_Educational_Game)
 
