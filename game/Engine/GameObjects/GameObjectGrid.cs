@@ -19,14 +19,14 @@ namespace Blok3Game.Engine.GameObjects
 		public Vector2 MousePos;
 		public bool MouseLeftState;
 		private int prevCellScale = HexFront.self.CellScale;
-        private int curCellScale = HexFront.self.CellScale;
-        public int Interactible = 0;
+		private int curCellScale = HexFront.self.CellScale;
+		public int Interactible = 0;
 		private int ignoreNumber = 9;
-		public Selector selector {get; set;}
-        private Random rand = new Random();
-        public bool updated;
+		public Selector selector { get; set; }
+		private Random rand = new Random();
+		public bool updated;
 
-        public GameObjectGrid(int rows, int columns, int layer = 0, string id = "")
+		public GameObjectGrid(int rows, int columns, int layer = 0, string id = "")
 			: base(layer, id)
 		{
 			grid = new GameObject[columns, rows];
@@ -35,40 +35,40 @@ namespace Blok3Game.Engine.GameObjects
 				for (int y = 0; y < rows; y++)
 				{
 					grid[x, y] = null;
-                    Add(new Cell(),x,y);
-                }
+					Add(new Cell(), x, y);
+				}
 			}
 		}
 
-        public void Add(GameObject obj, int x, int y)
+		public void Add(GameObject obj, int x, int y)
 		{
-            Vector2 pos = GetHexagonPos(x, y);
-            int PosX = (int)pos.X;
-            int PosY = (int)pos.Y;
+			Vector2 pos = GetHexagonPos(x, y);
+			int PosX = (int)pos.X;
+			int PosY = (int)pos.Y;
 
-            grid[x, y] = obj;
+			grid[x, y] = obj;
 			obj.Parent = this;
-            obj.Position = new Vector2(PosX, PosY) + this.position;
-        }
+			obj.Position = new Vector2(PosX, PosY) + this.position;
+		}
 
 		public void Resize()
 		{
-            int tileScale = curCellScale;
+			int tileScale = curCellScale;
 
-			for (int x = 0;x < Columns; x++)
+			for (int x = 0; x < Columns; x++)
 			{
-				for(int y = 0;y < Rows; y++)
+				for (int y = 0; y < Rows; y++)
 				{
-                    Vector2 pos = GetHexagonPos(x, y);
-                    int PosX = (int)pos.X;
-                    int PosY = (int)pos.Y;
+					Vector2 pos = GetHexagonPos(x, y);
+					int PosX = (int)pos.X;
+					int PosY = (int)pos.Y;
 
-                    GameObject gm = this.Get(x, y);
+					GameObject gm = this.Get(x, y);
 
-                    gm.Position = new Vector2(PosX, PosY) + this.position;
-                }
+					gm.Position = new Vector2(PosX, PosY) + this.position;
+				}
 			}
-        }
+		}
 
 		public GameObject Get(int x, int y)
 		{
@@ -132,15 +132,15 @@ namespace Blok3Game.Engine.GameObjects
 			base.HandleInput(inputHelper);
 			if (Interactible == 0 || Interactible == 2)
 			{
-			MousePos = inputHelper.MousePosition;
+				MousePos = inputHelper.MousePosition;
 
-			MouseLeftState = inputHelper.MouseLeftButtonPressed;
+				MouseLeftState = inputHelper.MouseLeftButtonPressed;
 			}
 
-            foreach (GameObject obj in grid)
+			foreach (GameObject obj in grid)
 			{
-                if (obj != null)
-                    obj.HandleInput(inputHelper);
+				if (obj != null)
+					obj.HandleInput(inputHelper);
 			}
 		}
 
@@ -148,10 +148,10 @@ namespace Blok3Game.Engine.GameObjects
 		{
 			if (prevCellScale != HexFront.self.CellScale)
 			{
-                curCellScale = HexFront.self.CellScale;
-                this.Resize();
+				curCellScale = HexFront.self.CellScale;
+				this.Resize();
 				prevCellScale = curCellScale;
-            }
+			}
 
 			if (!updated)
 			{
@@ -159,116 +159,117 @@ namespace Blok3Game.Engine.GameObjects
 				SocketClient.Instance.SendDataPacket(packet);
 			}
 
-            foreach (GameObject obj in grid)
+			foreach (GameObject obj in grid)
 			{
-                if (obj != null)
-                    obj.Update(gameTime);
+				if (obj != null)
+					obj.Update(gameTime);
 			}
 		}
 
 		public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
 		{
-            foreach (GameObject obj in grid)
+			foreach (GameObject obj in grid)
 			{
-                if (obj != null)
-                    obj.Draw(gameTime, spriteBatch);
+				if (obj != null)
+					obj.Draw(gameTime, spriteBatch);
 			}
-            DebugDraw(gameTime, spriteBatch);
-        }
+			DebugDraw(gameTime, spriteBatch);
+		}
 
 		public Vector2 GetHexagonPos(int i, int j)
 		{
-            int tileScale = curCellScale;
-            float dispX = ((j & 1) * tileScale / 1.825F);
+			int tileScale = curCellScale;
+			float dispX = ((j & 1) * tileScale / 1.825F);
 
-            int PosX = (int)(((tileScale * 1.5F) * (Rows == ignoreNumber ? 0.25 : 1)) + i * (tileScale + tileScale / 10) - dispX + tileScale / 2.95);
-            int PosY = (int)(((tileScale / 5) * (Rows == ignoreNumber ? 0 : 1)) + j * (tileScale / 1.35));
+			int PosX = (int)(((tileScale * 1.5F) * (Rows == ignoreNumber ? 0.25 : 1)) + i * (tileScale + tileScale / 10) - dispX + tileScale / 2.95);
+			int PosY = (int)(((tileScale / 5) * (Rows == ignoreNumber ? 0 : 1)) + j * (tileScale / 1.35));
 
 			return new Vector2(PosX, PosY);
-        }
+		}
 
-        public override void DebugDraw(GameTime gameTime, SpriteBatch spriteBatch)
-        {
-            int tileScale = curCellScale;
-            for (int i = 0; i < Columns; i++)
+		public override void DebugDraw(GameTime gameTime, SpriteBatch spriteBatch)
+		{
+			int tileScale = curCellScale;
+			for (int i = 0; i < Columns; i++)
 			{
-				for(int j = 0; j < Rows; j++)
+				for (int j = 0; j < Rows; j++)
 				{
 					Vector2 pos = GetHexagonPos(i, j);
 					int PosX = (int)pos.X;
 					int PosY = (int)pos.Y;
 
 
-                    Color cl = new Color(DrawingHelper.GetColorCGA((i + j * Rows)));
+					Color cl = new Color(DrawingHelper.GetColorCGA((i + j * Rows)));
 
 					if (Interactible == 0 || Interactible == 2)
 					{
 						if (MousePos.X > PosX && MousePos.X < PosX + tileScale && MousePos.Y > PosY && MousePos.Y < PosY + tileScale)
-						if (DrawingHelper.InsideHexagon(new Rectangle(PosX, PosY, tileScale, tileScale), MousePos))
-						{
-							cl = Color.White;
-							if (MouseLeftState)
+							if (DrawingHelper.InsideHexagon(new Rectangle(PosX, PosY, tileScale, tileScale), MousePos))
 							{
-								GridMouseInput(new Vector2(i, j));
+								cl = Color.White;
+								if (MouseLeftState)
+								{
+									GridMouseInput(new Vector2(i, j));
+								}
+								GameObject ce = this.Get(i, j);
+								if (Interactible == 0)
+									ce.DebugDraw(gameTime, spriteBatch);
 							}
-							GameObject ce = this.Get(i, j);
-                            if (Interactible == 0)
-                            ce.DebugDraw(gameTime, spriteBatch);
-						}
 					}
 					else
-					if(Interactible == 1)
+					if (Interactible == 1)
 					{
-                        Cell ce = (Cell)this.Get(i, j);
-                        if (rand.Next(1952) >= 1922 && ce.GlowTime == 0)
+						Cell ce = (Cell)this.Get(i, j);
+						if (rand.Next(1952) >= 1922 && ce.GlowTime == 0)
 						{
-                            ce.GlowTime = 50;
-                        } else
+							ce.GlowTime = 50;
+						}
+						else
 						{
-							if(ce.GlowTime > 0)
-							ce.GlowTime--;
+							if (ce.GlowTime > 0)
+								ce.GlowTime--;
 						}
 
-						if(ce.GlowTime > 0)
+						if (ce.GlowTime > 0)
 						{
-                            DrawingHelper.FillHexagon(new Rectangle(PosX, PosY, tileScale, tileScale), spriteBatch, cl);
-                        }
+							DrawingHelper.FillHexagon(new Rectangle(PosX, PosY, tileScale, tileScale), spriteBatch, cl);
+						}
 					}
 
 
-                    //DrawingHelper.FillHexagon(new Rectangle(PosX, PosY, tileScale, tileScale), spriteBatch, cl);
-                }
+					//DrawingHelper.FillHexagon(new Rectangle(PosX, PosY, tileScale, tileScale), spriteBatch, cl);
+				}
 			}
-        }
+		}
 
 		public void GridMouseInput(Vector2 cell)
 		{
-            if (Interactible == 2)
+			if (Interactible == 2)
 			{
 				MinigameInput(cell);
-            } else
+			}
+			else
 			{
 				int? ID = selector.SelectedPiece?.ID;
 				if (ID != null)
 				{
-					if(CanPlaceAt(cell))
+					if (CanPlaceAt(cell))
 					{
-		                PlacePiece(cell, ID.Value);
+						PlacePiece(cell, ID.Value);
 					}
 				}
-            }
-        }
+			}
+		}
 
 		public void PlacePiece(Vector2 pos, int id)
 		{
 			CellUpdatePacket pack = new CellUpdatePacket(SocketClient.Instance.RoomId, pos, id, GameState.Username);
 			SocketClient.Instance.SendDataPacket(pack);
-        }
+		}
 
 		public void SetCellPiece(Vector2 cell, GameObject box, string playerName)
 		{
-			Cell cl = (Cell)(this.Get((int)cell.X, (int)cell.Y));
-
+			Cell cl = (Cell)Get((int)cell.X, (int)cell.Y);
 			if (cl.Obj != null)
 			{
 				return;
@@ -282,13 +283,13 @@ namespace Blok3Game.Engine.GameObjects
 			{
 				cube2.OwnerName = playerName;
 			}
-			else if (box is Cube3 cube3)
+			else if (box is PieceObject piece)
 			{
-				cube3.OwnerName = playerName;
+				piece.OwnerName = playerName;
 			}
 
 			cl.SetObject(box);
-        }
+		}
 
 		private bool CanPlaceAt(Vector2 pos)
 		{
@@ -302,7 +303,12 @@ namespace Blok3Game.Engine.GameObjects
 				return false;
 			}
 
-			Vector2[] selectedDirections = GetNeighbors(x,y);
+			if (CheckIfAvailable())
+			{
+				return true;
+			}
+
+			Vector2[] selectedDirections = GetNeighbors(x, y);
 
 			foreach (Vector2 dir in selectedDirections)
 			{
@@ -323,17 +329,41 @@ namespace Blok3Game.Engine.GameObjects
 					bool isOwned =
 						(obj is Cube cube && cube.OwnerName == ownerName) ||
 						(obj is Cube2 cube2 && cube2.OwnerName == ownerName) ||
-						(obj is Cube3 cube3 && cube3.OwnerName == ownerName);
+						(obj is PieceObject piece && piece.OwnerName == ownerName);
 
 					if (isOwned)
 					{
-						return true; 
+						return true;
 					}
 				}
 			}
 
 			return false;
 		}
+
+
+		private bool CheckIfAvailable()
+		{
+			string ownerName = GameState.Username;
+
+			foreach (GameObject obj in grid)
+			{
+				if (obj is Cell cell && cell.Obj != null)
+				{
+					var placedObj = cell.Obj;
+
+					if ((placedObj is Cube cube && cube.OwnerName == ownerName) ||
+						(placedObj is Cube2 cube2 && cube2.OwnerName == ownerName) ||
+						(placedObj is PieceObject piece && piece.OwnerName == ownerName))
+					{
+						Console.WriteLine("gdf");
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+
 
 		// Use this function to return a Vector2 array of all possible neighbors (including non-existent ones) for the given x and y values.
 		private Vector2[] GetNeighbors(int x, int y)
@@ -363,38 +393,54 @@ namespace Blok3Game.Engine.GameObjects
 
 		private void MinigameInput(Vector2 cell)
 		{
-            Cube box = new Cube();
-            Cell cl = (Cell)(this.Get((int)cell.X, (int)cell.Y));
-            cl.SetObject(box);
-            for (int i = 0; i < Columns; i++)
-            {
-                for (int j = 0; j < Rows; j++)
-                {
-                    cl = (Cell)(this.Get(i, j));
-                    if (cl.Obj == null)
-                    {
-                        return;
-                    }
-                }
-            }
-            for (int i = 0; i < Columns; i++)
-            {
-                for (int j = 0; j < Rows; j++)
-                {
-                    cl = (Cell)(this.Get(i, j));
-                    cl.ClearObject();
-                }
-            }
-        }
+			Cube box = new Cube();
+			Cell cl = (Cell)(this.Get((int)cell.X, (int)cell.Y));
+			cl.SetObject(box);
+			for (int i = 0; i < Columns; i++)
+			{
+				for (int j = 0; j < Rows; j++)
+				{
+					cl = (Cell)(this.Get(i, j));
+					if (cl.Obj == null)
+					{
+						return;
+					}
+				}
+			}
+			for (int i = 0; i < Columns; i++)
+			{
+				for (int j = 0; j < Rows; j++)
+				{
+					cl = (Cell)(this.Get(i, j));
+					cl.ClearObject();
+				}
+			}
+		}
 
-        public override void Reset()
+		public override void Reset()
 		{
 			base.Reset();
 			foreach (GameObject obj in grid)
 			{
-				if(obj != null)
-				obj.Reset();
+				if (obj != null)
+					obj.Reset();
 			}
 		}
-    }
+		public void UpdateCells(int seed)
+		{
+			for (int x = 0; x < Columns; x++)
+			{
+				for (int y = 0; y < Rows; y++)
+				{
+					Cell current = (Cell)Get(x, y);
+					ResourceList resL = new ResourceList();
+					current.Resource = resL.getRandomResource();
+					Random rnd = new Random(seed + x + y);
+					int resourcesAmount = rnd.Next(1, 6);
+					current.Resource.Amount = resourcesAmount;
+				}
+			}
+		}
+	}
+
 }

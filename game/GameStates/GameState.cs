@@ -12,6 +12,7 @@ using static System.Net.Mime.MediaTypeNames;
 using Blok3Game.Engine.UI;
 using Microsoft.Xna.Framework.Input;
 using System.Transactions;
+using Blok3Game.Engine.JSON;
 
 namespace Blok3Game.GameStates
 {
@@ -39,6 +40,7 @@ namespace Blok3Game.GameStates
         private Rectangle chatBorder;
         private TextInput playerNameInput;
 
+        public static int Seed { get; set; }
         public GameState() : base()
         {
             selector = new Selector();
@@ -267,6 +269,7 @@ namespace Blok3Game.GameStates
                 Player.myTurn = true;
                 timeRemaining = Player.TimePerTurn;
                 elapsedSinceTurnStart = 0;
+                player.BeginTurn();
             }
             else
             {
@@ -293,6 +296,7 @@ namespace Blok3Game.GameStates
         private void StartGame(StartGameData data)
         {
             PieceList pieces = new PieceList();
+            grid.UpdateCells((int)data.RoomSeed);
 
             foreach (string player in data.Players)
             {

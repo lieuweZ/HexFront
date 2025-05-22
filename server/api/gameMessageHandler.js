@@ -11,6 +11,7 @@ class GameMessageHandler extends MessageHandler {
   #handleIncomingStartGameMessages(socket) {
     socket.on("start game", (data) => {
       this._rooms[data.roomId].started = true;
+      const roomseed = this._rooms[data.roomId].roomseed;
 
       //send a message to all players that the game has started.
       //the client in the specific room can then start the game.
@@ -20,6 +21,7 @@ class GameMessageHandler extends MessageHandler {
         players: this._rooms[data.roomId].players.map(
           (p) => `${p.role}:${p.name}`
         ),
+        RoomSeed: roomseed,
       });
     });
   }

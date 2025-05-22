@@ -20,17 +20,14 @@ namespace Blok3Game.GameObjects
         public List<GameObject> hand;
         public GameObject centralBuilding;
         public bool surrendered;
+        public List<ResourceCollector> Collectors = new List<ResourceCollector>();
+
+
 
         public Player(string name = "Player 1")
         {
             Name = name;
-            resources = new List<ResourceType>
-            {
-                new ResourceType { Id = 1, Name = "Wood", Amount = 5, Color = 0 },
-                new ResourceType { Id = 2, Name = "Stone", Amount = 3, Color = 1 },
-                new ResourceType { Id = 3, Name = "Gold", Amount = 2, Color = 2 }
-            };
-
+            resources = ResourceList.resources;
             hand = new List<GameObject>();
             centralBuilding = null;
             surrendered = false;
@@ -52,6 +49,30 @@ namespace Blok3Game.GameObjects
                 playerName = GameState.Username
             });
             myTurn = !myTurn;
+        }
+
+        public void BeginTurn()
+        {
+            var grid = GameState.grid;
+            for (var x = 0; x <= grid.Columns; x++)
+            {
+                for (var y = 0; y <= grid.Rows; y++)
+                {
+                    Cell cl = (Cell)grid.Get(x, y);
+                    if (cl is Cell && cl.Obj != null)
+                    {
+                        if (cl.Obj is PieceObject piece && piece.OwnerName == GameState.Username)
+                        {
+                            piece.AtStartTurn(cl, this);
+                        }
+                    }
+                }
+            }
+        }
+
+        public void RegisterCollector(ResourceCollector collector)
+        {
+            Collectors.Add(collector);
         }
 
         private static void OnTimedEvent(object source, ElapsedEventArgs e)

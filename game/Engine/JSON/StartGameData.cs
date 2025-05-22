@@ -6,7 +6,9 @@
 
         public string UserId { get; set; }
         public string[] Players { get; set; }
-        
+
+        public int RoomSeed { get; set; }
+
         public StartGameData() : base()
         {
             EventName = "start game";
