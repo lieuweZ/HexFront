@@ -24,7 +24,6 @@ namespace Blok3Game.GameObjects
         {
             Random rand = new Random();
             cell = new CellType(rand.Next(2), DrawingHelper.GetColorEGA(34), true, false);
-            cell = new CellType(DrawingHelper.GetColorEGA(34), true, false);
         }
 
         public override void DebugDraw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -87,8 +86,6 @@ namespace Blok3Game.GameObjects
             {
                 Obj.Draw(this.position + displacementhalf, gameTime, spriteBatch);
             }
-            
-            //DrawingHelper.FillRectangle(new Rectangle((int)this.position.X, (int)this.position.Y, 25, 25), spriteBatch, Color.Blue);
         }
     }
 }
