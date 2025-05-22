@@ -127,7 +127,7 @@ namespace Blok3Game.Engine.Helpers
             if (colorNumber == 6)
                 green = green * 2 / 3;
 
-            uint color = (uint)(255) << 24 | (uint)(red * 255) << 16 | (uint)(green * 255) << 8 | (uint)(blue * 255);
+            uint color = (uint)(255) << 24 | (uint)(blue * 255) << 16 | (uint)(green * 255) << 8 | (uint)(red * 255);
 
             return color;
         }
@@ -170,7 +170,7 @@ namespace Blok3Game.Engine.Helpers
             float green = (colorbin[colorbin.Length - 2] == 1 ? (2F / 3F) : 0) + (colorbin[1] == 1 ? (1F / 3F) : 0);
             float blue = (colorbin[colorbin.Length - 1] == 1 ? (2F / 3F) : 0) + (colorbin[2] == 1 ? (1F / 3F) : 0);
 
-            uint color = (uint)(255) << 24 | (uint)(red * 255) << 16 | (uint)(green * 255) << 8 | (uint)(blue * 255);
+            uint color = (uint)(255) << 24 | (uint)(blue * 255) << 16 | (uint)(green * 255) << 8 | (uint)(red * 255);
 
             return color;
         }

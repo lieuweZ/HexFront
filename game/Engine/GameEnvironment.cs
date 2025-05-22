@@ -1,7 +1,10 @@
 ﻿using System;
 using BaseProject;
 using Blok3Game.Engine.AssetHandler;
+using Blok3Game.Engine.GameObjects;
 using Blok3Game.Engine.Helpers;
+using Blok3Game.Engine.SocketIOClient;
+using Blok3Game.Packets;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -131,12 +134,42 @@ public class GameEnvironment : Game
             FullScreen = !FullScreen;
         }
 
+        /*if (inputHelper.KeyPressed(Keys.G))
+        {
+            CellTypePacket packet = new CellTypePacket(0);
+            SocketClient.Instance.SendDataPacket(packet);
+        }
+
+        if (inputHelper.KeyPressed(Keys.I))
+        {
+            CellInsesrtPacket packet = new CellInsesrtPacket("bricks", 34, true);
+            SocketClient.Instance.SendDataPacket(packet);
+        }
+
+        if (inputHelper.KeyPressed(Keys.U))
+        {
+            CellChangePacket packet = new CellChangePacket(3, 1, "Sponge cake");
+            SocketClient.Instance.SendDataPacket(packet);
+        }
+
+        if (inputHelper.KeyPressed(Keys.E))
+        {
+            CellEffectPacket packet = new CellEffectPacket(0);
+            SocketClient.Instance.SendDataPacket(packet);
+        }
+        
+        if (inputHelper.KeyPressed(Keys.D))
+        {
+            CellDeletePacket packet = new CellDeletePacket(3);
+            SocketClient.Instance.SendDataPacket(packet);
+        }*/
+
         /*if (inputHelper.KeyPressed(Keys.F2))
         {
             Random rand = new Random();
             HexFront.self.UpdateScreenSize(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / rand.Next(1,4), GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / rand.Next(1, 4));
         }*/
-        
+
         gameStateManager.HandleInput(inputHelper);
     }
 
