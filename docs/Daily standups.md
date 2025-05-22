@@ -112,3 +112,13 @@ Daamin. Aan de TMC gewerkt en resource collectors. De resource collectors plaats
 nicolaas. Niks. TMC afmaken. Geen obstakels
 
 Lehan. was online geweest om mogelijk vragen antwoorden. Werken aan de quiz een voortgangs evaluatie. Geen obstakels.
+
+##### 2025 05 22
+
+Lieuwe. Game server te laten werken. TMC en retrospective maken de server proberen te laten werken. Mogelijkheid dat de leraar er niet is.
+
+Daamin. Niks gedaan aan het spel. Mergen en de retrospective. Node js probleem.
+
+nicolaas. Movement opgelost van de units. retrospective en mergen van de code. Niet genoeg tijd.
+
+Lehan. Gewerkt aan de tmc. retrospective. geen obstakel.
