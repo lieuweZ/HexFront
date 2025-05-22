@@ -15,26 +15,81 @@ namespace Blok3Game.GameObjects
         public Unit() : base()
         {
             this.position = new Vector2(25, 25);
-            Health = 100;  // Starting health
-            Damage = 20;   // Base damage
+            Health = 100;
+            Damage = 20;
         }
 
         public bool TakeDamage(int damageAmount)
         {
             Health -= damageAmount;
-            return Health <= 0;  // Returns true if unit dies
+            return Health <= 0;
         }
 
         public override void Draw(Vector2 displacement, GameTime gameTime, SpriteBatch spriteBatch)
         {
+            // Head
             DrawingHelper.FillRectangle(
                 new Rectangle(
-                    (int)(displacement.X - this.position.X / 2), 
-                    (int)(displacement.Y - this.position.Y / 2), 
-                    25, 25
-                ), 
-                spriteBatch, 
+                    (int)(displacement.X - 5),
+                    (int)(displacement.Y - 20),
+                    10, 10
+                ),
+                spriteBatch,
                 Color.Blue
+            );
+
+            // Body
+            DrawingHelper.FillRectangle(
+                new Rectangle(
+                    (int)(displacement.X - 6),
+                    (int)(displacement.Y - 10),
+                    12, 15
+                ),
+                spriteBatch,
+                Color.Blue
+            );
+
+            // Left arm
+            DrawingHelper.FillRectangle(
+                new Rectangle(
+                    (int)(displacement.X - 12),
+                    (int)(displacement.Y - 8),
+                    6, 4
+                ),
+                spriteBatch,
+                Color.DarkBlue
+            );
+
+            // Right arm (holding weapon)
+            DrawingHelper.FillRectangle(
+                new Rectangle(
+                    (int)(displacement.X + 6),
+                    (int)(displacement.Y - 8),
+                    12, 4
+                ),
+                spriteBatch,
+                Color.DarkBlue
+            );
+
+            // Legs
+            DrawingHelper.FillRectangle(
+                new Rectangle(
+                    (int)(displacement.X - 6),
+                    (int)(displacement.Y + 5),
+                    5, 10
+                ),
+                spriteBatch,
+                Color.DarkBlue
+            );
+            
+            DrawingHelper.FillRectangle(
+                new Rectangle(
+                    (int)(displacement.X + 1),
+                    (int)(displacement.Y + 5),
+                    5, 10
+                ),
+                spriteBatch,
+                Color.DarkBlue
             );
         }
     }
