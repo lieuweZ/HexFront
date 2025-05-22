@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Blok3Game.Engine.GameObjects
 {
@@ -32,6 +33,8 @@ namespace Blok3Game.Engine.GameObjects
 			: base(layer, id)
 		{
 			grid = new GameObject[columns, rows];
+			selector = new Selector();
+			
 			for (int x = 0; x < columns; x++)
 			{
 				for (int y = 0; y < rows; y++)
@@ -237,30 +240,66 @@ namespace Blok3Game.Engine.GameObjects
 
 public void GridMouseInput(Vector2 cell)
 {
-    // Add null check for selector
-    if (selector == null || selector.SelectedPiece == null)
-    {
-        return;
-    }
-
-    // Check if it's the player's turn
-    if (!Player.myTurn)
-    {
-        Console.WriteLine("Cannot interact - not your turn");
-        return;
-    }
-
     int x = (int)cell.X;
     int y = (int)cell.Y;
-    
-    if (x < 0 || x >= Columns || y < 0 || y >= Rows)
+
+    // Early return if selector is null
+    if (selector == null)
+    {
+        Console.WriteLine("Warning: Selector is not initialized");
         return;
+    }
+
+    if (!Player.myTurn)
+    {
+        return;
+    }
 
     Cell clickedCell = Get(x, y) as Cell;
     if (clickedCell == null)
     {
         return;
     }
+
+    // If no cell is selected and a unit is clicked
+    if (selectedCellCoord == null && clickedCell.Obj is Unit selectedUnit)
+    {
+        if (selectedUnit.OwnerName == GameState.Username && Player.myTurn)
+        {
+            selectedCellCoord = cell;
+            clickedCell.GlowTime = 100;
+        }
+        return;
+    }
+
+    // Safe access to SelectedPiece with null check
+    if (selector.SelectedPiece?.GetType() == typeof(UnitCreator))
+    {
+        if (clickedCell.Obj == null)
+        {
+            UnitCreator creator = new UnitCreator();
+            creator.OwnerName = GameState.Username;
+            clickedCell.SetObject(creator);
+            
+            CellUpdatePacket packet = new CellUpdatePacket(
+                SocketClient.Instance.RoomId,
+                cell,
+                0,
+                GameState.Username
+            );
+            SocketClient.Instance.SendDataPacket(packet);
+        }
+        return;
+    }
+
+    // Add null check for selector
+    if (selector == null || selector.SelectedPiece == null)
+    {
+        return;
+    }
+
+    if (x < 0 || x >= Columns || y < 0 || y >= Rows)
+        return;
 
     // If no cell is selected
     if (selectedCellCoord == null)
@@ -291,7 +330,7 @@ public void GridMouseInput(Vector2 cell)
                     }
                 }
             }
-            else if (clickedCell.Obj is Unit unit && unit.OwnerName == GameState.Username)
+            else if (clickedCell.Obj is Unit movableUnit && movableUnit.OwnerName == GameState.Username)
             {
                 selectedCellCoord = cell;
                 clickedCell.GlowTime = 100;
@@ -311,15 +350,22 @@ public void GridMouseInput(Vector2 cell)
     else
     {
         Vector2 selected = selectedCellCoord.Value;
-        
+        Cell sourceCell = Get((int)selected.X, (int)selected.Y) as Cell;
+
+        // Double check ownership before allowing movement
+        if (sourceCell?.Obj is Unit unit && unit.OwnerName != GameState.Username)
+        {
+            selectedCellCoord = null;
+            return;
+        }
+
         bool isNeighbor = GetNeighbors((int)selected.X, (int)selected.Y)
             .Any(dir => x == selected.X + dir.X && y == selected.Y + dir.Y);
 
-        if (isNeighbor && clickedCell?.Obj == null)
+        if (isNeighbor && clickedCell?.Obj == null && Player.myTurn)
         {
-            // Move the object only if it's a Unit
-            Cell sourceCell = Get((int)selected.X, (int)selected.Y) as Cell;
-            if (sourceCell?.Obj is Unit)
+            // Move the object only if it's a Unit and belongs to current player
+            if (sourceCell?.Obj is Unit unitToMove && unitToMove.OwnerName == GameState.Username)
             {
                 clickedCell.SetObject(sourceCell.Obj);
                 sourceCell.ClearObject();
@@ -527,8 +573,10 @@ public void HandleRemoteMove(Vector2 source, Vector2 target)
 
         public void OnTurnStart()
         {
-            Console.WriteLine("Turn start triggered - checking for UnitCreators");
-            // Spawn units from all UnitCreators owned by current player
+            int spawnsThisTurn = 0;
+            const int MAX_SPAWNS_PER_TURN = 3;
+            var unitCreators = new List<(UnitCreator creator, int x, int y)>();
+            
             for (int x = 0; x < Columns; x++)
             {
                 for (int y = 0; y < Rows; y++)
@@ -536,22 +584,76 @@ public void HandleRemoteMove(Vector2 source, Vector2 target)
                     Cell cell = Get(x, y) as Cell;
                     if (cell?.Obj is UnitCreator creator && creator.OwnerName == GameState.Username)
                     {
-                        Console.WriteLine($"Found UnitCreator at {x},{y}");
-                        // Find an empty neighbor cell
-                        Vector2[] neighbors = GetNeighbors(x, y);
+                        creator.OnTurnStart();
+                        unitCreators.Add((creator, x, y));
+                    }
+                }
+            }
+
+            foreach (var (creator, x, y) in unitCreators)
+            {
+                if (spawnsThisTurn >= MAX_SPAWNS_PER_TURN) break;
+
+                var neighbors = GetNeighbors(x, y)
+                    .Select(dir => new { 
+                        nx = x + (int)dir.X, 
+                        ny = y + (int)dir.Y 
+                    })
+                    .Where(n => {
+                        if (n.nx < 0 || n.nx >= Columns || n.ny < 0 || n.ny >= Rows)
+                            return false;
+                        Cell neighborCell = Get(n.nx, n.ny) as Cell;
+                        return neighborCell?.Obj == null;
+                    })
+                    .ToList();
+
+                if (neighbors.Any())
+                {
+                    var rnd = new Random();
+                    var selected = neighbors[rnd.Next(neighbors.Count)];
+                    
+                    Unit newUnit = creator.SpawnUnit();
+                    if (newUnit != null)
+                    {
+                        Cell targetCell = Get(selected.nx, selected.ny) as Cell;
+                        newUnit.OwnerName = GameState.Username;
+                        targetCell.SetObject(newUnit);
+                        spawnsThisTurn++;
+
+                        CellUpdatePacket packet = new CellUpdatePacket(
+                            SocketClient.Instance.RoomId,
+                            new Vector2(selected.nx, selected.ny),
+                            1,
+                            GameState.Username
+                        );
+                        SocketClient.Instance.SendDataPacket(packet);
+                    }
+                }
+            }
+        }
+
+        public void OnTurnEnd()
+        {
+            for (int x = 0; x < Columns; x++)
+            {
+                for (int y = 0; y < Rows; y++)
+                {
+                    Cell cell = Get(x, y) as Cell;
+                    if (cell?.Obj is Unit attacker && attacker.OwnerName == GameState.Username)
+                    {
+                        var neighbors = GetNeighbors(x, y);
                         foreach (Vector2 dir in neighbors)
                         {
                             int nx = x + (int)dir.X;
                             int ny = y + (int)dir.Y;
                             
                             Cell neighborCell = Get(nx, ny) as Cell;
-                            if (neighborCell?.Obj == null)
+                            if (neighborCell?.Obj is Unit target && target.OwnerName != GameState.Username)
                             {
-                                // Spawn unit at empty neighbor cell
-                                Unit newUnit = creator.SpawnUnit();
-                                neighborCell.SetObject(newUnit);
-                                Console.WriteLine($"Spawned unit at {nx},{ny}");
-                                break;
+                                if (target.TakeDamage(attacker.Damage))
+                                {
+                                    neighborCell.ClearObject();
+                                }
                             }
                         }
                     }

@@ -8,18 +8,19 @@ using System.Text;
 using System.Threading.Tasks;
 using Blok3Game.Engine.Helpers;
 using BaseProject;
+using Blok3Game.GameStates;
 
 namespace Blok3Game.GameObjects
 {
     public class Cell : GameObject
     {
-        public GameObject Obj {get; private set;}
+        public GameObject Obj { get; private set; }
         public ResourceType Resource;
         public CellType cell;
         public int GlowTime = 0;
         public Cell()
         {
-            cell = new CellType(DrawingHelper.GetColorEGA(34), true, false) ;
+            cell = new CellType(DrawingHelper.GetColorEGA(34), true, false);
         }
 
         public override void DebugDraw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -31,7 +32,27 @@ namespace Blok3Game.GameObjects
         public void SetObject(GameObject obj)
         { 
             Obj = obj;
-            obj.Position = obj.Position;
+            if (obj != null)
+            {
+                // Set ownership for pieces that support it
+                if (obj is UnitCreator creator)
+                {
+                    creator.OwnerName = GameState.Username;
+                    Console.WriteLine($"Set UnitCreator ownership to {creator.OwnerName}");
+                }
+                else if (obj is Unit unit)
+                {
+                    unit.OwnerName = GameState.Username;
+                    Console.WriteLine($"Set Unit ownership to {unit.OwnerName}");
+                }
+
+                obj.Position = Position;
+                Console.WriteLine($"Placed {obj.GetType().Name} at position {Position}");
+            }
+            else
+            {
+                Console.WriteLine("Cleared cell contents");
+            }
         }
 
         public void ClearObject()
@@ -46,7 +67,6 @@ namespace Blok3Game.GameObjects
                 Obj.Update(this, gameTime);
             }
         }
-
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
@@ -63,11 +83,6 @@ namespace Blok3Game.GameObjects
             {
                 Obj.Draw(this.position + displacementhalf, gameTime, spriteBatch);
             }
-
-            
-            
-            
-            //DrawingHelper.FillRectangle(new Rectangle((int)this.position.X, (int)this.position.Y, 25, 25), spriteBatch, Color.Blue);
         }
     }
 }
