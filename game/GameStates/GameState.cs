@@ -119,11 +119,18 @@ namespace Blok3Game.GameStates
         {
             string playerName = data.playerName.ToString();
             currentTurnPlayerName = playerName;
+            Console.WriteLine($"Turn changed to: {playerName}");
 
             if (playerName == Username)
+            {
                 Player.myTurn = true;
+                Console.WriteLine("It's my turn - triggering OnTurnStart");
+                grid.OnTurnStart();  // Make sure this line is present
+            }
             else
+            {
                 Player.myTurn = false;
+            }
         }
 
         private void OnButtonClicked(UIElement element)
