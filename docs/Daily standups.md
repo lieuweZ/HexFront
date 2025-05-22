@@ -121,4 +121,4 @@ Daamin. Niks gedaan aan het spel. Mergen en de retrospective. Node js probleem.
 
 nicolaas. Movement opgelost van de units. retrospective en mergen van de code. Niet genoeg tijd.
 
-Lehan. Gewerkt aan de tmc. retrospective. geen obstakel.
+Lehan. Gewerkt aan de tmc. retrospective. minder geduld.
