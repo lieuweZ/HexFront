@@ -1,4 +1,4 @@
-﻿using Blok3Game.Engine.AssetHandler;
+using Blok3Game.Engine.AssetHandler;
 using Blok3Game.Engine.JSON;
 using Blok3Game.Engine.SocketIOClient;
 using Blok3Game.Engine.UI;
@@ -23,6 +23,8 @@ namespace Blok3Game.GameStates
         {
             Button buttonStart = CreateButton(new Vector2(150, 525), "START GAME", OnButtonStartClicked);
             Button buttonCancel = CreateButton(new Vector2(450, 525), "CANCEL", OnButtonCancelClicked);
+            TextGameObject tut = CreateText(new Vector2(211, 250 + 125), "Instructions\nSelect structures bij  choosing from the top menu.\nClick an empty cell next to one of your buildings to build the structure\nOrder units from structures\nUse your units to extract resources from resource nodes\nUse your units to destroy the main building of your opponent.");
+            Add(tut);
         }
 
         protected override void HandleIncomingMessages()
