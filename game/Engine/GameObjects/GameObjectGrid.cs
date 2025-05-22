@@ -263,14 +263,8 @@ public void GridMouseInput(Vector2 cell)
     {
         if (clickedCell?.Obj != null)
         {
-            // Check if the piece belongs to the current player
-            bool isOwnPiece = false;
-            if (clickedCell.Obj is Cube cube) isOwnPiece = cube.OwnerName == GameState.Username;
-            else if (clickedCell.Obj is Cube2 cube2) isOwnPiece = cube2.OwnerName == GameState.Username;
-            else if (clickedCell.Obj is Cube3 cube3) isOwnPiece = cube3.OwnerName == GameState.Username;
-
-            // Only select if it's the player's own piece
-            if (isOwnPiece)
+            // Only allow selection of Unit for movement
+            if (clickedCell.Obj is Unit unit && unit.OwnerName == GameState.Username)
             {
                 selectedCellCoord = cell;
                 clickedCell.GlowTime = 100; // Highlight
@@ -278,7 +272,7 @@ public void GridMouseInput(Vector2 cell)
         }
         else
         {
-            // Handle piece placement
+            // Handle piece placement - allow all piece types
             int? ID = selector.SelectedPiece?.ID;
             if (ID != null && CanPlaceAt(cell))
             {
@@ -291,52 +285,28 @@ public void GridMouseInput(Vector2 cell)
     {
         Vector2 selected = selectedCellCoord.Value;
         
-        // Check if clicked cell is a neighbor
         bool isNeighbor = GetNeighbors((int)selected.X, (int)selected.Y)
             .Any(dir => x == selected.X + dir.X && y == selected.Y + dir.Y);
 
-if (isNeighbor && clickedCell?.Obj == null)
-{
-    // Move the object
-    Cell sourceCell = Get((int)selected.X, (int)selected.Y) as Cell;
-    clickedCell.SetObject(sourceCell.Obj);
-    sourceCell.ClearObject();
-    // Send move packet
-    MovePiece(selected, cell);
-    selectedCellCoord = null;
-}
-
-        else if (x == selected.X && y == selected.Y)
+        if (isNeighbor && clickedCell?.Obj == null)
         {
-            // Deselect if clicking same cell
+            // Move the object only if it's a Unit
+            Cell sourceCell = Get((int)selected.X, (int)selected.Y) as Cell;
+            if (sourceCell?.Obj is Unit)
+            {
+                clickedCell.SetObject(sourceCell.Obj);
+                sourceCell.ClearObject();
+                MovePiece(selected, cell);
+            }
             selectedCellCoord = null;
-        }
-        else if (clickedCell?.Obj != null)
-        {
-            // Check if the new piece belongs to the current player
-            bool isOwnPiece = false;
-            if (clickedCell.Obj is Cube cube) isOwnPiece = cube.OwnerName == GameState.Username;
-            else if (clickedCell.Obj is Cube2 cube2) isOwnPiece = cube2.OwnerName == GameState.Username;
-            else if (clickedCell.Obj is Cube3 cube3) isOwnPiece = cube3.OwnerName == GameState.Username;
-
-            // Change selection to new cell only if it's the player's own piece
-            if (isOwnPiece)
-            {
-                selectedCellCoord = cell;
-                clickedCell.GlowTime = 100;
-            }
-            else
-            {
-                selectedCellCoord = null;
-            }
         }
         else
         {
-            // Deselect if clicking empty non-neighbor
             selectedCellCoord = null;
         }
     }
 }
+
 public void MovePiece(Vector2 source, Vector2 target)
 {
 
@@ -393,9 +363,9 @@ public void HandleRemoteMove(Vector2 source, Vector2 target)
 				return;
 			}
 
-			if (box is Cube cube)
+			if (box is Unit unit)
 			{
-				cube.OwnerName = playerName;
+				unit.OwnerName = playerName;
 			}
 			else if (box is Cube2 cube2)
 			{
