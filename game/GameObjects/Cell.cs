@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using Blok3Game.Engine.Helpers;
 using BaseProject;
 using Blok3Game.GameStates;
+using Blok3Game.Engine.SocketIOClient;
+using Blok3Game.Packets;
 
 namespace Blok3Game.GameObjects
 {
@@ -20,6 +22,8 @@ namespace Blok3Game.GameObjects
         public int GlowTime = 0;
         public Cell()
         {
+            Random rand = new Random();
+            cell = new CellType(rand.Next(2), DrawingHelper.GetColorEGA(34), true, false);
             cell = new CellType(DrawingHelper.GetColorEGA(34), true, false);
         }
 
@@ -71,7 +75,7 @@ namespace Blok3Game.GameObjects
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             int tileScale = HexFront.self.CellScale;
-            DrawingHelper.FillHexagon(new Rectangle((int)this.position.X, (int)this.position.Y, tileScale, tileScale), spriteBatch, new Color(cell.Color));
+            DrawingHelper.FillHexagon(new Rectangle((int)this.position.X, (int)this.position.Y, tileScale, tileScale), spriteBatch, new Color(cell.GetColor()));
 
             Vector2 displacementhalf = new Vector2(tileScale / 2, tileScale / 2);
 
@@ -83,6 +87,8 @@ namespace Blok3Game.GameObjects
             {
                 Obj.Draw(this.position + displacementhalf, gameTime, spriteBatch);
             }
+            
+            //DrawingHelper.FillRectangle(new Rectangle((int)this.position.X, (int)this.position.Y, 25, 25), spriteBatch, Color.Blue);
         }
     }
 }

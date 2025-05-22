@@ -18,7 +18,7 @@ namespace Blok3Game.Engine.Helpers
             Objects[0] = typeof(UnitCreator);
             Objects[1] = typeof(Unit);      // Make sure Unit has ID 1
             Objects[2] = typeof(Cube2);
-            Objects[3] = typeof(Cube3);
+            Objects[3] = typeof(ResourceCollector);
         }
 
         public GameObject CreateFromId(int id)
@@ -26,8 +26,8 @@ namespace Blok3Game.Engine.Helpers
             GameObject obj = null;
 
             Type type = Objects[id];
-            if(type != null)
-            obj = (GameObject)Activator.CreateInstance(type);
+            if (type != null)
+                obj = (GameObject)Activator.CreateInstance(type);
 
             return obj;
         }
