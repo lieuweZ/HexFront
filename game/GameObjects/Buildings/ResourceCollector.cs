@@ -11,7 +11,7 @@ namespace Blok3Game.Engine.GameObjects
     public class ResourceCollector : PieceObject
     {
 
-        public ResourceCollector() : base("building", 0, 5, Vector2.Zero)
+        public ResourceCollector() : base("building", 0, 5, Vector2.Zero, 1)
         {
         }
 

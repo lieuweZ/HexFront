@@ -10,12 +10,14 @@ namespace Blok3Game.Engine.GameObjects
         public string Type { get; private set; } // Either Building or Unit
         public int Attack { get; private set; }
         public int Health { get; private set; }
-        public PieceObject(string type, int attack, int health, Vector2 position) : base()
+        public int RescoureCost { get; private set; }
+        public PieceObject(string type, int attack, int health, Vector2 position, int rescoureCost) : base()
         {
             Type = type;
             Attack = attack;
             Health = health;
             Position = position;
+            RescoureCost = rescoureCost;
         }
 
         public void Update()

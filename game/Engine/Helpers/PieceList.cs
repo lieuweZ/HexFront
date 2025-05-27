@@ -30,5 +30,14 @@ namespace Blok3Game.Engine.Helpers
 
             return obj;
         }
+        public PieceObject getFromId(int id)
+        {
+            PieceObject obj = null;
+
+            Type type = Objects[id];
+            obj = (PieceObject)Activator.CreateInstance(type);
+
+            return obj;
+        }
     }
 }

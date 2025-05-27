@@ -255,10 +255,39 @@ namespace Blok3Game.Engine.GameObjects
 				{
 					if (CanPlaceAt(cell))
 					{
-						PlacePiece(cell, ID.Value);
+						PieceList pieces = new PieceList();
+						var piecetoplace = pieces.getFromId((int)ID);
+						var player = GetPlayer();
+						var resource = player.resources.Find(s => s.Id == 0);
+						if (resource.Amount >= piecetoplace.RescoureCost)
+						{
+							resource.Amount -= piecetoplace.RescoureCost;
+							PlacePiece(cell, ID.Value);
+						}
+						else
+						{
+							Console.WriteLine("Not enough rescoures need: " + piecetoplace.RescoureCost + " You have: " + resource.Amount);
+						}
 					}
 				}
 			}
+		}
+
+		private static Player GetPlayer()
+		{
+			GameObjectList gameObjects = GameEnvironment.GameStateManager.GetGameState(GameStateManager.GAME_STATE) as GameObjectList;
+
+			if (gameObjects != null)
+			{
+				foreach (GameObject obj in gameObjects.Children)
+				{
+					if (obj is Player player)
+					{
+						return player;
+					}
+				}
+			}
+			return null;
 		}
 
 		public void PlacePiece(Vector2 pos, int id)
