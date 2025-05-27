@@ -248,180 +248,112 @@ namespace Blok3Game.Engine.GameObjects
 			}
 		}
 
-public void GridMouseInput(Vector2 cell)
-{
-    int x = (int)cell.X;
-    int y = (int)cell.Y;
+		public void GridMouseInput(Vector2 cell)
+		{
+			int x = (int)cell.X;
+			int y = (int)cell.Y;
 
-    // Early return if selector is null
-    if (selector == null)
-    {
-        Console.WriteLine("Warning: Selector is not initialized");
-        return;
-    }
+			// Early return if selector is null
+			if (selector == null)
+			{
+				return;
+			}
 
-    if (!Player.myTurn)
-    {
-        return;
-    }
+			if (!Player.myTurn)
+			{
+				return;
+			}
 
-    Cell clickedCell = Get(x, y) as Cell;
-    if (clickedCell == null)
-    {
-        return;
-    }
+			Cell clickedCell = Get(x, y) as Cell;
+			if (clickedCell == null)
+			{
+				return;
+			}
 
-    // If no cell is selected and a unit is clicked
-    if (selectedCellCoord == null && clickedCell.Obj is Unit selectedUnit)
-    {
-        if (selectedUnit.OwnerName == GameState.Username && Player.myTurn)
-        {
-            selectedCellCoord = cell;
-            clickedCell.GlowTime = 100;
-        }
-        return;
-    }
+			if (x < 0 || x >= Columns || y < 0 || y >= Rows)
+				return;
 
-    // Safe access to SelectedPiece with null check
-    if (selector.SelectedPiece?.GetType() == typeof(UnitCreator))
-    {
-        if (clickedCell.Obj == null)
-        {
-            UnitCreator creator = new UnitCreator();
-            creator.OwnerName = GameState.Username;
-            clickedCell.SetObject(creator);
-            
-            CellUpdatePacket packet = new CellUpdatePacket(
-                SocketClient.Instance.RoomId,
-                cell,
-                0,
-                GameState.Username
-            );
-            SocketClient.Instance.SendDataPacket(packet);
-        }
-        return;
-    }
+			// If no cell is selected
+			if (selectedCellCoord == null)
+			{
+				if (clickedCell.Obj != null)
+				{
+					if (clickedCell.Obj is Unit movableUnit && movableUnit.OwnerName == GameState.Username && Player.myTurn)
+					{
+						selectedCellCoord = cell;
+						clickedCell.GlowTime = 100;
+					}
+				}
+				else
+				{
+					// Handle piece placement
+					int? ID = selector.SelectedPiece?.ID;
+					if (ID.HasValue && CanPlaceAt(cell))
+					{
+						PlacePiece(cell, ID.Value); 
+					}
+				}
+			}
+			// If a cell is already selected
+			else
+			{
+				Vector2 selected = selectedCellCoord.Value;
+				Cell sourceCell = Get((int)selected.X, (int)selected.Y) as Cell;
 
-    // Add null check for selector
-    if (selector == null || selector.SelectedPiece == null)
-    {
-        return;
-    }
+				// Double check ownership before allowing movement
+				if (sourceCell?.Obj is Unit unit && unit.OwnerName != GameState.Username)
+				{
+					selectedCellCoord = null;
+					return;
+				}
 
-    if (x < 0 || x >= Columns || y < 0 || y >= Rows)
-        return;
+				bool isNeighbor = GetNeighbors((int)selected.X, (int)selected.Y)
+					.Any(dir => x == selected.X + dir.X && y == selected.Y + dir.Y);
 
-    // If no cell is selected
-    if (selectedCellCoord == null)
-    {
-        if (clickedCell.Obj != null)
-        {
-            if (clickedCell.Obj is UnitCreator creator && creator.OwnerName == GameState.Username)
-            {
-                Vector2[] neighbors = GetNeighbors(x, y);
-                if (neighbors != null)
-                {
-                    foreach (Vector2 dir in neighbors)
-                    {
-                        int nx = x + (int)dir.X;
-                        int ny = y + (int)dir.Y;
-                        
-                        Cell neighborCell = Get(nx, ny) as Cell;
-                        if (neighborCell?.Obj == null)
-                        {
-                            Unit newUnit = creator.SpawnUnit();
-                            if (newUnit != null)
-                            {
-                                newUnit.OwnerName = GameState.Username;
-                                neighborCell.SetObject(newUnit);
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-            else if (clickedCell.Obj is Unit movableUnit && movableUnit.OwnerName == GameState.Username)
-            {
-                selectedCellCoord = cell;
-                clickedCell.GlowTime = 100;
-            }
-        }
-        else
-        {
-            // Handle piece placement
-            int? ID = selector.SelectedPiece?.ID;
-            if (ID.HasValue && CanPlaceAt(cell))
-            {
-                PlacePiece(cell, ID.Value);
-            }
-        }
-    }
-    // If a cell is already selected
-    else
-    {
-        Vector2 selected = selectedCellCoord.Value;
-        Cell sourceCell = Get((int)selected.X, (int)selected.Y) as Cell;
+				if (isNeighbor && clickedCell?.Obj == null && Player.myTurn)
+				{
+					// Move the object only if it's a Unit and belongs to current player
+					if (sourceCell?.Obj is Unit unitToMove && unitToMove.OwnerName == GameState.Username)
+					{
+						MovePiece(selected, cell);
+					}
+					selectedCellCoord = null;
+				}
+				else
+				{
+					selectedCellCoord = null;
+				}
+			}
+		}
 
-        // Double check ownership before allowing movement
-        if (sourceCell?.Obj is Unit unit && unit.OwnerName != GameState.Username)
-        {
-            selectedCellCoord = null;
-            return;
-        }
+		public void MovePiece(Vector2 source, Vector2 target)
+		{
+			MovePiecePacket packet = new MovePiecePacket(
+				SocketClient.Instance.RoomId,
+				source,
+				target,
+				GameState.Username
+			);
+			
+			SocketClient.Instance.SendDataPacket(packet);
+		}
 
-        bool isNeighbor = GetNeighbors((int)selected.X, (int)selected.Y)
-            .Any(dir => x == selected.X + dir.X && y == selected.Y + dir.Y);
+		public void HandleRemoteMove(Vector2 source, Vector2 target)
+		{
+			Cell sourceCell = Get((int)source.X, (int)source.Y) as Cell;
+			Cell targetCell = Get((int)target.X, (int)target.Y) as Cell;
 
-        if (isNeighbor && clickedCell?.Obj == null && Player.myTurn)
-        {
-            // Move the object only if it's a Unit and belongs to current player
-            if (sourceCell?.Obj is Unit unitToMove && unitToMove.OwnerName == GameState.Username)
-            {
-                clickedCell.SetObject(sourceCell.Obj);
-                sourceCell.ClearObject();
-                MovePiece(selected, cell);
-            }
-            selectedCellCoord = null;
-        }
-        else
-        {
-            selectedCellCoord = null;
-        }
-    }
-}
-
-public void MovePiece(Vector2 source, Vector2 target)
-{
-
-
-    MovePiecePacket packet = new MovePiecePacket(
-        SocketClient.Instance.RoomId,
-        source,
-        target,
-        GameState.Username
-    );
-    
-    SocketClient.Instance.SendDataPacket(packet);
-
-}
-
-public void HandleRemoteMove(Vector2 source, Vector2 target)
-{
-    
-    Cell sourceCell = Get((int)source.X, (int)source.Y) as Cell;
-    Cell targetCell = Get((int)target.X, (int)target.Y) as Cell;
-
-    if (sourceCell?.Obj != null && targetCell != null)
-    {
-        GameObject piece = sourceCell.Obj;
-        sourceCell.ClearObject();
-        targetCell.SetObject(piece);
-    }
-}
+			if (sourceCell?.Obj != null && targetCell != null)
+			{
+				GameObject piece = sourceCell.Obj;
+				sourceCell.ClearObject();
+				targetCell.SetObject(piece);
+				targetCell.Obj.Parent = targetCell;
+			}
+		}
 
 		public void PlacePiece(Vector2 pos, int id)
 		{
-
 			CellUpdatePacket pack = new CellUpdatePacket(
 				SocketClient.Instance.RoomId, 
 				pos, 
@@ -431,7 +363,7 @@ public void HandleRemoteMove(Vector2 source, Vector2 target)
 			SocketClient.Instance.SendDataPacket(pack);
 		}
 
-		public void SetCellPiece(Vector2 cell, GameObject box, string playerName)
+		public void SetCellPiece(Vector2 cell, GameObject obj, string playerName)
 		{
 			Cell cl = (Cell)Get((int)cell.X, (int)cell.Y);
 			if (cl.Obj != null)
@@ -439,20 +371,13 @@ public void HandleRemoteMove(Vector2 source, Vector2 target)
 				return;
 			}
 
-			if (box is Unit unit)
-			{
-				unit.OwnerName = playerName;
-			}
-			else if (box is Cube2 cube2)
-			{
-				cube2.OwnerName = playerName;
-			}
-			else if (box is PieceObject piece)
+			else if (obj is PieceObject piece)
 			{
 				piece.OwnerName = playerName;
 			}
 
-			cl.SetObject(box);
+			cl.SetObject(obj);
+			cl.Obj.Parent = cl;
 		}
 
 		private bool CanPlaceAt(Vector2 pos)
@@ -465,11 +390,6 @@ public void HandleRemoteMove(Vector2 source, Vector2 target)
 			if (current == null || current.Obj != null)
 			{
 				return false;
-			}
-
-			if (CheckIfAvailable())
-			{
-				return true;
 			}
 
 			Vector2[] selectedDirections = GetNeighbors(x, y);
@@ -490,10 +410,7 @@ public void HandleRemoteMove(Vector2 source, Vector2 target)
 				{
 					string ownerName = GameState.Username;
 					var obj = neighbor.Obj;
-					bool isOwned =
-						(obj is Cube cube && cube.OwnerName == ownerName) ||
-						(obj is Cube2 cube2 && cube2.OwnerName == ownerName) ||
-						(obj is PieceObject piece && piece.OwnerName == ownerName);
+					bool isOwned = obj is PieceObject piece && piece.OwnerName == ownerName;
 
 					if (isOwned)
 					{
@@ -504,32 +421,8 @@ public void HandleRemoteMove(Vector2 source, Vector2 target)
 			return false;
 		}
 
-
-		private bool CheckIfAvailable()
-		{
-			string ownerName = GameState.Username;
-
-			foreach (GameObject obj in grid)
-			{
-				if (obj is Cell cell && cell.Obj != null)
-				{
-					var placedObj = cell.Obj;
-
-					if ((placedObj is Cube cube && cube.OwnerName == ownerName) ||
-						(placedObj is Cube2 cube2 && cube2.OwnerName == ownerName) ||
-						(placedObj is PieceObject piece && piece.OwnerName == ownerName))
-					{
-						Console.WriteLine("gdf");
-						return false;
-					}
-				}
-			}
-			return true;
-		}
-
-
 		// Use this function to return a Vector2 array of all possible neighbors (including non-existent ones) for the given x and y values.
-		private Vector2[] GetNeighbors(int x, int y)
+		public Vector2[] GetNeighbors(int x, int y)
 		{
 			Vector2[] directionsEven = new Vector2[]
 			{
@@ -582,92 +475,35 @@ public void HandleRemoteMove(Vector2 source, Vector2 target)
 
         public void OnTurnStart()
         {
-            int spawnsThisTurn = 0;
-            const int MAX_SPAWNS_PER_TURN = 3;
-            var unitCreators = new List<(UnitCreator creator, int x, int y)>();
-            
-            for (int x = 0; x < Columns; x++)
-            {
-                for (int y = 0; y < Rows; y++)
-                {
-                    Cell cell = Get(x, y) as Cell;
-                    if (cell?.Obj is UnitCreator creator && creator.OwnerName == GameState.Username)
-                    {
-                        creator.OnTurnStart();
-                        unitCreators.Add((creator, x, y));
-                    }
-                }
-            }
-
-            foreach (var (creator, x, y) in unitCreators)
-            {
-                if (spawnsThisTurn >= MAX_SPAWNS_PER_TURN) break;
-
-                var neighbors = GetNeighbors(x, y)
-                    .Select(dir => new { 
-                        nx = x + (int)dir.X, 
-                        ny = y + (int)dir.Y 
-                    })
-                    .Where(n => {
-                        if (n.nx < 0 || n.nx >= Columns || n.ny < 0 || n.ny >= Rows)
-                            return false;
-                        Cell neighborCell = Get(n.nx, n.ny) as Cell;
-                        return neighborCell?.Obj == null;
-                    })
-                    .ToList();
-
-                if (neighbors.Any())
-                {
-                    var rnd = new Random();
-                    var selected = neighbors[rnd.Next(neighbors.Count)];
-                    
-                    Unit newUnit = creator.SpawnUnit();
-                    if (newUnit != null)
-                    {
-                        Cell targetCell = Get(selected.nx, selected.ny) as Cell;
-                        newUnit.OwnerName = GameState.Username;
-                        targetCell.SetObject(newUnit);
-                        spawnsThisTurn++;
-
-                        CellUpdatePacket packet = new CellUpdatePacket(
-                            SocketClient.Instance.RoomId,
-                            new Vector2(selected.nx, selected.ny),
-                            1,
-                            GameState.Username
-                        );
-                        SocketClient.Instance.SendDataPacket(packet);
-                    }
-                }
-            }
         }
 
         public void OnTurnEnd()
         {
             for (int x = 0; x < Columns; x++)
-            {
-                for (int y = 0; y < Rows; y++)
-                {
-                    Cell cell = Get(x, y) as Cell;
-                    if (cell?.Obj is Unit attacker && attacker.OwnerName == GameState.Username)
-                    {
-                        var neighbors = GetNeighbors(x, y);
-                        foreach (Vector2 dir in neighbors)
-                        {
-                            int nx = x + (int)dir.X;
-                            int ny = y + (int)dir.Y;
-                            
-                            Cell neighborCell = Get(nx, ny) as Cell;
-                            if (neighborCell?.Obj is Unit target && target.OwnerName != GameState.Username)
-                            {
-                                if (target.TakeDamage(attacker.Damage))
-                                {
-                                    neighborCell.ClearObject();
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+			{
+				for (int y = 0; y < Rows; y++)
+				{
+					Cell cell = Get(x, y) as Cell;
+					if (cell?.Obj is Unit attacker && attacker.OwnerName == GameState.Username)
+					{
+						var neighbors = GetNeighbors(x, y);
+						foreach (Vector2 dir in neighbors)
+						{
+							int nx = x + (int)dir.X;
+							int ny = y + (int)dir.Y;
+
+							Cell neighborCell = Get(nx, ny) as Cell;
+							if (neighborCell?.Obj is PieceObject target && target.OwnerName != GameState.Username)
+							{
+								if (target.TakeDamage(attacker.Attack))
+								{
+									neighborCell.ClearObject();
+								}
+							}
+						}
+					}
+				}
+			}
         }
 
 		public override void Reset()
@@ -695,5 +531,4 @@ public void HandleRemoteMove(Vector2 source, Vector2 target)
 			}
 		}
 	}
-
 }

@@ -6,25 +6,26 @@ using Blok3Game.GameStates;
 
 namespace Blok3Game.GameObjects
 {
-    public class Unit : GameObject
+    public class Unit : PieceObject
     {
-        public string OwnerName { get; set; }
-        public int Health { get; private set; }
-        public int Damage { get; private set; }
-
-        public Unit() : base()
+        public int ResourceCost { get; set; }
+        public Unit() : base("unit", 2, 2)
         {
+            ResourceCost = 1;
             this.position = new Vector2(25, 25);
-            Health = 100;
-            Damage = 20;
         }
-
-        public bool TakeDamage(int damageAmount)
+        public void AttackObjects(Cell myCell, Player player)
         {
-            Health -= damageAmount;
-            return Health <= 0;
         }
 
+        public void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+        }
+        public override void AtEndTurn(Cell cell, Player player)
+        {
+            AttackObjects(cell, player);
+        }
         public override void Draw(Vector2 displacement, GameTime gameTime, SpriteBatch spriteBatch)
         {
             // Head
@@ -81,7 +82,7 @@ namespace Blok3Game.GameObjects
                 spriteBatch,
                 Color.DarkBlue
             );
-            
+
             DrawingHelper.FillRectangle(
                 new Rectangle(
                     (int)(displacement.X + 1),
@@ -91,6 +92,8 @@ namespace Blok3Game.GameObjects
                 spriteBatch,
                 Color.DarkBlue
             );
+
+            base.Draw(displacement, spriteBatch);
         }
     }
 }

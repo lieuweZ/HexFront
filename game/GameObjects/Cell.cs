@@ -37,24 +37,12 @@ namespace Blok3Game.GameObjects
             Obj = obj;
             if (obj != null)
             {
-                // Set ownership for pieces that support it
-                if (obj is UnitCreator creator)
-                {
-                    creator.OwnerName = GameState.Username;
-                    Console.WriteLine($"Set UnitCreator ownership to {creator.OwnerName}");
-                }
-                else if (obj is Unit unit)
-                {
-                    unit.OwnerName = GameState.Username;
-                    Console.WriteLine($"Set Unit ownership to {unit.OwnerName}");
-                }
-
                 obj.Position = Position;
-                Console.WriteLine($"Placed {obj.GetType().Name} at position {Position}");
+            //    Console.WriteLine($"Placed {obj.GetType().Name} at position {Position}");
             }
             else
             {
-                Console.WriteLine("Cleared cell contents");
+            //    Console.WriteLine("Cleared cell contents");
             }
         }
 
