@@ -479,31 +479,6 @@ namespace Blok3Game.Engine.GameObjects
 
         public void OnTurnEnd()
         {
-            for (int x = 0; x < Columns; x++)
-			{
-				for (int y = 0; y < Rows; y++)
-				{
-					Cell cell = Get(x, y) as Cell;
-					if (cell?.Obj is Unit attacker && attacker.OwnerName == GameState.Username)
-					{
-						var neighbors = GetNeighbors(x, y);
-						foreach (Vector2 dir in neighbors)
-						{
-							int nx = x + (int)dir.X;
-							int ny = y + (int)dir.Y;
-
-							Cell neighborCell = Get(nx, ny) as Cell;
-							if (neighborCell?.Obj is PieceObject target && target.OwnerName != GameState.Username)
-							{
-								if (target.TakeDamage(attacker.Attack))
-								{
-									neighborCell.ClearObject();
-								}
-							}
-						}
-					}
-				}
-			}
         }
 
 		public override void Reset()

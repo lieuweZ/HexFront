@@ -82,7 +82,8 @@ namespace Blok3Game.GameObjects
                     {
                         if (cl.Obj is PieceObject piece && piece.OwnerName == GameState.Username)
                         {
-                            piece.AtEndTurn(cl, this);
+                            Console.WriteLine("this is happening at the end of the turn");
+                            piece.AtEndTurn(cl, this, new Vector2(x,y));
                         }
                     }
                 }

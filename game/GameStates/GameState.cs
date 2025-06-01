@@ -12,6 +12,8 @@ using static System.Net.Mime.MediaTypeNames;
 using Blok3Game.Engine.UI;
 using Microsoft.Xna.Framework.Input;
 using System.Transactions;
+using System.Net.Mail;
+using System.Runtime;
 
 namespace Blok3Game.GameStates
 {
@@ -60,6 +62,7 @@ namespace Blok3Game.GameStates
             SocketClient.Instance.SubscribeToDataPacket<MovePiecePacket>(OnMovePieceReceived);
             SocketClient.Instance.SubscribeToDataPacket<TurnChangedPacket>(OnTurnChanged);
             SocketClient.Instance.SubscribeToDataPacket<StartGameData>(StartGame);
+            SocketClient.Instance.SubscribeToDataPacket<DamagePacket>(DamageCell);
 
 
             player = new Player("player");
@@ -101,12 +104,12 @@ namespace Blok3Game.GameStates
                 resourceTexts.Add(resText);
                 yOffset += 25;
             }
-                TextGameObject unitText = new TextGameObject("Fonts/SpriteFont", 100);
-                unitText.Position = new Vector2(10, yOffset);
-                unitText.Text = "";
-                Add(unitText);
-                resourceTexts.Add(unitText);
-                yOffset += 100;
+            TextGameObject unitText = new TextGameObject("Fonts/SpriteFont", 100);
+            unitText.Position = new Vector2(10, yOffset);
+            unitText.Text = "";
+            Add(unitText);
+            resourceTexts.Add(unitText);
+            yOffset += 100;
 
             chatText = new TextGameObject("Fonts/SpriteFont", 100);
             chatText.Position = new Vector2(10, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 250);
@@ -195,7 +198,7 @@ namespace Blok3Game.GameStates
                     }
                 }
             }
-            
+
             grid.updated = true;
         }
 
@@ -204,7 +207,7 @@ namespace Blok3Game.GameStates
         {
             base.Update(gameTime);
 
-           // UpdateGridObjects(gameTime);
+            // UpdateGridObjects(gameTime);
 
             playerNameText.Text = $"Name: {player.Name}";
             currentTurnText.Text = $"Current Turn: {currentTurnPlayerName}";
@@ -281,6 +284,7 @@ namespace Blok3Game.GameStates
             }
             else
             {
+                player.EndTurn();
                 grid.OnTurnEnd();
                 Player.myTurn = false;
             }
@@ -327,9 +331,20 @@ namespace Blok3Game.GameStates
                 grid.HandleRemoteMove(source, target);
             }
         }
-        
-        private void UpdateGridObjects(GameTime gameTime)
+
+        private void DamageCell(DamagePacket data)
         {
+            string[] position = data.targetPosition.Split();
+            int x = int.Parse(position[0]);
+            int y = int.Parse(position[1]);
+            Cell cl = (Cell)grid.Get(x, y);
+            if (cl.Obj is PieceObject piece)
+            {
+                if (piece.TakeDamage(data.attackDamage))
+                {
+                    cl.ClearObject();
+                }
+            }
         }
     }
 }

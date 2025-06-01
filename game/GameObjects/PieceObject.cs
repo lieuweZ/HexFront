@@ -3,7 +3,6 @@ using Blok3Game.Engine.Helpers;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System;
-
 namespace Blok3Game.Engine.GameObjects
 {
     public class PieceObject : GameObject
@@ -27,13 +26,13 @@ namespace Blok3Game.Engine.GameObjects
         }
         public bool TakeDamage(int damageAmount)
         {
-            damageFlashTime = maxFlashDuration;
             Health -= damageAmount;
+            Console.WriteLine("this objectt took damage" + Health + "this is the damage amount:" + damageAmount);
             return Health <= 0;
         }
         public virtual void AtStartTurn(Cell cell, Player player) { }
 
-        public virtual void AtEndTurn(Cell cell, Player player) { }
+        public virtual void AtEndTurn(Cell cell, Player player, Vector2 cellPosition) { }
 
         public virtual void Draw(Vector2 displacement, SpriteBatch spriteBatch)
         {
