@@ -122,3 +122,13 @@ Daamin. Niks gedaan aan het spel. Mergen en de retrospective. Node js probleem.
 nicolaas. Movement opgelost van de units. retrospective en mergen van de code. Niet genoeg tijd.
 
 Lehan. Gewerkt aan de tmc. retrospective. minder geduld.
+
+##### 2025 06 02
+
+Lieuwe. Aan de Expert review gewerkt. Besig geweest met de kleur van de spelers gewerkt. Morgen geen les.
+
+Daamin. Gewerkt aan de expert meeting iets toegevoegt aan de TMC. Verder werken aan de expert formulier. Thuis werken.
+
+nicolaas. Gewerkt aan de units te laten aan vallen. Pieces selectie randomizen. Expert meeting op vrijdag.
+
+Lehan. Weinig. Gewerkt aan de deelproduct documentatie. Weinig.
