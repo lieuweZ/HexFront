@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Blok3Game.Engine.Helpers;
 using BaseProject;
+using Blok3Game.GameStates;
 using Blok3Game.Engine.SocketIOClient;
 using Blok3Game.Packets;
 
@@ -15,7 +16,7 @@ namespace Blok3Game.GameObjects
 {
     public class Cell : GameObject
     {
-        public GameObject Obj {get; private set;}
+        public GameObject Obj { get; private set; }
         public ResourceType Resource;
         public CellType cell;
         public int GlowTime = 0;
@@ -34,7 +35,15 @@ namespace Blok3Game.GameObjects
         public void SetObject(GameObject obj)
         { 
             Obj = obj;
-            obj.Position = obj.Position;
+            if (obj != null)
+            {
+                obj.Position = Position;
+            //    Console.WriteLine($"Placed {obj.GetType().Name} at position {Position}");
+            }
+            else
+            {
+            //    Console.WriteLine("Cleared cell contents");
+            }
         }
 
         public void ClearObject()
@@ -49,7 +58,6 @@ namespace Blok3Game.GameObjects
                 Obj.Update(this, gameTime);
             }
         }
-
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
@@ -66,8 +74,6 @@ namespace Blok3Game.GameObjects
             {
                 Obj.Draw(this.position + displacementhalf, gameTime, spriteBatch);
             }
-            
-            //DrawingHelper.FillRectangle(new Rectangle((int)this.position.X, (int)this.position.Y, 25, 25), spriteBatch, Color.Blue);
         }
     }
 }

@@ -15,9 +15,10 @@ namespace Blok3Game.Engine.Helpers
 
         public PieceList()
         {
-            Objects[0] = typeof(Cube);
-            Objects[1] = typeof(Cube2);
-            Objects[2] = typeof(ResourceCollector);
+            Objects[0] = typeof(UnitCreator);
+            Objects[1] = typeof(ResourceCollector);
+            Objects[2] = typeof(Unit);
+            Objects[3] = typeof(CentralBuilding);
         }
 
         public GameObject CreateFromId(int id)

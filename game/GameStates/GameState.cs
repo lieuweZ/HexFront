@@ -12,7 +12,8 @@ using static System.Net.Mime.MediaTypeNames;
 using Blok3Game.Engine.UI;
 using Microsoft.Xna.Framework.Input;
 using System.Transactions;
-using Blok3Game.Engine.JSON;
+using System.Net.Mail;
+using System.Runtime;
 
 namespace Blok3Game.GameStates
 {
@@ -32,9 +33,7 @@ namespace Blok3Game.GameStates
         private Vector2 pieTimerPosition;
         private float pieTimerRotation;
         private string currentTurnPlayerName = "";
-
         public static string Username = "";
-
         private List<string> messages = new List<string>();
         private TextGameObject chatText;
         private Rectangle chatBorder;
@@ -60,10 +59,13 @@ namespace Blok3Game.GameStates
 
             SocketClient.Instance.SubscribeToDataPacket<CellEffectPacket>(RecievedCellEffectData);
             SocketClient.Instance.SubscribeToDataPacket<ChatMessagePacket>(RecievedMsg);
+            SocketClient.Instance.SubscribeToDataPacket<MovePiecePacket>(OnMovePieceReceived);
             SocketClient.Instance.SubscribeToDataPacket<TurnChangedPacket>(OnTurnChanged);
             SocketClient.Instance.SubscribeToDataPacket<StartGameData>(StartGame);
+            SocketClient.Instance.SubscribeToDataPacket<DamagePacket>(DamageCell);
 
-            player = new Player("Alice");
+
+            player = new Player("player");
             Add(player);
 
             playerNameText = new TextGameObject("Fonts/SpriteFont", 100);
@@ -102,6 +104,12 @@ namespace Blok3Game.GameStates
                 resourceTexts.Add(resText);
                 yOffset += 25;
             }
+            TextGameObject unitText = new TextGameObject("Fonts/SpriteFont", 100);
+            unitText.Position = new Vector2(10, yOffset);
+            unitText.Text = "";
+            Add(unitText);
+            resourceTexts.Add(unitText);
+            yOffset += 100;
 
             chatText = new TextGameObject("Fonts/SpriteFont", 100);
             chatText.Position = new Vector2(10, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 250);
@@ -186,7 +194,7 @@ namespace Blok3Game.GameStates
                     Cell cell = (Cell)grid.Get(x, y);
                     if (pack.tileID == cell.cell.getTileId())
                     {
-                        cell.cell = new CellType(pack.tileID, DrawingHelper.GetColorEGA(pack.color), pack.passable, false);
+                        cell.cell = new CellType(pack.tileID, DrawingHelper.GetColorEGA(4), pack.passable, false);
                     }
                 }
             }
@@ -199,6 +207,8 @@ namespace Blok3Game.GameStates
         {
             base.Update(gameTime);
 
+            // UpdateGridObjects(gameTime);
+
             playerNameText.Text = $"Name: {player.Name}";
             currentTurnText.Text = $"Current Turn: {currentTurnPlayerName}";
 
@@ -207,20 +217,19 @@ namespace Blok3Game.GameStates
                 var res = player.resources[i];
                 resourceTexts[i].Text = $"{res.Name}: {res.Amount}";
             }
+
+            resourceTexts[1].Text = $"Units: {player.UnitsAvailable}";
             if (Player.myTurn)
             {
                 elapsedSinceTurnStart += gameTime.ElapsedGameTime.TotalSeconds;
                 double displayTime = Math.Max(0, timeRemaining - elapsedSinceTurnStart);
                 timerText.Text = $"Time Left: {Math.Ceiling(displayTime)}s";
                 pieTimerRotation = (float)((1 - displayTime / timeRemaining) * MathHelper.TwoPi);
-
             }
             else
             {
                 timerText.Text = "Time Left: 60s";
             }
-
-
         }
 
         public override void HandleInput(InputHelper inputHelper)
@@ -232,7 +241,6 @@ namespace Blok3Game.GameStates
                     ChatMessagePacket pack = new ChatMessagePacket(playerNameInput.Text);
                     SocketClient.Instance.SendDataPacket(pack);
                     playerNameInput.Clear();
-
                 }
         }
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -263,16 +271,21 @@ namespace Blok3Game.GameStates
         {
             string playerName = data.playerName.ToString();
             currentTurnPlayerName = playerName;
+            //Console.WriteLine($"Turn changed to: {playerName}");
             GameEnvironment.AssetManager.AudioManager.PlaySoundEffect("your_turn");
             if (playerName == Username)
             {
+                Console.WriteLine("Begin turn is working");
                 Player.myTurn = true;
+                grid.OnTurnStart();  // Make sure this line is present
                 timeRemaining = Player.TimePerTurn;
                 elapsedSinceTurnStart = 0;
                 player.BeginTurn();
             }
             else
             {
+                player.EndTurn();
+                grid.OnTurnEnd();
                 Player.myTurn = false;
             }
         }
@@ -281,7 +294,7 @@ namespace Blok3Game.GameStates
         {
             if (element == endTurnButton && Player.myTurn)
             {
-                Console.WriteLine("End Turn button clicked.");
+                //Console.WriteLine("End Turn button clicked.");
 
                 SocketClient.Instance.SendDataPacket(new TurnChangedPacket()
                 {
@@ -296,7 +309,7 @@ namespace Blok3Game.GameStates
         private void StartGame(StartGameData data)
         {
             PieceList pieces = new PieceList();
-            grid.UpdateCells((int)data.RoomSeed);
+            grid.UpdateCells(data.RoomSeed);
 
             foreach (string player in data.Players)
             {
@@ -304,9 +317,33 @@ namespace Blok3Game.GameStates
                 string role = parts[0];
                 string PlayerName = parts[1];
                 int Column = grid.Columns / 2;
-                int Row = (grid.Rows - 1) * (Int32.Parse(role) - 1);
-                Console.WriteLine(PlayerName);
-                grid.SetCellPiece(new Vector2(Column, Row), pieces.CreateFromId(1), PlayerName);
+                int Row = (grid.Rows - 1) * (int.Parse(role) - 1);
+                grid.SetCellPiece(new Vector2(Column, Row), pieces.CreateFromId(3), PlayerName);
+            }
+        }
+        private void OnMovePieceReceived(object data)
+        {
+            if (data is MovePiecePacket movePacket)
+            {
+                // Handle ALL moves, not just remote ones
+                Vector2 source = movePacket.GetSourceCell();
+                Vector2 target = movePacket.GetTargetCell();
+                grid.HandleRemoteMove(source, target);
+            }
+        }
+
+        private void DamageCell(DamagePacket data)
+        {
+            string[] position = data.targetPosition.Split();
+            int x = int.Parse(position[0]);
+            int y = int.Parse(position[1]);
+            Cell cl = (Cell)grid.Get(x, y);
+            if (cl.Obj is PieceObject piece)
+            {
+                if (piece.TakeDamage(data.attackDamage))
+                {
+                    cl.ClearObject();
+                }
             }
         }
     }
