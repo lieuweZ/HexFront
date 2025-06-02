@@ -38,6 +38,9 @@ namespace Blok3Game.GameStates
         private TextGameObject chatText;
         private Rectangle chatBorder;
         private TextInput playerNameInput;
+        private TextGameObject gameOverText;
+
+        public bool finished;
 
         public static int Seed { get; set; }
         public GameState() : base()
@@ -63,6 +66,7 @@ namespace Blok3Game.GameStates
             SocketClient.Instance.SubscribeToDataPacket<TurnChangedPacket>(OnTurnChanged);
             SocketClient.Instance.SubscribeToDataPacket<StartGameData>(StartGame);
             SocketClient.Instance.SubscribeToDataPacket<DamagePacket>(DamageCell);
+            SocketClient.Instance.SubscribeToDataPacket<GameOverPacket>(GameOver);
 
 
             player = new Player("player");
@@ -83,6 +87,12 @@ namespace Blok3Game.GameStates
             timerText.Text = "";
             Add(timerText);
 
+
+            gameOverText = new TextGameObject("Fonts/SpriteFont", 100);
+            gameOverText.Position = new Vector2(GameEnvironment.Screen.X / 2 - 40, GameEnvironment.Screen.Y / 2);
+            gameOverText.Text = "GAMEOVER";
+            
+
             pieTimerTexture = GameEnvironment.AssetManager.GetSprite("Images/UI/fill");
             pieTimerPosition = new Vector2(GameEnvironment.Screen.X - 100, 100);
 
@@ -91,6 +101,13 @@ namespace Blok3Game.GameStates
                 Text = "End Turn",
             };
             endTurnButton.Clicked += OnButtonClicked;
+            Add(endTurnButton);
+
+            endTurnButton = new Button(new Vector2(10, 170), 0.05f, "Button_Big@1x4")
+            {
+                Text = "Quit",
+            };
+            endTurnButton.Clicked += OnQuitButtonClicked;
             Add(endTurnButton);
 
             resourceTexts = new List<TextGameObject>();
@@ -187,6 +204,7 @@ namespace Blok3Game.GameStates
 
         public void UpdateTile(CellTypePacket pack)
         {
+            if(!this.finished)
             for (int x = 0; x < grid.Columns; x++)
             {
                 for (int y = 0; y < grid.Rows; y++)
@@ -269,6 +287,7 @@ namespace Blok3Game.GameStates
 
         private void OnTurnChanged(dynamic data)
         {
+            if (this.finished) return;
             string playerName = data.playerName.ToString();
             currentTurnPlayerName = playerName;
             //Console.WriteLine($"Turn changed to: {playerName}");
@@ -292,6 +311,7 @@ namespace Blok3Game.GameStates
 
         private void OnButtonClicked(UIElement element)
         {
+            if (this.finished) return;
             if (element == endTurnButton && Player.myTurn)
             {
                 //Console.WriteLine("End Turn button clicked.");
@@ -304,6 +324,14 @@ namespace Blok3Game.GameStates
 
                 Player.myTurn = false;
             }
+        }
+
+        private void OnQuitButtonClicked(UIElement element)
+        {
+            GameOverPacket packet = new GameOverPacket();
+            SocketClient.Instance.SendDataPacket(packet);
+
+            GameEnvironment.GameStateManager.SwitchTo("Main Menu");
         }
 
         private void StartGame(StartGameData data)
@@ -320,9 +348,11 @@ namespace Blok3Game.GameStates
                 int Row = (grid.Rows - 1) * (int.Parse(role) - 1);
                 grid.SetCellPiece(new Vector2(Column, Row), pieces.CreateFromId(3), PlayerName);
             }
+            finished = false;
         }
         private void OnMovePieceReceived(object data)
         {
+            if (this.finished) return;
             if (data is MovePiecePacket movePacket)
             {
                 // Handle ALL moves, not just remote ones
@@ -332,8 +362,64 @@ namespace Blok3Game.GameStates
             }
         }
 
+        private void GameOver(GameOverPacket data)
+        {
+            finished = true;
+            gameOverText.Text = "GAMEOVER";
+            gameOverText.Color = Color.Black;
+
+            bool youlost = true;
+            bool opponentlost = true;
+
+            for (int i = 0; i < GameState.grid.Rows; i++)
+            {
+                for (int j = 0; j < GameState.grid.Columns; j++)
+                {
+                    Cell cell = (Cell)GameState.grid.Get(i, j);
+
+                    if (cell.Obj != null)
+                    {
+                        if (cell.Obj is CentralBuilding)
+                        {
+                            if (((PieceObject)cell.Obj).OwnerName.Equals(GameState.Username))
+                            {
+                                youlost = false;
+                            } else
+                            {
+                                opponentlost = false;
+                            }
+
+                        }
+                    }
+                }
+            }
+            if (!youlost || !opponentlost)
+            {
+            if (youlost)
+            {
+                gameOverText.Text = "You Lost";
+                gameOverText.Color = Color.Red;
+            }
+
+            if (opponentlost)
+            {
+                gameOverText.Text = "You Won";
+                gameOverText.Color = Color.Green;
+            }
+            }
+
+            if(!youlost && !opponentlost)
+            {
+                gameOverText.Text = "Draw";
+                gameOverText.Color = Color.Wheat;
+            }
+
+            Add(gameOverText);
+        }
+
         private void DamageCell(DamagePacket data)
         {
+            if (this.finished) return;
             string[] position = data.targetPosition.Split();
             int x = int.Parse(position[0]);
             int y = int.Parse(position[1]);

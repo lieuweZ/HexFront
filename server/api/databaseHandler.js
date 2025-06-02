@@ -42,7 +42,7 @@ class DatabaseHandler extends MessageHandler {
 		if (this._rooms[roomId]) {
 			const players = this._rooms[roomId].players;
 			
-			let data = await this._databaseConnector.executePreparedQuery("SELECT * FROM pb4gdg2425_xooqaadaatuu78_.tile where tileID=" + cellType);
+			let data = await this._databaseConnector.executePreparedQuery("SELECT * FROM mydb.tile where tileID=" + cellType);
 			
 			//send a message to all players in the room that a new player has joined.
 			//since the socket is now subscribed to the room, it will also receive the message.
@@ -73,22 +73,22 @@ class DatabaseHandler extends MessageHandler {
 			data = "passable";
 		}
 		
-		this._databaseConnector.executePreparedQuery("UPDATE `pb4gdg2425_xooqaadaatuu78_`.`tile` SET `" + data + "` = '" + datavalue + "' WHERE (`tileID` = '" + tiletypeId + "')");
+		this._databaseConnector.executePreparedQuery("UPDATE `mydb`.`tile` SET `" + data + "` = '" + datavalue + "' WHERE (`tileID` = '" + tiletypeId + "')");
 	}
 
 	async InsertCellData(name, cellColor, passable) {
-			let data2 = await this._databaseConnector.executePreparedQuery("SELECT COUNT(*) as TileTypes FROM pb4gdg2425_xooqaadaatuu78_.tile");
-			this._databaseConnector.executePreparedQuery("INSERT INTO `pb4gdg2425_xooqaadaatuu78_`.`tile` (`tileID`, `name`, `color`, `passable`) VALUES ('" + data2.rows[0].TileTypes + "', '" + name + "', '" + cellColor + "', '" + (passable == true ? 1 :0) + "');");
+			let data2 = await this._databaseConnector.executePreparedQuery("SELECT COUNT(*) as TileTypes FROM mydb.tile");
+			this._databaseConnector.executePreparedQuery("INSERT INTO `mydb`.`tile` (`tileID`, `name`, `color`, `passable`) VALUES ('" + data2.rows[0].TileTypes + "', '" + name + "', '" + cellColor + "', '" + (passable == true ? 1 :0) + "');");
 	}
 
 	async DeleteCellData(cellType) {
-		this._databaseConnector.executePreparedQuery("DELETE FROM pb4gdg2425_xooqaadaatuu78_.tile where tileID=" + cellType);
+		this._databaseConnector.executePreparedQuery("DELETE FROM mydb.tile where tileID=" + cellType);
 	}
 
 	async GetCellEffectData(roomId, cellType, name, celldata) {
 		if (this._rooms[roomId]) {			
 			let data = await this._databaseConnector.executePreparedQuery
-			("SELECT * FROM pb4gdg2425_xooqaadaatuu78_.tileeffects INNER JOIN pb4gdg2425_xooqaadaatuu78_.effect ON pb4gdg2425_xooqaadaatuu78_.effect.ideffect=pb4gdg2425_xooqaadaatuu78_.tileeffects.effect_ideffect where pb4gdg2425_xooqaadaatuu78_.tileeffects.tile_tileID = " + cellType);
+			("SELECT * FROM mydb.tileeffects INNER JOIN mydb.effect ON mydb.effect.ideffect=mydb.tileeffects.effect_ideffect where mydb.tileeffects.tile_tileID = " + cellType);
 			
 			//send a message to all players in the room that a new player has joined.
 			//since the socket is now subscribed to the room, it will also receive the message.

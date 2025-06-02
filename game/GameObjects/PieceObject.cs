@@ -10,7 +10,7 @@ namespace Blok3Game.Engine.GameObjects
         public string OwnerName { get; set; } // Owner of this piece
         public string Type { get; private set; } // Either Building or Unit
         public int Attack { get; private set; }
-        public int Health { get; private set; }
+        public int Health { get; protected set; }
         protected float damageFlashTime = 0f;
         private readonly float maxFlashDuration = 0.2f;
         private readonly Color flashOverlayColor = Color.Red * 0.4f;
