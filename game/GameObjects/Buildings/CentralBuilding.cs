@@ -26,7 +26,7 @@ namespace Blok3Game.Engine.GameObjects
             DrawingHelper.FillRectangle(new Rectangle((int)(displacement.X - 12), (int)(displacement.Y - 12), 25, 25), spriteBatch, Color.White);
         }
 
-        public bool TakeDamage(int damageAmount)
+        public override bool TakeDamage(int damageAmount)
         {
             Health -= damageAmount;
             Console.WriteLine("this objectt took damage" + Health + "this is the damage amount:" + damageAmount);

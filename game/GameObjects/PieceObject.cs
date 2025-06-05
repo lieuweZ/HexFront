@@ -24,7 +24,7 @@ namespace Blok3Game.Engine.GameObjects
         public void Update(GameTime gameTime)
         {
         }
-        public bool TakeDamage(int damageAmount)
+        public virtual bool TakeDamage(int damageAmount)
         {
             Health -= damageAmount;
             Console.WriteLine("this objectt took damage" + Health + "this is the damage amount:" + damageAmount);
