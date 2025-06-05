@@ -96,6 +96,13 @@ namespace Blok3Game.GameStates
             pieTimerTexture = GameEnvironment.AssetManager.GetSprite("Images/UI/fill");
             pieTimerPosition = new Vector2(GameEnvironment.Screen.X - 100, 100);
 
+            endTurnButton = new Button(new Vector2(10, 170), 0.05f, "Button_Big@1x4")
+            {
+                Text = "Quit",
+            };
+            endTurnButton.Clicked += OnQuitButtonClicked;
+            Add(endTurnButton);
+
             endTurnButton = new Button(new Vector2(10, 150), 0.05f, "Button_Big@1x4")
             {
                 Text = "End Turn",
@@ -103,12 +110,7 @@ namespace Blok3Game.GameStates
             endTurnButton.Clicked += OnButtonClicked;
             Add(endTurnButton);
 
-            endTurnButton = new Button(new Vector2(10, 170), 0.05f, "Button_Big@1x4")
-            {
-                Text = "Quit",
-            };
-            endTurnButton.Clicked += OnQuitButtonClicked;
-            Add(endTurnButton);
+            
 
             resourceTexts = new List<TextGameObject>();
             float yOffset = 40;
