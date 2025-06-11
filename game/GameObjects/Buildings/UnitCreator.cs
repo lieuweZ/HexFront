@@ -17,7 +17,7 @@ namespace Blok3Game.GameObjects
         private const int UNITS_PER_CREATOR = 1; // Limit to 1 unit per creator
         private int unitsSpawned = 0;
 
-        public UnitCreator() : base("building", 0, 5)
+        public UnitCreator() : base("Images/Sprites/Central_Building", "building", 0, 5)
         {
             ResourceCost = 3;
             this.position = new Vector2(25, 25);

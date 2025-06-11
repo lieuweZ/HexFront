@@ -13,7 +13,7 @@ namespace Blok3Game.GameObjects
     public class Unit : PieceObject
     {
         public int ResourceCost { get; set; }
-        public Unit() : base("unit", 2, 2)
+        public Unit() : base("Images/Sprites/Central_Building", "unit", 2, 2)
         {
             ResourceCost = 1;
             position = new Vector2(25, 25);
@@ -32,7 +32,7 @@ namespace Blok3Game.GameObjects
                 var neighborCell = GameState.grid.Get(neighborX, neighborY) as Cell;
                 if (neighborCell?.Obj is PieceObject piece && piece.OwnerName != GameState.Username)
                 {
-                    enemyCell.Add(new Vector2(neighborX,neighborY));
+                    enemyCell.Add(new Vector2(neighborX, neighborY));
                 }
             }
 
