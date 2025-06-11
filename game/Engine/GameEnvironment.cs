@@ -154,7 +154,7 @@ public class GameEnvironment : Game
 
         if (inputHelper.KeyPressed(Keys.U))
         {
-            CellChangePacket packet = new CellChangePacket(3, 1, "Sponge cake");
+            CellChangePacket packet = new CellChangePacket(3, 1, "Sponge");
             SocketClient.Instance.SendDataPacket(packet);
         }
 

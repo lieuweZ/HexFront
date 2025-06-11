@@ -259,6 +259,8 @@ namespace Blok3Game.Engine.GameObjects
 				return;
 			}
 
+			if(this.Interactible != 2) {
+
 			if (!Player.myTurn)
 			{
 				return;
@@ -273,56 +275,61 @@ namespace Blok3Game.Engine.GameObjects
 			if (x < 0 || x >= Columns || y < 0 || y >= Rows)
 				return;
 
-			// If no cell is selected
-			if (selectedCellCoord == null)
-			{
-				if (clickedCell.Obj != null)
+				// If no cell is selected
+				if (selectedCellCoord == null)
 				{
-					if (clickedCell.Obj is Unit movableUnit && movableUnit.OwnerName == GameState.Username && Player.myTurn)
+					if (clickedCell.Obj != null)
 					{
-						selectedCellCoord = cell;
-						clickedCell.GlowTime = 100;
+						if (clickedCell.Obj is Unit movableUnit && movableUnit.OwnerName == GameState.Username && Player.myTurn)
+						{
+							selectedCellCoord = cell;
+							clickedCell.GlowTime = 100;
+						}
+					}
+					else
+					{
+						// Handle piece placement
+						int? ID = selector.SelectedPiece?.ID;
+						if (ID.HasValue && CanPlaceAt(cell))
+						{
+							PlacePiece(cell, ID.Value);
+						}
 					}
 				}
+				// If a cell is already selected
 				else
 				{
-					// Handle piece placement
-					int? ID = selector.SelectedPiece?.ID;
-					if (ID.HasValue && CanPlaceAt(cell))
+					Vector2 selected = selectedCellCoord.Value;
+					Cell sourceCell = Get((int)selected.X, (int)selected.Y) as Cell;
+
+					// Double check ownership before allowing movement
+					if (sourceCell?.Obj is Unit unit && unit.OwnerName != GameState.Username)
 					{
-						PlacePiece(cell, ID.Value); 
+						selectedCellCoord = null;
+						return;
+					}
+
+					bool isNeighbor = GetNeighbors((int)selected.X, (int)selected.Y)
+						.Any(dir => x == selected.X + dir.X && y == selected.Y + dir.Y);
+
+					if (isNeighbor && clickedCell?.Obj == null && Player.myTurn)
+					{
+						// Move the object only if it's a Unit and belongs to current player
+						if (sourceCell?.Obj is Unit unitToMove && unitToMove.OwnerName == GameState.Username)
+						{
+							MovePiece(selected, cell);
+						}
+						selectedCellCoord = null;
+					}
+					else
+					{
+						selectedCellCoord = null;
 					}
 				}
 			}
-			// If a cell is already selected
 			else
 			{
-				Vector2 selected = selectedCellCoord.Value;
-				Cell sourceCell = Get((int)selected.X, (int)selected.Y) as Cell;
-
-				// Double check ownership before allowing movement
-				if (sourceCell?.Obj is Unit unit && unit.OwnerName != GameState.Username)
-				{
-					selectedCellCoord = null;
-					return;
-				}
-
-				bool isNeighbor = GetNeighbors((int)selected.X, (int)selected.Y)
-					.Any(dir => x == selected.X + dir.X && y == selected.Y + dir.Y);
-
-				if (isNeighbor && clickedCell?.Obj == null && Player.myTurn)
-				{
-					// Move the object only if it's a Unit and belongs to current player
-					if (sourceCell?.Obj is Unit unitToMove && unitToMove.OwnerName == GameState.Username)
-					{
-						MovePiece(selected, cell);
-					}
-					selectedCellCoord = null;
-				}
-				else
-				{
-					selectedCellCoord = null;
-				}
+				this.MinigameInput(cell);
 			}
 		}
 

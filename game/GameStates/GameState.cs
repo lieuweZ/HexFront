@@ -214,7 +214,7 @@ namespace Blok3Game.GameStates
                     Cell cell = (Cell)grid.Get(x, y);
                     if (pack.tileID == cell.cell.getTileId())
                     {
-                        cell.cell = new CellType(pack.tileID, DrawingHelper.GetColorEGA(4), pack.passable, false);
+                        cell.cell = new CellType(pack.tileID, DrawingHelper.GetColorEGA(pack.color), pack.passable, false);
                     }
                 }
             }
