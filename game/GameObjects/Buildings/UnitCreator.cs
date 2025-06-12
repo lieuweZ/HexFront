@@ -11,7 +11,6 @@ namespace Blok3Game.GameObjects
 {
     public class UnitCreator : PieceObject
     {
-        public int ResourceCost { get; set; }
         private int spawnCooldown = 0;
         private const int SPAWN_COOLDOWN_TURNS = 1;
         private const int UNITS_PER_CREATOR = 1; // Limit to 1 unit per creator
@@ -19,7 +18,7 @@ namespace Blok3Game.GameObjects
 
         public UnitCreator() : base("building", 0, 5)
         {
-            ResourceCost = 3;
+            RescoureCost = 3;
             this.position = new Vector2(25, 25);
         }
 

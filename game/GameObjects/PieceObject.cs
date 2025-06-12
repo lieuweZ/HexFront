@@ -14,6 +14,7 @@ namespace Blok3Game.Engine.GameObjects
         protected float damageFlashTime = 0f;
         private readonly float maxFlashDuration = 0.2f;
         private readonly Color flashOverlayColor = Color.Red * 0.4f;
+        public int RescoureCost { get; set; }
         public PieceObject(string type, int attack, int health) : base()
         {
             Type = type;
