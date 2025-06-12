@@ -27,7 +27,7 @@ namespace Blok3Game.Engine.GameObjects
         {
 			life--;
 
-            this.position = this.position + new Vector2(0, 1);
+            this.position = this.position + new Vector2(0, -1);
 			if(this.parent != null)
 			if(life <= 0 && (this.parent.GetType() == typeof(GameObjectList) || this.parent.GetType() == typeof(GameState)))
 			{
