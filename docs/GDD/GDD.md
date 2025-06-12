@@ -149,5 +149,46 @@ Sound you hear when its your turn
 
 ### Menus
 
+#### Main Menu  
+Dit is het hoofdmenu van het spel.
+
+![Main Menu](./img/Main_menu.png){width=500}
+
+#### Lobby Create  
+Dit is het scherm waar je een lobby kunt aanmaken.
+
+![Lobby Create](./img/Lobby_create.png){width=500}
+
+#### In Game Lobby  
+Dit is de wachtruimte voor een lobby, hier kun je een game starten.
+
+![In Game Lobby](./img/In_game_lobby.png){width=500}
+
+### In Game
+
+#### Player Info  
+Hier zie je de resources en units die je hebt.
+
+![Player Info](./img/Player_info.png)
+
+#### Unit Selector  
+Hier kies je welke units of gebouwen je op het veld plaatst.
+
+![Unit Selector](./img/Unit_selector.png)
+
+### Timer
+
+De timer zorgt ervoor dat spelers maar een beperkte tijd hebben per beurt.
+
+Tijd per beurt: 60 seconden
+
+#### Timer Full  
+
+![Timer Full](./img/Timer_full.png)
+
+#### Timer Half  
+
+![Timer Half](./img/Timer_half.png)
+
 
 
