@@ -92,7 +92,7 @@ namespace Blok3Game.GameStates
             gameOverText = new TextGameObject("Fonts/SpriteFont", 100);
             gameOverText.Position = new Vector2(GameEnvironment.Screen.X / 2 - 40, GameEnvironment.Screen.Y / 2);
             gameOverText.Text = "GAMEOVER";
-            
+
 
             pieTimerTexture = GameEnvironment.AssetManager.GetSprite("Images/UI/fill");
             pieTimerPosition = new Vector2(GameEnvironment.Screen.X - 100, 100);
@@ -111,7 +111,7 @@ namespace Blok3Game.GameStates
             endTurnButton.Clicked += OnButtonClicked;
             Add(endTurnButton);
 
-            
+
 
             resourceTexts = new List<TextGameObject>();
             float yOffset = 40;
@@ -210,18 +210,18 @@ namespace Blok3Game.GameStates
 
         public void UpdateTile(CellTypePacket pack)
         {
-            if(!this.finished)
-            for (int x = 0; x < grid.Columns; x++)
-            {
-                for (int y = 0; y < grid.Rows; y++)
+            if (!this.finished)
+                for (int x = 0; x < grid.Columns; x++)
                 {
-                    Cell cell = (Cell)grid.Get(x, y);
-                    if (pack.tileID == cell.cell.getTileId())
+                    for (int y = 0; y < grid.Rows; y++)
                     {
-                        cell.cell = new CellType(pack.tileID, DrawingHelper.GetColorEGA(pack.color), pack.passable, false);
+                        Cell cell = (Cell)grid.Get(x, y);
+                        if (pack.tileID == cell.cell.getTileId())
+                        {
+                            cell.cell = new CellType(pack.tileID, DrawingHelper.GetColorEGA(pack.color), pack.passable, false);
+                        }
                     }
                 }
-            }
 
             grid.updated = true;
         }
@@ -348,15 +348,16 @@ namespace Blok3Game.GameStates
                 PieceList pieces = new PieceList();
                 grid.UpdateCells(data.RoomSeed);
 
-            foreach (string player in data.Players)
-            {
-                string[] parts = player.Split(':');
-                string role = parts[0];
-                string PlayerName = parts[1];
-                int Column = grid.Columns / 2;
-                int Row = (grid.Rows - 1) * (int.Parse(role) - 1);
-                grid.SetCellPiece(new Vector2(Column, Row), pieces.CreateFromId(4), PlayerName);
-            }
+                foreach (string player in data.Players)
+                {
+                    string[] parts = player.Split(':');
+                    string role = parts[0];
+                    string PlayerName = parts[1];
+                    int Column = grid.Columns / 2;
+                    int Row = (grid.Rows - 1) * (int.Parse(role) - 1);
+                    grid.SetCellPiece(new Vector2(Column, Row), pieces.CreateFromId(4), PlayerName);
+                }
+            });
             finished = false;
         }
 
@@ -394,7 +395,8 @@ namespace Blok3Game.GameStates
                             if (((PieceObject)cell.Obj).OwnerName.Equals(GameState.Username))
                             {
                                 youlost = false;
-                            } else
+                            }
+                            else
                             {
                                 opponentlost = false;
                             }
@@ -405,20 +407,20 @@ namespace Blok3Game.GameStates
             }
             if (!youlost || !opponentlost)
             {
-            if (youlost)
-            {
-                gameOverText.Text = "You Lost";
-                gameOverText.Color = Color.Red;
+                if (youlost)
+                {
+                    gameOverText.Text = "You Lost";
+                    gameOverText.Color = Color.Red;
+                }
+
+                if (opponentlost)
+                {
+                    gameOverText.Text = "You Won";
+                    gameOverText.Color = Color.Green;
+                }
             }
 
-            if (opponentlost)
-            {
-                gameOverText.Text = "You Won";
-                gameOverText.Color = Color.Green;
-            }
-            }
-
-            if(!youlost && !opponentlost)
+            if (!youlost && !opponentlost)
             {
                 gameOverText.Text = "Draw";
                 gameOverText.Color = Color.Wheat;

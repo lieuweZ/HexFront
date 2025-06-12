@@ -25,10 +25,24 @@ namespace Blok3Game.Engine.GameObjects
             Origin = new Vector2(sprite.Width / 2, sprite.Height / 2); // Optional: center origin
         }
 
+        public void PassiveResource(Cell myCell, Player player)
+        {
+            var target = player.resources.FirstOrDefault(r => r.Id == myCell.Resource.Id);
+            if (target != null)
+            {
+                target.Amount += 1;
+            }
+        }
+
         public static void LoadAssets()
         {
             spriteCentralBuilding = new SpriteSheet("Images/Sprites/Central_Building");
             assetsLoaded = true;
+        }
+
+        public override void AtStartTurn(Cell cell, Player player)
+        {
+            PassiveResource(cell, player);
         }
 
         public void Update(GameTime gameTime)
@@ -50,7 +64,8 @@ namespace Blok3Game.Engine.GameObjects
             Health -= damageAmount;
             Console.WriteLine("this objectt took damage" + Health + "this is the damage amount:" + damageAmount);
 
-            if(Health <= 0) {
+            if (Health <= 0)
+            {
                 SocketClient.Instance.SendDataPacket(new GameOverPacket());
             }
 
