@@ -11,6 +11,7 @@ namespace Blok3Game.Engine.GameObjects
         private int HEIGHT = 40;
         private int SPACING = 30;
         private int POSITION_X = 0;
+        private InputHelper inputhelper;
         public SelectPiece SelectedPiece { get; private set; }
 
         public Selector()
@@ -31,7 +32,7 @@ namespace Blok3Game.Engine.GameObjects
         public override void HandleInput(InputHelper inputHelper)
         {
             base.HandleInput(inputHelper);
-
+            inputhelper = inputHelper;
             foreach (SelectPiece piece in Children)
             {
                 if (piece.IsHovered && inputHelper.MouseLeftButtonPressed)
@@ -67,5 +68,19 @@ namespace Blok3Game.Engine.GameObjects
                 Console.WriteLine("This is the current selected piece ID" + this.SelectedPiece.ID);
             }
         }
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            base.Draw(gameTime, spriteBatch);
+
+            foreach (SelectPiece piece in Children)
+            {
+                if (piece.IsHovered)
+                {
+                    Vector2 textPosition = inputhelper.MousePosition + new Vector2(-50, -50);
+                    spriteBatch.DrawString(GameEnvironment.AssetManager.Content.Load<SpriteFont>("Fonts/SpriteFont"), piece.HoverText, textPosition, Color.White);
+                }
+            }
+        }
+
     }
 }

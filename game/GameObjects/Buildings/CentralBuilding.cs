@@ -13,7 +13,7 @@ namespace Blok3Game.Engine.GameObjects
         private static SpriteSheet spriteCentralBuilding;
         private static bool assetsLoaded = false;
 
-        public CentralBuilding() : base("Images/Sprites/Central_Building", "building", 0, 20) // pass null initially, set sprite later
+        public CentralBuilding() : base("Images/Sprites/Central_Building", "building", 0, 20, "Central Building") // pass null initially, set sprite later
         {
             if (!assetsLoaded)
             {

@@ -19,7 +19,7 @@ namespace Blok3Game.GameObjects
         private static SpriteSheet spriteUnitCreator;
         private static bool assetsLoaded = false;
 
-        public UnitCreator() : base("Images/Sprites/Barrack", "building", 0, 5)
+        public UnitCreator() : base("Images/Sprites/Barrack", "building", 0, 5, "Barrack")
         {
             RescoureCost = 3;
             this.position = new Vector2(25, 25);

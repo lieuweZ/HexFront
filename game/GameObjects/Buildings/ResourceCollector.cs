@@ -14,7 +14,7 @@ namespace Blok3Game.Engine.GameObjects
 
         private static SpriteSheet spriteResourceCollector;
         private static bool assetsLoaded = false;
-        public ResourceCollector() : base("Images/Sprites/Colector", "building", 0, 5)
+        public ResourceCollector() : base("Images/Sprites/Colector", "building", 0, 5, "Resource Collector")
         {
             RescoureCost = 1;
             if (!assetsLoaded)

@@ -13,7 +13,7 @@ namespace Blok3Game.Engine.GameObjects
     public class SelectPiece : GameObject
     {
         private Rectangle tangle;
-        public int ID {get; set;}
+        public int ID { get; set; }
         private Color currentColor = Color.Red;
         private bool isHovered = false;
         private bool isSelected = false;
@@ -23,10 +23,26 @@ namespace Blok3Game.Engine.GameObjects
             get => isSelected;
             set => isSelected = value;
         }
+
+        public string HoverText { get; set; }
+
         public SelectPiece(Vector2 position, int width, int height, int id) : base()
         {
             ID = id;
             this.tangle = new Rectangle((int)position.X, (int)position.Y, width, height);
+
+            PieceList pieceList = new PieceList();
+            PieceObject piece = pieceList.getFromId(id);
+
+            if (piece != null)
+            {
+                string typeLabel = piece.Type == "unit" ? "Units" : "Uni";
+                HoverText = $"{piece.Name}\nCost: {piece.RescoureCost} {typeLabel}";
+            }
+            else
+            {
+                HoverText = "Unknown Piece";
+            }
         }
 
         public override void HandleInput(InputHelper inputHelper)
