@@ -16,14 +16,14 @@ namespace Blok3Game.Engine.GameObjects
         private readonly float maxFlashDuration = 0.2f;
         private readonly Color flashOverlayColor = Color.Red * 0.4f;
         public int ResourceCost { get; set; }
+        public string HoverText { get; set; }
         public PieceObject(string assestSprite, string type, int attack, int health, string name) : base(assestSprite)
         {
             Type = type;
             Attack = attack;
             Health = health;
             Name = name;
-
-
+            HoverText = $"HP: {Health} \n ATK: {Attack}";
         }
 
         public void Update(GameTime gameTime)
