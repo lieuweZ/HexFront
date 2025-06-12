@@ -132,3 +132,13 @@ Daamin. Gewerkt aan de expert meeting iets toegevoegt aan de TMC. Verder werken 
 nicolaas. Gewerkt aan de units te laten aan vallen. Pieces selectie randomizen. Expert meeting op vrijdag.
 
 Lehan. Weinig. Gewerkt aan de deelproduct documentatie. Weinig.
+
+##### 2025 06 12
+
+Lieuwe. Expert review, sprites en tmc. TMC en het mergen van de code. Tijd
+
+Daamin. Voortgangs evaluatie en sprites toevoegen. Code mergen TMC voortgang evaluatie. TIjd
+
+nicolaas. Voortgangs evaluatie en twee features. werken aan tmc en voortgangs evaluatie, code mergen, server probleem oplossen.TIjd.
+
+Lehan. Gewerkt Eindevalutie, twee playtests. Het minigame feature repareren en de Eindevalutie. Geen zin meer in om te werken aan het project.
