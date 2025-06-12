@@ -3,40 +3,39 @@
 ## THINK
 
 
-### **Reward System & Achievements**
+### **Polish: Sprites, Audio & Visuele Feedback**
 
-**Waarom een reward system en achievements toevoegen?**\
-Om spelers te motiveren om terug te keren naar het spel, willen we een gevoel van progressie en beloning inbouwen. Naast het directe doel van winnen, geven rewards en achievements de speler extra doelen om naartoe te werken. Dit verhoogt de betrokkenheid en zorgt voor langdurige motivatie, zelfs buiten de core gameplay-loop.
+**Waarom is polish belangrijk?**\
+Polish bepaalt in grote mate hoe "af" en professioneel een game aanvoelt. Het gaat niet alleen om gameplay, maar ook om hoe soepel alles eruitziet, klinkt en aanvoelt. Kleine details zoals animaties, geluidseffecten of duidelijke iconen maken een groot verschil in de beleving van spelers --- vooral bij hun eerste indruk.
 
-**Wat voor achievements passen bij ons spel?**\
-Achievements kunnen spelers aanzetten tot experimenteren met verschillende speelstijlen. Denk aan:
+**Wat verstaan we onder polish?**
 
--   **Strategiegerichte achievements**, bijv. "Win zonder een unit te verliezen".
+-   **Sprites & Visuele Elementen:** Heldere, herkenbare sprites die goed bij de stijl passen. Visuele effecten zoals vonken of rook bij een explosie, en duidelijk onderscheid tussen stukken.
 
--   **Exploratie-achievements**, bijv. "Gebruik elk type gebouw minstens één keer".
+-   **Audio:** Geluidseffecten die direct feedback geven op handelingen (bijv. klikken, plaatsen, aanvallen), én achtergrondmuziek die past bij de sfeer van het spel. Audio helpt ook bij het versterken van spanning of beloning.
 
--   **Progressie-achievements**, bijv. "Versla 5 verschillende tegenstanders".
+-   **UI/UX Feedback:** Bijv. knoppen die oplichten bij hover, kleine trillingen of glows bij een succesvolle actie, en foutmeldingen die visueel opvallen zonder te storen.
 
--   **Fun/speciale acties**, bijv. "Win met nog maar één HP over".
+**Wat willen we bereiken met deze polish?**
 
-**Wat willen we bereiken met dit systeem?**
+-   **Meer duidelijkheid en overzicht** tijdens gameplay.
 
--   Verhoogde herspeelbaarheid.
+-   **Sterkere betrokkenheid** van spelers dankzij zintuiglijke feedback.
 
--   Meer betrokkenheid van spelers met verschillende skill levels.
+-   **Betere eerste indruk** bij nieuwe spelers.
 
--   Een gevoel van trots en persoonlijke groei bij het behalen van doelen.
-
--   Stimuleren van diverse speelstijlen (ipv alleen de sterkste tactiek herhalen).
 
 **Aandachtspunten:**
 
--   Balans tussen uitdaging en haalbaarheid is cruciaal: achievements moeten belonend voelen, niet frustrerend.
+-   Zorg voor **consistentie** in stijl, kleuren en iconografie.
 
--   Beloningen mogen niet pay-to-win zijn, alleen visueel of prestatiegericht.
+-   Houd rekening met **leesbaarheid en contrast**, zeker bij felle of overlappende elementen.
 
--   Het systeem moet duidelijk en transparant zijn (ingame zichtbaar, goed uitgelegd)
+-   Geluiden moeten **niet storend** zijn --- herhaling moet subtiel aanvoelen.
 
+-   Gebruik polish als **ondersteuning van de gameplay**, niet als afleiding.
+
+Door hier actief aandacht aan te besteden in de MAKE-fase, zorgen we ervoor dat het spel niet alleen goed speelt, maar ook goed voelt en eruitziet. Polish is geen extraatje, maar een essentieel onderdeel van het totaalplaatje.
 
 ## MAKE 
 
