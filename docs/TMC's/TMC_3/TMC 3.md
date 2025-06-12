@@ -39,6 +39,34 @@ Door hier actief aandacht aan te besteden in de MAKE-fase, zorgen we ervoor dat 
 
 ## MAKE 
 
+## MAKE
+
+### Toevoeging van Sprites & Visuele Feedback bij Selector
+
+#### **Wat is er aangepast?**
+
+- **Sprites toegevoegd voor units en gebouwen**  
+  De placeholders zijn vervangen door herkenbare en stijlvolle sprites. Elke unit heeft nu een eigen visuele identiteit, wat zorgt voor meer overzicht en herkenning tijdens het spelen. Dit helpt ook bij het visueel onderscheiden van verschillende types karakters en structuren.
+
+- **Selector met feedbacktekst en visuele cues**  
+  Bij het selecteren van een unit of building verschijnt er nu duidelijke feedbacktekst in het scherm, zoals:  
+  *"Soldaat Cost 1 Units"*  
+
+
+#### **Waarom zijn deze aanpassingen belangrijk?**
+
+- **Verhoogde duidelijkheid en immersie**: Spelers begrijpen beter wat er gebeurt in het spel, en acties voelen zinvoller.
+- **Snellere herkenning**: Geen verwarring meer tussen eenheden — sprites zijn visueel onderscheidend.
+- **Betere flow**: De speler krijgt directe terugkoppeling bij elke interactie, wat de spelervaring vloeiender maakt.
+
+#### **Voorbeeldbeeld**
+
+Op deze afbeelding zie je de huidige sprites en rechts de feedback die verschijnt wanneer je met de muis over een geselecteerd object beweegt.
+
+- ![Sprite voorbeeld – Units](./img/sprites.png)
+
+
+
 ## CHECK
 
 ### Samenvatting Playtest Resultaten
