@@ -20,7 +20,6 @@ namespace Blok3Game.GameObjects
 
         public void Draw(Vector2 displacement, GameTime gameTime, SpriteBatch spriteBatch)
         {
-
         }
     }
 }

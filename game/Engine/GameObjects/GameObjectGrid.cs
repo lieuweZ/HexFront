@@ -1,4 +1,4 @@
-using BaseProject;
+﻿using BaseProject;
 using Blok3Game.Engine.Helpers;
 using Blok3Game.Engine.JSON;
 using Blok3Game.Engine.SocketIOClient;
@@ -9,12 +9,16 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Blok3Game.Engine.GameObjects
 {
 	public class GameObjectGrid : GameObject
 	{
 		protected GameObject[,] grid;
+		private Vector2? selectedCellCoord = null;
+		private Cell selectedCell;
 		protected int cellWidth = 82, cellHeight = 82;
 		public Vector2 MousePos;
 		public bool MouseLeftState;
@@ -30,6 +34,8 @@ namespace Blok3Game.Engine.GameObjects
 			: base(layer, id)
 		{
 			grid = new GameObject[columns, rows];
+			selector = new Selector();
+
 			for (int x = 0; x < columns; x++)
 			{
 				for (int y = 0; y < rows; y++)
@@ -244,32 +250,130 @@ namespace Blok3Game.Engine.GameObjects
 
 		public void GridMouseInput(Vector2 cell)
 		{
-			if (Interactible == 2)
+			int x = (int)cell.X;
+			int y = (int)cell.Y;
+
+			// Early return if selector is null
+			if (selector == null)
+			{
+				return;
+			}
+
+			if (this.Interactible == 2)
 			{
 				MinigameInput(cell);
+				return;
 			}
-			else
+
+			if (!Player.myTurn)
 			{
-				int? ID = selector.SelectedPiece?.ID;
-				if (ID != null)
+				return;
+			}
+
+			Cell clickedCell = Get(x, y) as Cell;
+			if (clickedCell == null)
+			{
+				return;
+			}
+
+			if (x < 0 || x >= Columns || y < 0 || y >= Rows)
+				return;
+
+			// If no cell is selected
+			if (selectedCellCoord == null)
+			{
+				if (clickedCell.Obj != null)
 				{
-					if (CanPlaceAt(cell))
+					if (clickedCell.Obj is Unit movableUnit && movableUnit.OwnerName == GameState.Username && Player.myTurn)
 					{
-						PieceList pieces = new PieceList();
-						var piecetoplace = pieces.getFromId((int)ID);
-						var player = GetPlayer();
-						var resource = player.resources.Find(s => s.Id == 0);
-						if (resource.Amount >= piecetoplace.RescoureCost)
+						selectedCellCoord = cell;
+						clickedCell.GlowTime = 100;
+					}
+				}
+				else
+				{
+					int? ID = selector.SelectedPiece?.ID;
+					if (ID != null)
+					{
+						if (CanPlaceAt(cell))
 						{
-							resource.Amount -= piecetoplace.RescoureCost;
-							PlacePiece(cell, ID.Value);
-						}
-						else
-						{
-							Console.WriteLine("Not enough rescoures need: " + piecetoplace.RescoureCost + " You have: " + resource.Amount);
+
+							PieceList pieces = new PieceList();
+							var piecetoplace = pieces.getFromId((int)ID);
+							var player = GetPlayer();
+							var resource = player.resources.Find(s => s.Id == 0);
+							Console.WriteLine(resource.Amount);
+
+							Console.WriteLine(piecetoplace.RescoureCost);
+
+							if (resource.Amount >= piecetoplace.RescoureCost)
+							{
+								resource.Amount -= piecetoplace.RescoureCost;
+								PlacePiece(cell, ID.Value);
+							}
+							else
+							{
+								Console.WriteLine("Not enough rescoures need: " + piecetoplace.RescoureCost + " You have: " + resource.Amount);
+							}
 						}
 					}
 				}
+			}
+			// If a cell is already selected
+			else
+			{
+				Vector2 selected = selectedCellCoord.Value;
+				Cell sourceCell = Get((int)selected.X, (int)selected.Y) as Cell;
+
+				// Double check ownership before allowing movement
+				if (sourceCell?.Obj is Unit unit && unit.OwnerName != GameState.Username)
+				{
+					selectedCellCoord = null;
+					return;
+				}
+
+				bool isNeighbor = GetNeighbors((int)selected.X, (int)selected.Y)
+					.Any(dir => x == selected.X + dir.X && y == selected.Y + dir.Y);
+
+				if (isNeighbor && clickedCell?.Obj == null && Player.myTurn)
+				{
+					// Move the object only if it's a Unit and belongs to current player
+					if (sourceCell?.Obj is Unit unitToMove && unitToMove.OwnerName == GameState.Username)
+					{
+						MovePiece(selected, cell);
+					}
+					selectedCellCoord = null;
+				}
+				else
+				{
+					selectedCellCoord = null;
+				}
+			}
+		}
+
+		public void MovePiece(Vector2 source, Vector2 target)
+		{
+			MovePiecePacket packet = new MovePiecePacket(
+				SocketClient.Instance.RoomId,
+				source,
+				target,
+				GameState.Username
+			);
+
+			SocketClient.Instance.SendDataPacket(packet);
+		}
+
+		public void HandleRemoteMove(Vector2 source, Vector2 target)
+		{
+			Cell sourceCell = Get((int)source.X, (int)source.Y) as Cell;
+			Cell targetCell = Get((int)target.X, (int)target.Y) as Cell;
+
+			if (sourceCell?.Obj != null && targetCell != null)
+			{
+				GameObject piece = sourceCell.Obj;
+				sourceCell.ClearObject();
+				targetCell.SetObject(piece);
+				targetCell.Obj.Parent = targetCell;
 			}
 		}
 
@@ -292,11 +396,16 @@ namespace Blok3Game.Engine.GameObjects
 
 		public void PlacePiece(Vector2 pos, int id)
 		{
-			CellUpdatePacket pack = new CellUpdatePacket(SocketClient.Instance.RoomId, pos, id, GameState.Username);
+			CellUpdatePacket pack = new CellUpdatePacket(
+				SocketClient.Instance.RoomId,
+				pos,
+				id,
+				GameState.Username
+			);
 			SocketClient.Instance.SendDataPacket(pack);
 		}
 
-		public void SetCellPiece(Vector2 cell, GameObject box, string playerName)
+		public void SetCellPiece(Vector2 cell, GameObject obj, string playerName)
 		{
 			Cell cl = (Cell)Get((int)cell.X, (int)cell.Y);
 			if (cl.Obj != null)
@@ -304,20 +413,13 @@ namespace Blok3Game.Engine.GameObjects
 				return;
 			}
 
-			if (box is Cube cube)
-			{
-				cube.OwnerName = playerName;
-			}
-			else if (box is Cube2 cube2)
-			{
-				cube2.OwnerName = playerName;
-			}
-			else if (box is PieceObject piece)
+			else if (obj is PieceObject piece)
 			{
 				piece.OwnerName = playerName;
 			}
 
-			cl.SetObject(box);
+			cl.SetObject(obj);
+			cl.Obj.Parent = cl;
 		}
 
 		private bool CanPlaceAt(Vector2 pos)
@@ -330,11 +432,6 @@ namespace Blok3Game.Engine.GameObjects
 			if (current == null || current.Obj != null)
 			{
 				return false;
-			}
-
-			if (CheckIfAvailable())
-			{
-				return true;
 			}
 
 			Vector2[] selectedDirections = GetNeighbors(x, y);
@@ -355,10 +452,7 @@ namespace Blok3Game.Engine.GameObjects
 				{
 					string ownerName = GameState.Username;
 					var obj = neighbor.Obj;
-					bool isOwned =
-						(obj is Cube cube && cube.OwnerName == ownerName) ||
-						(obj is Cube2 cube2 && cube2.OwnerName == ownerName) ||
-						(obj is PieceObject piece && piece.OwnerName == ownerName);
+					bool isOwned = obj is PieceObject piece && piece.OwnerName == ownerName;
 
 					if (isOwned)
 					{
@@ -366,36 +460,11 @@ namespace Blok3Game.Engine.GameObjects
 					}
 				}
 			}
-
 			return false;
 		}
 
-
-		private bool CheckIfAvailable()
-		{
-			string ownerName = GameState.Username;
-
-			foreach (GameObject obj in grid)
-			{
-				if (obj is Cell cell && cell.Obj != null)
-				{
-					var placedObj = cell.Obj;
-
-					if ((placedObj is Cube cube && cube.OwnerName == ownerName) ||
-						(placedObj is Cube2 cube2 && cube2.OwnerName == ownerName) ||
-						(placedObj is PieceObject piece && piece.OwnerName == ownerName))
-					{
-						Console.WriteLine("gdf");
-						return false;
-					}
-				}
-			}
-			return true;
-		}
-
-
 		// Use this function to return a Vector2 array of all possible neighbors (including non-existent ones) for the given x and y values.
-		private Vector2[] GetNeighbors(int x, int y)
+		public Vector2[] GetNeighbors(int x, int y)
 		{
 			Vector2[] directionsEven = new Vector2[]
 			{
@@ -446,6 +515,14 @@ namespace Blok3Game.Engine.GameObjects
 			}
 		}
 
+		public void OnTurnStart()
+		{
+		}
+
+		public void OnTurnEnd()
+		{
+		}
+
 		public override void Reset()
 		{
 			base.Reset();
@@ -471,5 +548,4 @@ namespace Blok3Game.Engine.GameObjects
 			}
 		}
 	}
-
 }
