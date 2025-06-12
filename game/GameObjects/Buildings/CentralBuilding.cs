@@ -5,6 +5,8 @@ using System;
 using System.Linq;
 using Blok3Game.Engine.Helpers;
 using Blok3Game.GameStates;
+using Blok3Game.Engine.SocketIOClient;
+using Blok3Game.Packets;
 
 namespace Blok3Game.Engine.GameObjects
 {
@@ -41,6 +43,19 @@ namespace Blok3Game.Engine.GameObjects
                 float scale = 1f; // adjust if you want to scale your sprite
                 sprite.Draw(spriteBatch, displacement, Origin, scale, Color.White);
             }
+        }
+
+        public override bool TakeDamage(int damageAmount)
+        {
+            Health -= damageAmount;
+            Console.WriteLine("this objectt took damage" + Health + "this is the damage amount:" + damageAmount);
+
+            if(Health <= 0) {
+                SocketClient.Instance.SendDataPacket(new GameOverPacket());
+            }
+
+
+            return Health <= 0;
         }
     }
 }

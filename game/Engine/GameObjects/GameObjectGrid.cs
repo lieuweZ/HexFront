@@ -279,72 +279,42 @@ namespace Blok3Game.Engine.GameObjects
 			if (x < 0 || x >= Columns || y < 0 || y >= Rows)
 				return;
 
-			// If no cell is selected
-			if (selectedCellCoord == null)
-			{
-				if (clickedCell.Obj != null)
+				// If no cell is selected
+				if (selectedCellCoord == null)
 				{
-					if (clickedCell.Obj is Unit movableUnit && movableUnit.OwnerName == GameState.Username && Player.myTurn)
+					if (clickedCell.Obj != null)
 					{
-						selectedCellCoord = cell;
-						clickedCell.GlowTime = 100;
-					}
-				}
-				else
-				{
-					int? ID = selector.SelectedPiece?.ID;
-					if (ID != null)
-					{
-						if (CanPlaceAt(cell))
+						if (clickedCell.Obj is Unit movableUnit && movableUnit.OwnerName == GameState.Username && Player.myTurn)
 						{
-
-							PieceList pieces = new PieceList();
-							var piecetoplace = pieces.getFromId((int)ID);
-							var player = GetPlayer();
-							var resource = player.resources.Find(s => s.Id == 0);
-							var units = player.UnitsAvailable;
-
-							if (piecetoplace.Type == "unit")
-							{
-								if (units >= piecetoplace.RescoureCost)
-								{
-									player.UnitsAvailable -= piecetoplace.RescoureCost;
-									PlacePiece(cell, ID.Value);
-								}
-								else
-								{
-									Console.WriteLine("Not enough units need: " + piecetoplace.RescoureCost + " You have: " + units);
-
-								}
-							}
-							else if (piecetoplace.Type == "building" && resource.Amount >= piecetoplace.RescoureCost)
-							{
-								resource.Amount -= piecetoplace.RescoureCost;
-								PlacePiece(cell, ID.Value);
-							}
-							else
-							{
-								Console.WriteLine("Not enough rescoures need: " + piecetoplace.RescoureCost + " You have: " + resource.Amount);
-							}
+							selectedCellCoord = cell;
+							clickedCell.GlowTime = 100;
+						}
+					}
+					else
+					{
+						// Handle piece placement
+						int? ID = selector.SelectedPiece?.ID;
+						if (ID.HasValue && CanPlaceAt(cell))
+						{
+							PlacePiece(cell, ID.Value);
 						}
 					}
 				}
-			}
-			// If a cell is already selected
-			else
-			{
-				Vector2 selected = selectedCellCoord.Value;
-				Cell sourceCell = Get((int)selected.X, (int)selected.Y) as Cell;
-
-				// Double check ownership before allowing movement
-				if (sourceCell?.Obj is Unit unit && unit.OwnerName != GameState.Username)
+				// If a cell is already selected
+				else
 				{
-					selectedCellCoord = null;
-					return;
-				}
+					Vector2 selected = selectedCellCoord.Value;
+					Cell sourceCell = Get((int)selected.X, (int)selected.Y) as Cell;
 
-				bool isNeighbor = GetNeighbors((int)selected.X, (int)selected.Y)
-					.Any(dir => x == selected.X + dir.X && y == selected.Y + dir.Y);
+					// Double check ownership before allowing movement
+					if (sourceCell?.Obj is Unit unit && unit.OwnerName != GameState.Username)
+					{
+						selectedCellCoord = null;
+						return;
+					}
+
+					bool isNeighbor = GetNeighbors((int)selected.X, (int)selected.Y)
+						.Any(dir => x == selected.X + dir.X && y == selected.Y + dir.Y);
 
 				if (isNeighbor && clickedCell?.Obj == null && Player.myTurn)
 				{
