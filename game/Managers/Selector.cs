@@ -18,10 +18,10 @@ namespace Blok3Game.Engine.GameObjects
             float centerX = GameEnvironment.Screen.X / 2f - WIDTH / 2f;
             float y = POSITION_Y;
 
-            for (int i = -1; i <= 1; i++)
+            for (int i = -1; i <= 2; i++)
             {
                 float x = centerX + i * (WIDTH + SPACING);
-                Add(new SelectPiece(new Vector2(x, y), WIDTH, HEIGHT,(i + 1)));
+                Add(new SelectPiece(new Vector2(x, y), WIDTH, HEIGHT,i + 1));
             }
         }
 

@@ -318,7 +318,7 @@ namespace Blok3Game.GameStates
                 string PlayerName = parts[1];
                 int Column = grid.Columns / 2;
                 int Row = (grid.Rows - 1) * (int.Parse(role) - 1);
-                grid.SetCellPiece(new Vector2(Column, Row), pieces.CreateFromId(3), PlayerName);
+                grid.SetCellPiece(new Vector2(Column, Row), pieces.CreateFromId(4), PlayerName);
             }
         }
         private void OnMovePieceReceived(object data)

@@ -17,8 +17,9 @@ namespace Blok3Game.Engine.Helpers
         {
             Objects[0] = typeof(UnitCreator);
             Objects[1] = typeof(ResourceCollector);
-            Objects[2] = typeof(Unit);
-            Objects[3] = typeof(CentralBuilding);
+            Objects[2] = typeof(DefensiveBuilding);
+            Objects[3] = typeof(Unit);
+            Objects[4] = typeof(CentralBuilding);
         }
 
         public GameObject CreateFromId(int id)

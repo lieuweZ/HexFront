@@ -50,6 +50,10 @@ namespace Blok3Game.GameObjects
         public override void AtEndTurn(Cell cell, Player player, Vector2 cellPosition)
         {
             Vector2? targetPosition = AttackObjects(cell, player, cellPosition);
+            if (targetPosition == null)
+            {
+                return;
+            }
             Console.WriteLine("this is the attack amount" + Attack);
             DamagePacket packet = new DamagePacket(
                 new Vector2(targetPosition.Value.X, targetPosition.Value.Y),
