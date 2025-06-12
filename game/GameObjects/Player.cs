@@ -71,20 +71,21 @@ namespace Blok3Game.GameObjects
         }
 
         public void EndTurn()
-        {   
+        {
             var grid = GameState.grid;
             for (var x = 0; x <= grid.Columns; x++)
             {
                 for (var y = 0; y <= grid.Rows; y++)
                 {
-                    Cell cl = (Cell)grid.Get(x, y);
-                    if (cl is Cell && cl.Obj != null)
+                    if (grid.Get(x, y) is Cell cl && cl.Obj is PieceObject piece)
                     {
-                        if (cl.Obj is PieceObject piece && piece.OwnerName == GameState.Username)
-                        {
-                            Console.WriteLine("this is happening at the end of the turn");
-                            piece.AtEndTurn(cl, this, new Vector2(x,y));
-                        }
+                        var pos = new Vector2(x, y);
+
+                        if (piece is DefensiveBuilding defensive)
+                            defensive.AtEndTurn(cl, this, pos);
+
+                        if (piece is Unit unit && unit.OwnerName == GameState.Username)
+                            unit.AtEndTurn(cl, this, pos);
                     }
                 }
             }

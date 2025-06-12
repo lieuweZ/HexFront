@@ -1,4 +1,3 @@
-using Blok3Game.Engine.GameObjects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Blok3Game.Engine.Helpers;
@@ -7,32 +6,19 @@ using Blok3Game.Packets;
 using System;
 using System.Collections.Generic;
 using Blok3Game.Engine.SocketIOClient;
+using Blok3Game.GameObjects;
 
-namespace Blok3Game.GameObjects
+namespace Blok3Game.Engine.GameObjects
 {
-    public class Unit : PieceObject
+    public class DefensiveBuilding : PieceObject
     {
-        private static SpriteSheet spriteUnit;
-        private static bool assetsLoaded = false;
-        public Unit() : base("Images/Sprites/Unit", "unit", 2, 2, "Soldier")
-        {
-            RescoureCost = 1;
-            position = new Vector2(25, 25);
-            if (!assetsLoaded)
-            {
-                LoadAssets();
-            }
-            sprite = spriteUnit;  // Assign the preloaded sprite
-            Origin = new Vector2(sprite.Width / 2, sprite.Height / 2); // Optional: center origin
-        }
 
-        public static void LoadAssets()
+        public int ResourceCost { get; set; }
+        public DefensiveBuilding() : base("building", 1, 10)
         {
-            spriteUnit = new SpriteSheet("Images/Sprites/Unit");
-            assetsLoaded = true;
+            ResourceCost = 1;
         }
-
-        public Vector2? AttackObjects(Cell myCell, Player player, Vector2 cellPosition)
+        public Vector2? AttackObjects(Vector2 cellPosition)
         {
             var directions = GameState.grid.GetNeighbors((int)cellPosition.X, (int)cellPosition.Y);
 
@@ -44,9 +30,9 @@ namespace Blok3Game.GameObjects
                 var neighborY = (int)(cellPosition.Y + dir.Y);
 
                 var neighborCell = GameState.grid.Get(neighborX, neighborY) as Cell;
-                if (neighborCell?.Obj is PieceObject piece && piece.OwnerName != GameState.Username)
+                if (neighborCell?.Obj is Unit unit && unit.OwnerName != GameState.Username)
                 {
-                    enemyCell.Add(new Vector2(neighborX, neighborY));
+                    enemyCell.Add(new Vector2(neighborX,neighborY));
                 }
             }
 
@@ -63,12 +49,11 @@ namespace Blok3Game.GameObjects
         }
         public override void AtEndTurn(Cell cell, Player player, Vector2 cellPosition)
         {
-            Vector2? targetPosition = AttackObjects(cell, player, cellPosition);
+            Vector2? targetPosition = AttackObjects(cellPosition);
             if (targetPosition == null)
             {
                 return;
             }
-            Console.WriteLine("this is the attack amount" + Attack);
             DamagePacket packet = new DamagePacket(
                 new Vector2(targetPosition.Value.X, targetPosition.Value.Y),
                 Attack
@@ -77,11 +62,8 @@ namespace Blok3Game.GameObjects
         }
         public override void Draw(Vector2 displacement, GameTime gameTime, SpriteBatch spriteBatch)
         {
-            if (sprite != null)
-            {
-                float scale = 1f; // adjust if you want to scale your sprite
-                sprite.Draw(spriteBatch, displacement, Origin, scale, Color.White);
-            }
+            DrawingHelper.FillRectangle(new Rectangle((int)(displacement.X - 12), (int)(displacement.Y - 12), 25, 25), spriteBatch, Color.Orange);
+            base.Draw(displacement, spriteBatch);
         }
     }
 }
