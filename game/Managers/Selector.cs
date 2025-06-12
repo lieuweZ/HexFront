@@ -20,13 +20,14 @@ namespace Blok3Game.Engine.GameObjects
             float x = GameEnvironment.Screen.X - 70f;
             float y = centerY;
 
-            for (int i = 0; i <= 1; i++)
+            for (int i = 0; i <= 2; i++)
             {
                 y = y + i * (HEIGHT + SPACING);
                 Console.WriteLine(y);
                 Add(new SelectPiece(new Vector2(x, y), WIDTH, HEIGHT, i));
             }
-            Add(new SelectPiece(new Vector2(x, centerY + 2 * (HEIGHT + SPACING)), WIDTH, HEIGHT, 2));
+
+            Add(new SelectPiece(new Vector2(x, centerY + 2 * (HEIGHT + SPACING)), WIDTH, HEIGHT, 3));
         }
 
         public override void HandleInput(InputHelper inputHelper)

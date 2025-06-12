@@ -16,7 +16,7 @@ namespace Blok3Game.GameObjects
         private static bool assetsLoaded = false;
         public Unit() : base("Images/Sprites/Unit", "unit", 2, 2, "Soldier")
         {
-            RescoureCost = 1;
+            ResourceCost = 1;
             position = new Vector2(25, 25);
             if (!assetsLoaded)
             {

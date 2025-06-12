@@ -306,25 +306,25 @@ namespace Blok3Game.Engine.GameObjects
 
 							if (piecetoplace.Type == "unit")
 							{
-								if (units >= piecetoplace.RescoureCost)
+								if (units >= piecetoplace.ResourceCost)
 								{
-									player.UnitsAvailable -= piecetoplace.RescoureCost;
+									player.UnitsAvailable -= piecetoplace.ResourceCost;
 									PlacePiece(cell, ID.Value);
 								}
 								else
 								{
-									Console.WriteLine("Not enough units need: " + piecetoplace.RescoureCost + " You have: " + units);
+									Console.WriteLine("Not enough units need: " + piecetoplace.ResourceCost + " You have: " + units);
 
 								}
 							}
-							else if (piecetoplace.Type == "building" && resource.Amount >= piecetoplace.RescoureCost)
+							else if (piecetoplace.Type == "building" && resource.Amount >= piecetoplace.ResourceCost)
 							{
-								resource.Amount -= piecetoplace.RescoureCost;
+								resource.Amount -= piecetoplace.ResourceCost;
 								PlacePiece(cell, ID.Value);
 							}
 							else
 							{
-								Console.WriteLine("Not enough rescoures need: " + piecetoplace.RescoureCost + " You have: " + resource.Amount);
+								Console.WriteLine("Not enough rescoures need: " + piecetoplace.ResourceCost + " You have: " + resource.Amount);
 							}
 						}
 					}

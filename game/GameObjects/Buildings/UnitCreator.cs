@@ -21,7 +21,7 @@ namespace Blok3Game.GameObjects
 
         public UnitCreator() : base("Images/Sprites/Barrack", "building", 0, 5, "Barrack")
         {
-            RescoureCost = 3;
+            ResourceCost = 3;
             this.position = new Vector2(25, 25);
             if (!assetsLoaded)
             {
@@ -40,8 +40,12 @@ namespace Blok3Game.GameObjects
 
         public void CollectUnit(Cell myCell, Player player)
         {
-            player.UnitsAvailable += 1;
-            //    Console.WriteLine($"{GameState.Username} collected 1 {myCell.Resource.Name}. Remaining in cell: {myCell.Resource.Amount}");
+            var target = player.resources[0];
+            if (target.Amount >= 1)
+            {
+                target.Amount -= 1;
+                player.UnitsAvailable += 1;
+            }
         }
         public override void AtStartTurn(Cell cell, Player player)
         {

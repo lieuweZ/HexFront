@@ -13,10 +13,9 @@ namespace Blok3Game.Engine.GameObjects
     public class DefensiveBuilding : PieceObject
     {
 
-        public int ResourceCost { get; set; }
-        public DefensiveBuilding() : base("building", 1, 10)
+        public DefensiveBuilding() : base("Images/Sprites/Colector", "building", 1, 10, "Defense Tower")
         {
-            ResourceCost = 1;
+            ResourceCost = 3;
         }
         public Vector2? AttackObjects(Vector2 cellPosition)
         {

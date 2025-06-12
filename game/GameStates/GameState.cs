@@ -279,7 +279,6 @@ namespace Blok3Game.GameStates
             GameEnvironment.AssetManager.AudioManager.PlaySoundEffect("your_turn");
             if (playerName == Username)
             {
-                Console.WriteLine("Begin turn is working");
                 Player.myTurn = true;
                 grid.OnTurnStart();  // Make sure this line is present
                 timeRemaining = Player.TimePerTurn;
@@ -319,15 +318,16 @@ namespace Blok3Game.GameStates
                 PieceList pieces = new PieceList();
                 grid.UpdateCells(data.RoomSeed);
 
-            foreach (string player in data.Players)
-            {
-                string[] parts = player.Split(':');
-                string role = parts[0];
-                string PlayerName = parts[1];
-                int Column = grid.Columns / 2;
-                int Row = (grid.Rows - 1) * (int.Parse(role) - 1);
-                grid.SetCellPiece(new Vector2(Column, Row), pieces.CreateFromId(4), PlayerName);
-            }
+                foreach (string player in data.Players)
+                {
+                    string[] parts = player.Split(':');
+                    string role = parts[0];
+                    string PlayerName = parts[1];
+                    int Column = grid.Columns / 2;
+                    int Row = (grid.Rows - 1) * (int.Parse(role) - 1);
+                    grid.SetCellPiece(new Vector2(Column, Row), pieces.CreateFromId(4), PlayerName);
+                }
+            });
         }
 
         private void OnMovePieceReceived(object data)
