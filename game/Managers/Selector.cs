@@ -81,6 +81,5 @@ namespace Blok3Game.Engine.GameObjects
                 }
             }
         }
-
     }
 }

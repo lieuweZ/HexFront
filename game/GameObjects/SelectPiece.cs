@@ -36,8 +36,8 @@ namespace Blok3Game.Engine.GameObjects
 
             if (piece != null)
             {
-                string typeLabel = piece.Type == "unit" ? "Units" : "Uni";
-                HoverText = $"{piece.Name}\nCost: {piece.RescoureCost} {typeLabel}";
+                string typeLabel = piece.Type == "unit" ? "Units" : "Gold";
+                HoverText = $"{piece.Name}\nCost: {piece.RescoureCost}  {typeLabel}";
             }
             else
             {
