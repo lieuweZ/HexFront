@@ -48,60 +48,61 @@ Voor deze tmc cylce zijn er exsterne playtest uitgevoerd de playteters waren na 
 
 ### Playtest Formulier
 
-Ervaring met games (kruis aan):
+- **Ervaring met games** (kruis aan):
  Geen ervaring
  Af en toe
  Regelmatig
  Hardcore gamer
 
-Algemene Ervaring
-Hoe leuk vond je het spel?
+**Algemene Ervaring**
+
+- **Hoe leuk vond je het spel?**
 (1 = helemaal niet leuk, 5 = superleuk)
 1  2  3  4  5
 
-Hoe intuïtief vond je de besturing / bediening?
+- **Hoe intuïtief vond je de besturing / bediening?**
 1  2  3  4  5
 
-Was er een moment waarop je je verward of vast voelde zitten?
+- **Was er een moment waarop je je verward of vast voelde zitten?**
  Ja
  Nee
 Zo ja, waar precies?
 
-Wat vond je van het tempo van het spel?
+- **Wat vond je van het tempo van het spel?**
  Te traag
  Prima
  Te snel
 
-Hoe lang heb je gespeeld?
+- **Hoe lang heb je gespeeld?**
 
-Gameplay & Mechanics
+**Gameplay & Mechanics**
 
-Wat werkte goed?
+- **Wat werkte goed?**
 
-Wat werkte niet goed of voelde frustrerend aan?
+- **Wat werkte niet goed of voelde frustrerend aan?**
 
-Waren er bugs, glitches of rare dingen?
+- **Waren er bugs, glitches of rare dingen?**
 
-Heb je iets gemist wat je graag had willen kunnen doen in de game?
+- **Heb je iets gemist wat je graag had willen kunnen doen in de game?**
 
-Graphics & Audio
+**Graphics & Audio**
 
-Wat vond je van de stijl / graphics?
+- **Wat vond je van de stijl / graphics?**
 
-Hoe vond je het geluid en/of muziek?
+- **Hoe vond je het geluid en/of muziek?**
 
-Algemene Beoordeling
+**Algemene Beoordeling**
 
-Wat is je algemene score voor deze game?
+- **Wat is je algemene score voor deze game?**
 (1 = slecht, 10 = fantastisch)
 1  2  3  4  5  6  7  8  9  10
 
-Zou je dit spel aanbevelen aan een vriend(in)?
+- **Zou je dit spel aanbevelen aan een vriend(in)?**
  Ja
  Nee
 Waarom wel/niet?
 
-Heb je nog andere opmerkingen of suggesties
+- **Heb je nog andere opmerkingen of suggesties**
 
 ### Algemene Beoordeling
 - **Gemiddelde score:**
