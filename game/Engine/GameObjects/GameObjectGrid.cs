@@ -259,6 +259,12 @@ namespace Blok3Game.Engine.GameObjects
 				return;
 			}
 
+			if(this.Interactible == 2)
+			{
+				MinigameInput(cell);
+					return;
+            }
+
 			if (!Player.myTurn)
 			{
 				return;
