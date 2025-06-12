@@ -20,7 +20,7 @@ namespace Blok3Game.GameObjects
         private static SpriteSheet spriteUnitCreator;
         private static bool assetsLoaded = false;
 
-        public UnitCreator() : base("Images/Sprites/Central_Building", "building", 0, 5)
+        public UnitCreator() : base("Images/Sprites/Barrack", "building", 0, 5)
         {
             ResourceCost = 3;
             this.position = new Vector2(25, 25);
@@ -34,7 +34,7 @@ namespace Blok3Game.GameObjects
 
         public static void LoadAssets()
         {
-            spriteUnitCreator = new SpriteSheet("Images/Sprites/Central_Building");
+            spriteUnitCreator = new SpriteSheet("Images/Sprites/Barrack");
             assetsLoaded = true;
         }
 
