@@ -11,17 +11,32 @@ namespace Blok3Game.GameObjects
 {
     public class UnitCreator : PieceObject
     {
-        public int ResourceCost { get; set; }
         private int spawnCooldown = 0;
         private const int SPAWN_COOLDOWN_TURNS = 1;
         private const int UNITS_PER_CREATOR = 1; // Limit to 1 unit per creator
         private int unitsSpawned = 0;
 
-        public UnitCreator() : base("building", 0, 5)
+        private static SpriteSheet spriteUnitCreator;
+        private static bool assetsLoaded = false;
+
+        public UnitCreator() : base("Images/Sprites/Barrack", "building", 0, 5, "Barrack")
         {
-            ResourceCost = 3;
+            RescoureCost = 3;
             this.position = new Vector2(25, 25);
+            if (!assetsLoaded)
+            {
+                LoadAssets();
+            }
+            sprite = spriteUnitCreator;  // Assign the preloaded sprite
+            Origin = new Vector2(sprite.Width / 2, sprite.Height / 2); // Optional: center origin
         }
+
+        public static void LoadAssets()
+        {
+            spriteUnitCreator = new SpriteSheet("Images/Sprites/Barrack");
+            assetsLoaded = true;
+        }
+
 
         public void CollectUnit(Cell myCell, Player player)
         {
@@ -71,48 +86,11 @@ namespace Blok3Game.GameObjects
         }
         public override void Draw(Vector2 displacement, GameTime gameTime, SpriteBatch spriteBatch)
         {
-            // Calculate center position for consistent drawing
-            int centerX = (int)displacement.X;
-            int centerY = (int)displacement.Y;
-
-            // Draw base rectangle centered on position
-            DrawingHelper.FillRectangle(
-                new Rectangle(
-                    centerX - 12,  // Half of width (25/2)
-                    centerY - 12,  // Half of height (25/2)
-                    25,
-                    25
-                ),
-                spriteBatch,
-                Color.Purple
-            );
-
-            // Draw plus symbol centered on the base rectangle
-            // Vertical line of plus
-            DrawingHelper.FillRectangle(
-                new Rectangle(
-                    centerX - 2,   // Half of width (4/2)
-                    centerY - 8,   // Half of height (16/2)
-                    4,
-                    16
-                ),
-                spriteBatch,
-                Color.White
-            );
-
-            // Horizontal line of plus
-            DrawingHelper.FillRectangle(
-                new Rectangle(
-                    centerX - 8,   // Half of width (16/2)
-                    centerY - 2,   // Half of height (4/2)
-                    16,
-                    4
-                ),
-                spriteBatch,
-                Color.White
-            );
-
-            base.Draw(displacement, spriteBatch);
+            if (sprite != null)
+            {
+                float scale = 1f; // adjust if you want to scale your sprite
+                sprite.Draw(spriteBatch, displacement, Origin, scale, Color.White);
+            }
         }
     }
 }

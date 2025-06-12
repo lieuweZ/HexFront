@@ -12,12 +12,26 @@ namespace Blok3Game.GameObjects
 {
     public class Unit : PieceObject
     {
-        public int ResourceCost { get; set; }
-        public Unit() : base("unit", 2, 2)
+        private static SpriteSheet spriteUnit;
+        private static bool assetsLoaded = false;
+        public Unit() : base("Images/Sprites/Unit", "unit", 2, 2, "Soldier")
         {
-            ResourceCost = 1;
+            RescoureCost = 1;
             position = new Vector2(25, 25);
+            if (!assetsLoaded)
+            {
+                LoadAssets();
+            }
+            sprite = spriteUnit;  // Assign the preloaded sprite
+            Origin = new Vector2(sprite.Width / 2, sprite.Height / 2); // Optional: center origin
         }
+
+        public static void LoadAssets()
+        {
+            spriteUnit = new SpriteSheet("Images/Sprites/Unit");
+            assetsLoaded = true;
+        }
+
         public Vector2? AttackObjects(Cell myCell, Player player, Vector2 cellPosition)
         {
             var directions = GameState.grid.GetNeighbors((int)cellPosition.X, (int)cellPosition.Y);
@@ -32,7 +46,7 @@ namespace Blok3Game.GameObjects
                 var neighborCell = GameState.grid.Get(neighborX, neighborY) as Cell;
                 if (neighborCell?.Obj is PieceObject piece && piece.OwnerName != GameState.Username)
                 {
-                    enemyCell.Add(new Vector2(neighborX,neighborY));
+                    enemyCell.Add(new Vector2(neighborX, neighborY));
                 }
             }
 
@@ -59,72 +73,11 @@ namespace Blok3Game.GameObjects
         }
         public override void Draw(Vector2 displacement, GameTime gameTime, SpriteBatch spriteBatch)
         {
-            // Head
-            DrawingHelper.FillRectangle(
-                new Rectangle(
-                    (int)(displacement.X - 5),
-                    (int)(displacement.Y - 20),
-                    10, 10
-                ),
-                spriteBatch,
-                Color.Blue
-            );
-
-            // Body
-            DrawingHelper.FillRectangle(
-                new Rectangle(
-                    (int)(displacement.X - 6),
-                    (int)(displacement.Y - 10),
-                    12, 15
-                ),
-                spriteBatch,
-                Color.Blue
-            );
-
-            // Left arm
-            DrawingHelper.FillRectangle(
-                new Rectangle(
-                    (int)(displacement.X - 12),
-                    (int)(displacement.Y - 8),
-                    6, 4
-                ),
-                spriteBatch,
-                Color.DarkBlue
-            );
-
-            // Right arm (holding weapon)
-            DrawingHelper.FillRectangle(
-                new Rectangle(
-                    (int)(displacement.X + 6),
-                    (int)(displacement.Y - 8),
-                    12, 4
-                ),
-                spriteBatch,
-                Color.DarkBlue
-            );
-
-            // Legs
-            DrawingHelper.FillRectangle(
-                new Rectangle(
-                    (int)(displacement.X - 6),
-                    (int)(displacement.Y + 5),
-                    5, 10
-                ),
-                spriteBatch,
-                Color.DarkBlue
-            );
-
-            DrawingHelper.FillRectangle(
-                new Rectangle(
-                    (int)(displacement.X + 1),
-                    (int)(displacement.Y + 5),
-                    5, 10
-                ),
-                spriteBatch,
-                Color.DarkBlue
-            );
-
-            base.Draw(displacement, spriteBatch);
+            if (sprite != null)
+            {
+                float scale = 1f; // adjust if you want to scale your sprite
+                sprite.Draw(spriteBatch, displacement, Origin, scale, Color.White);
+            }
         }
     }
 }

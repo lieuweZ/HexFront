@@ -10,18 +10,37 @@ namespace Blok3Game.Engine.GameObjects
 {
     public class CentralBuilding : PieceObject
     {
+        private static SpriteSheet spriteCentralBuilding;
+        private static bool assetsLoaded = false;
 
-        public CentralBuilding() : base("building", 0, 20)
+        public CentralBuilding() : base("Images/Sprites/Central_Building", "building", 0, 20, "Central Building") // pass null initially, set sprite later
         {
+            if (!assetsLoaded)
+            {
+                LoadAssets();
+            }
+            sprite = spriteCentralBuilding;  // Assign the preloaded sprite
+            Origin = new Vector2(sprite.Width / 2, sprite.Height / 2); // Optional: center origin
         }
+
+        public static void LoadAssets()
+        {
+            spriteCentralBuilding = new SpriteSheet("Images/Sprites/Central_Building");
+            assetsLoaded = true;
+        }
+
         public void Update(GameTime gameTime)
         {
             base.Update(gameTime);
         }
-        
+
         public override void Draw(Vector2 displacement, GameTime gameTime, SpriteBatch spriteBatch)
         {
-            DrawingHelper.FillRectangle(new Rectangle((int)(displacement.X - 12), (int)(displacement.Y - 12), 25, 25), spriteBatch, Color.White);
+            if (sprite != null)
+            {
+                float scale = 1f; // adjust if you want to scale your sprite
+                sprite.Draw(spriteBatch, displacement, Origin, scale, Color.White);
+            }
         }
     }
 }

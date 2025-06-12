@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Transactions;
 using System.Net.Mail;
 using System.Runtime;
+using BaseProject;
 
 namespace Blok3Game.GameStates
 {
@@ -155,14 +156,17 @@ namespace Blok3Game.GameStates
 
         public void ReceivedData(object i)
         {
-            if (i is CellUpdatePacket piecePacket)
-            {
-                PieceList pieces = new PieceList();
-                string[] pos = piecePacket.cell.Split(" ");
-                grid.SetCellPiece(new Vector2(int.Parse(pos[0]), int.Parse(pos[1])), pieces.CreateFromId(int.Parse(piecePacket.piece)), piecePacket.playerName);
+            HexFront.RunOnUIThread(() =>
+           {
+               if (i is CellUpdatePacket piecePacket)
+               {
+                   PieceList pieces = new PieceList();
+                   string[] pos = piecePacket.cell.Split(" ");
+                   grid.SetCellPiece(new Vector2(int.Parse(pos[0]), int.Parse(pos[1])), pieces.CreateFromId(int.Parse(piecePacket.piece)), piecePacket.playerName);
 
-                piecePacket = null;
-            }
+                   piecePacket = null;
+               }
+           });
         }
 
         public void RecievedCellData(object i)
@@ -308,19 +312,25 @@ namespace Blok3Game.GameStates
 
         private void StartGame(StartGameData data)
         {
-            PieceList pieces = new PieceList();
-            grid.UpdateCells(data.RoomSeed);
 
-            foreach (string player in data.Players)
+            HexFront.RunOnUIThread(() =>
             {
-                string[] parts = player.Split(':');
-                string role = parts[0];
-                string PlayerName = parts[1];
-                int Column = grid.Columns / 2;
-                int Row = (grid.Rows - 1) * (int.Parse(role) - 1);
-                grid.SetCellPiece(new Vector2(Column, Row), pieces.CreateFromId(3), PlayerName);
-            }
+
+                PieceList pieces = new PieceList();
+                grid.UpdateCells(data.RoomSeed);
+
+                foreach (string player in data.Players)
+                {
+                    string[] parts = player.Split(':');
+                    string role = parts[0];
+                    string PlayerName = parts[1];
+                    int Column = grid.Columns / 2;
+                    int Row = (grid.Rows - 1) * (int.Parse(role) - 1);
+                    grid.SetCellPiece(new Vector2(Column, Row), pieces.CreateFromId(3), PlayerName);
+                }
+            });
         }
+
         private void OnMovePieceReceived(object data)
         {
             if (data is MovePiecePacket movePacket)

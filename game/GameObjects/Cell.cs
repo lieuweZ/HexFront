@@ -35,7 +35,7 @@ namespace Blok3Game.GameObjects
         public void SetObject(GameObject obj)
         { 
             Obj = obj;
-            if (obj != null)
+            if (obj != null && obj.GetType() != typeof(Cube))
             {
                 obj.Position = Position;
             //    Console.WriteLine($"Placed {obj.GetType().Name} at position {Position}");

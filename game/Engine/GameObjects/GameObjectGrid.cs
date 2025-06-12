@@ -35,7 +35,7 @@ namespace Blok3Game.Engine.GameObjects
 		{
 			grid = new GameObject[columns, rows];
 			selector = new Selector();
-			
+
 			for (int x = 0; x < columns; x++)
 			{
 				for (int y = 0; y < rows; y++)
@@ -259,6 +259,12 @@ namespace Blok3Game.Engine.GameObjects
 				return;
 			}
 
+			if (this.Interactible == 2)
+			{
+				MinigameInput(cell);
+				return;
+			}
+
 			if (!Player.myTurn)
 			{
 				return;
@@ -286,11 +292,41 @@ namespace Blok3Game.Engine.GameObjects
 				}
 				else
 				{
-					// Handle piece placement
 					int? ID = selector.SelectedPiece?.ID;
-					if (ID.HasValue && CanPlaceAt(cell))
+					if (ID != null)
 					{
-						PlacePiece(cell, ID.Value); 
+						if (CanPlaceAt(cell))
+						{
+
+							PieceList pieces = new PieceList();
+							var piecetoplace = pieces.getFromId((int)ID);
+							var player = GetPlayer();
+							var resource = player.resources.Find(s => s.Id == 0);
+							var units = player.UnitsAvailable;
+
+							if (piecetoplace.Type == "unit")
+							{
+								if (units >= piecetoplace.RescoureCost)
+								{
+									player.UnitsAvailable -= piecetoplace.RescoureCost;
+									PlacePiece(cell, ID.Value);
+								}
+								else
+								{
+									Console.WriteLine("Not enough units need: " + piecetoplace.RescoureCost + " You have: " + units);
+
+								}
+							}
+							else if (piecetoplace.Type == "building" && resource.Amount >= piecetoplace.RescoureCost)
+							{
+								resource.Amount -= piecetoplace.RescoureCost;
+								PlacePiece(cell, ID.Value);
+							}
+							else
+							{
+								Console.WriteLine("Not enough rescoures need: " + piecetoplace.RescoureCost + " You have: " + resource.Amount);
+							}
+						}
 					}
 				}
 			}
@@ -334,7 +370,7 @@ namespace Blok3Game.Engine.GameObjects
 				target,
 				GameState.Username
 			);
-			
+
 			SocketClient.Instance.SendDataPacket(packet);
 		}
 
@@ -352,12 +388,29 @@ namespace Blok3Game.Engine.GameObjects
 			}
 		}
 
+		private static Player GetPlayer()
+		{
+			GameObjectList gameObjects = GameEnvironment.GameStateManager.GetGameState(GameStateManager.GAME_STATE) as GameObjectList;
+
+			if (gameObjects != null)
+			{
+				foreach (GameObject obj in gameObjects.Children)
+				{
+					if (obj is Player player)
+					{
+						return player;
+					}
+				}
+			}
+			return null;
+		}
+
 		public void PlacePiece(Vector2 pos, int id)
 		{
 			CellUpdatePacket pack = new CellUpdatePacket(
-				SocketClient.Instance.RoomId, 
-				pos, 
-				id, 
+				SocketClient.Instance.RoomId,
+				pos,
+				id,
 				GameState.Username
 			);
 			SocketClient.Instance.SendDataPacket(pack);
@@ -449,37 +502,37 @@ namespace Blok3Game.Engine.GameObjects
 
 		private void MinigameInput(Vector2 cell)
 		{
-            Cube box = new Cube();
-            Cell cl = (Cell)(this.Get((int)cell.X, (int)cell.Y));
-            cl.SetObject(box);
-            for (int i = 0; i < Columns; i++)
-            {
-                for (int j = 0; j < Rows; j++)
-                {
-                    cl = (Cell)(this.Get(i, j));
-                    if (cl.Obj == null)
-                    {
-                        return;
-                    }
-                }
-            }
-            for (int i = 0; i < Columns; i++)
-            {
-                for (int j = 0; j < Rows; j++)
-                {
-                    cl = (Cell)(this.Get(i, j));
-                    cl.ClearObject();
-                }
-            }
-        }
+			Cube box = new Cube();
+			Cell cl = (Cell)(this.Get((int)cell.X, (int)cell.Y));
+			cl.SetObject(box);
+			for (int i = 0; i < Columns; i++)
+			{
+				for (int j = 0; j < Rows; j++)
+				{
+					cl = (Cell)(this.Get(i, j));
+					if (cl.Obj == null)
+					{
+						return;
+					}
+				}
+			}
+			for (int i = 0; i < Columns; i++)
+			{
+				for (int j = 0; j < Rows; j++)
+				{
+					cl = (Cell)(this.Get(i, j));
+					cl.ClearObject();
+				}
+			}
+		}
 
-        public void OnTurnStart()
-        {
-        }
+		public void OnTurnStart()
+		{
+		}
 
-        public void OnTurnEnd()
-        {
-        }
+		public void OnTurnEnd()
+		{
+		}
 
 		public override void Reset()
 		{

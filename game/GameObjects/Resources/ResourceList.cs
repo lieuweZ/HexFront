@@ -11,10 +11,7 @@ namespace Blok3Game.GameObjects
 
         public static List<ResourceType> resources = new List<ResourceType>
             {
-                new ResourceType ( 0, "Uni",  0,   5)
-            /*    new ResourceType (1,   "Wood",   0,   0 ),
-                new ResourceType (2,   "Stone",   0,   1 ),
-                new ResourceType (3,   "Gold",   0,   2 ) */
+                new ResourceType (0, "Uni",  1,   5),
             };
 
 
