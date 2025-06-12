@@ -103,7 +103,7 @@ Waarom wel/niet?
 
 Heb je nog andere opmerkingen of suggesties
 
-#### Algemene Beoordeling
+### Algemene Beoordeling
 - **Gemiddelde score:**
   - Eerste tester: 3/10
   - Tweede tester: 4/10
