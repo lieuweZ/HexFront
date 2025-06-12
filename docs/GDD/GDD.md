@@ -140,3 +140,10 @@ Een spel gemaakt door Twister, een gedreven team dat werkt aan indiegames.
 - Soldier: HP:2 Damage:2 Cost:1
 
 ![IMG](./img/Unit.png)
+
+### Audio
+
+Sound you hear when its your turn
+
+![Audio](./audio/your_turn.mp3)
+
