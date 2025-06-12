@@ -302,11 +302,22 @@ namespace Blok3Game.Engine.GameObjects
 							var piecetoplace = pieces.getFromId((int)ID);
 							var player = GetPlayer();
 							var resource = player.resources.Find(s => s.Id == 0);
-							Console.WriteLine(resource.Amount);
+							var units = player.UnitsAvailable;
 
-							Console.WriteLine(piecetoplace.RescoureCost);
+							if (piecetoplace.Type == "unit")
+							{
+								if (units >= piecetoplace.RescoureCost)
+								{
+									player.UnitsAvailable -= piecetoplace.RescoureCost;
+									PlacePiece(cell, ID.Value);
+								}
+								else
+								{
+									Console.WriteLine("Not enough units need: " + piecetoplace.RescoureCost + " You have: " + units);
 
-							if (resource.Amount >= piecetoplace.RescoureCost)
+								}
+							}
+							else if (piecetoplace.Type == "building" && resource.Amount >= piecetoplace.RescoureCost)
 							{
 								resource.Amount -= piecetoplace.RescoureCost;
 								PlacePiece(cell, ID.Value);
