@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using System;
 namespace Blok3Game.Engine.GameObjects
 {
-    public class PieceObject : GameObject
+    public class PieceObject : SpriteGameObject
     {
         public string OwnerName { get; set; } // Owner of this piece
         public string Type { get; private set; } // Either Building or Unit
@@ -15,11 +15,13 @@ namespace Blok3Game.Engine.GameObjects
         private readonly float maxFlashDuration = 0.2f;
         private readonly Color flashOverlayColor = Color.Red * 0.4f;
         public int RescoureCost { get; set; }
-        public PieceObject(string type, int attack, int health) : base()
+        public PieceObject(string assestSprite, string type, int attack, int health) : base(assestSprite)
         {
             Type = type;
             Attack = attack;
             Health = health;
+
+
         }
 
         public void Update(GameTime gameTime)

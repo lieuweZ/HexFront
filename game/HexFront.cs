@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using Blok3Game.Engine.AssetHandler;
+using Blok3Game.Engine.GameObjects;
 using Blok3Game.Engine.JSON;
 using Blok3Game.Engine.SocketIOClient;
 using Blok3Game.GameStates;
@@ -14,6 +16,13 @@ namespace BaseProject
     {
         public static HexFront self;
         public int CellScale;
+        public static ConcurrentQueue<Action> UIThreadActions = new ConcurrentQueue<Action>();
+
+        public static void RunOnUIThread(Action action)
+        {
+            UIThreadActions.Enqueue(action);
+        }
+
         protected override void LoadContent()
         {
             base.LoadContent();
@@ -46,6 +55,17 @@ namespace BaseProject
             base.OnExiting(sender, args);
 
             SocketClient.Instance.SendDataPacket(new LeaveRoomData());
+        }
+
+        protected override void Update(GameTime gameTime)
+        {
+            // Process all UI-thread actions
+            while (UIThreadActions.TryDequeue(out var action))
+            {
+                action?.Invoke();
+            }
+
+            base.Update(gameTime); // Don't forget this!
         }
 
         public void Quit()

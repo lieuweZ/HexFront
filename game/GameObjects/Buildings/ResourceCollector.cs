@@ -11,9 +11,18 @@ namespace Blok3Game.Engine.GameObjects
     public class ResourceCollector : PieceObject
     {
 
-        public ResourceCollector() : base("building", 0, 5)
+
+        private static SpriteSheet spriteResourceCollector;
+        private static bool assetsLoaded = false;
+        public ResourceCollector() : base("Images/Sprites/Colector", "building", 0, 5)
         {
             RescoureCost = 1;
+            if (!assetsLoaded)
+            {
+                LoadAssets();
+            }
+            sprite = spriteResourceCollector;  // Assign the preloaded sprite
+            Origin = new Vector2(sprite.Width / 2, sprite.Height / 2); // Optional: center origin
         }
 
         public void CollectResource(Cell myCell, Player player)
@@ -30,6 +39,11 @@ namespace Blok3Game.Engine.GameObjects
             }
         }
 
+        public static void LoadAssets()
+        {
+            spriteResourceCollector = new SpriteSheet("Images/Sprites/Colector");
+            assetsLoaded = true;
+        }
         public void Update(GameTime gameTime)
         {
             base.Update(gameTime);
@@ -42,8 +56,11 @@ namespace Blok3Game.Engine.GameObjects
 
         public override void Draw(Vector2 displacement, GameTime gameTime, SpriteBatch spriteBatch)
         {
-            DrawingHelper.FillRectangle(new Rectangle((int)(displacement.X - 12), (int)(displacement.Y - 12), 25, 25), spriteBatch, Color.Orange);
-            base.Draw(displacement, spriteBatch);
+            if (sprite != null)
+            {
+                float scale = 1f; // adjust if you want to scale your sprite
+                sprite.Draw(spriteBatch, displacement, Origin, scale, Color.White);
+            }
         }
     }
 
