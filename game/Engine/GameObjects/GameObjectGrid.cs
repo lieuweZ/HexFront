@@ -336,15 +336,15 @@ namespace Blok3Game.Engine.GameObjects
 				Vector2 selected = selectedCellCoord.Value;
 				Cell sourceCell = Get((int)selected.X, (int)selected.Y) as Cell;
 
-				// Double check ownership before allowing movement
-				if (sourceCell?.Obj is Unit unit && unit.OwnerName != GameState.Username)
-				{
-					selectedCellCoord = null;
-					return;
-				}
+					// Double check ownership before allowing movement
+					if (sourceCell?.Obj is Unit unit && unit.OwnerName != GameState.Username)
+					{
+						selectedCellCoord = null;
+						return;
+					}
 
-				bool isNeighbor = GetNeighbors((int)selected.X, (int)selected.Y)
-					.Any(dir => x == selected.X + dir.X && y == selected.Y + dir.Y);
+					bool isNeighbor = GetNeighbors((int)selected.X, (int)selected.Y)
+						.Any(dir => x == selected.X + dir.X && y == selected.Y + dir.Y);
 
 				if (isNeighbor && clickedCell?.Obj == null && Player.myTurn)
 				{

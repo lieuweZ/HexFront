@@ -134,6 +134,12 @@ public class GameEnvironment : Game
             FullScreen = !FullScreen;
         }
 
+        /*if (inputHelper.KeyPressed(Keys.LeftControl) && inputHelper.KeyPressed(Keys.L))
+        {
+            GameOverPacket packet = new GameOverPacket();
+            SocketClient.Instance.SendDataPacket(packet);
+        }*/
+
         /*if (inputHelper.KeyPressed(Keys.G))
         {
             CellTypePacket packet = new CellTypePacket(0);
@@ -148,7 +154,7 @@ public class GameEnvironment : Game
 
         if (inputHelper.KeyPressed(Keys.U))
         {
-            CellChangePacket packet = new CellChangePacket(3, 1, "Sponge cake");
+            CellChangePacket packet = new CellChangePacket(3, 1, "Sponge");
             SocketClient.Instance.SendDataPacket(packet);
         }
 

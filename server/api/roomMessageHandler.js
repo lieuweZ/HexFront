@@ -16,6 +16,7 @@ class RoomMessageHandler extends MessageHandler {
 		this.#handleIncomingChatMessages(socket);
 		this.#handleIncomingPieceMoveMessages(socket);
 		this.#handleIncomingTurnChanges(socket);
+		this.#handleIncomingGameOVer(socket);
 	}
 
 	emitPlayerStateChangeToAllPlayersInRoom(socket, message) {
@@ -122,6 +123,35 @@ class RoomMessageHandler extends MessageHandler {
 			this._io
 				.to(roomId)
 				.emit("chat msg", { roomId: roomId, sender: name, message: message });
+
+			//store the room id and player name on the socket so that it can be restored if the connection is lost.
+			//see the #handleDisconnect function.
+			//socket.roomId = roomId;
+			//socket.playerName = playerName;
+		}
+	}
+
+	#handleIncomingGameOVer(socket) {
+		socket.on("gameOver", (data) => {
+			const roomId = data.roomId;
+
+			this.SendGameOverPacket(socket, roomId, data.message, data.sender);
+		});
+	}
+
+	SendGameOverPacket(socket, roomId, message, name) {
+		if (this._rooms[roomId]) {
+			const players = this._rooms[roomId].players;
+
+			/*for (let i = 0; i < players.length; i++) {
+				
+				socket.emit('chat msg', {roomId:roomId, sender: name, message: message});
+			}*/
+			//send a message to all players in the room that a new player has joined.
+			//since the socket is now subscribed to the room, it will also receive the message.
+			this._io
+				.to(roomId)
+				.emit("gameOver", { roomId: roomId});
 
 			//store the room id and player name on the socket so that it can be restored if the connection is lost.
 			//see the #handleDisconnect function.
