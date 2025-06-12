@@ -39,8 +39,6 @@ Door hier actief aandacht aan te besteden in de MAKE-fase, zorgen we ervoor dat 
 
 ## MAKE 
 
-## MAKE
-
 ### Toevoeging van Sprites & Visuele Feedback bij Selector
 
 #### **Wat is er aangepast?**
