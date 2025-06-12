@@ -120,7 +120,23 @@ Een spel gemaakt door Twister, een gedreven team dat werkt aan indiegames.
 - Programming: Hele team.
 - Sound & Music: Placeholder.
 
-### Building:
-- Unit Creator: HP:0 Damage:0 Cost:1
-- Resource Collector: HP:5 Damage:0 Cost:0-1
+### Buildings:
+- Central Building: HP:20 Damage:0 Cost:None
+
+![IMG](./img/Central%20Building.png)
+
+- Unit Creator: HP:0 Damage:0 Cost:3
+
+![IMG](./img/Barrack.png)
+
+- Resource Collector: HP:5 Damage:0 Cost:1
+
+![IMG](./img/Colector.png)
+
 - Defence tower: HP:0 Damage:0 Cost:2
+
+### Unit:
+
+- Soldier: HP:2 Damage:2 Cost:1
+
+![IMG](./img/Unit.png)
