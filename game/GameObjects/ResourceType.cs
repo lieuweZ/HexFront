@@ -1,10 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Blok3Game.GameObjects
 {
@@ -15,9 +10,16 @@ namespace Blok3Game.GameObjects
         public int Color;
         public string Name;
 
+        public ResourceType(int id, string name, int amount, int color)
+        {
+            Id = id;
+            Name = name;
+            Amount = amount;
+            Color = color;
+        }
+
         public void Draw(Vector2 displacement, GameTime gameTime, SpriteBatch spriteBatch)
         {
-
         }
     }
 }

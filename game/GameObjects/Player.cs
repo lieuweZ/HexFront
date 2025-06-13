@@ -1,4 +1,7 @@
 using Blok3Game.Engine.GameObjects;
+using Blok3Game.Engine.SocketIOClient;
+using Blok3Game.GameStates;
+using Blok3Game.Packets;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -10,30 +13,28 @@ namespace Blok3Game.GameObjects
     {
         public static bool myTurn = true;
         public static Timer turnTimer;
+        public static double TimePerTurn = 30;
 
         public string Name { get; set; }
         public List<ResourceType> resources;
+        public int UnitsAvailable;
         public List<GameObject> hand;
         public GameObject centralBuilding;
         public bool surrendered;
+        public List<ResourceCollector> Collectors = new List<ResourceCollector>();
+        public List<UnitCreator> UnitCreators = new List<UnitCreator>();
 
         public Player(string name = "Player 1")
         {
             Name = name;
-            resources = new List<ResourceType>
-            {
-                new ResourceType { Id = 1, Name = "Wood", Amount = 5, Color = 0 },
-                new ResourceType { Id = 2, Name = "Stone", Amount = 3, Color = 1 },
-                new ResourceType { Id = 3, Name = "Gold", Amount = 2, Color = 2 }
-            };
-
+            resources = ResourceList.resources;
             hand = new List<GameObject>();
             centralBuilding = null;
             surrendered = false;
 
             turnTimer = new Timer
             {
-                Interval = 1000 * 60,
+                Interval = 1000 * TimePerTurn,
                 AutoReset = true,
                 Enabled = false
             };
@@ -42,12 +43,62 @@ namespace Blok3Game.GameObjects
 
         private static void endTurn()
         {
+            SocketClient.Instance.SendDataPacket(new TurnChangedPacket()
+            {
+                roomId = SocketClient.Instance.RoomId,
+                playerName = GameState.Username
+            });
             myTurn = !myTurn;
+        }
+
+        public void BeginTurn()
+        {
+            var grid = GameState.grid;
+            for (var x = 0; x <= grid.Columns; x++)
+            {
+                for (var y = 0; y <= grid.Rows; y++)
+                {
+                    Cell cl = (Cell)grid.Get(x, y);
+                    if (cl is Cell && cl.Obj != null)
+                    {
+                        if (cl.Obj is PieceObject piece && piece.OwnerName == GameState.Username)
+                        {
+                            piece.AtStartTurn(cl, this);
+                        }
+                    }
+                }
+            }
+        }
+
+        public void EndTurn()
+        {
+            var grid = GameState.grid;
+            for (var x = 0; x <= grid.Columns; x++)
+            {
+                for (var y = 0; y <= grid.Rows; y++)
+                {
+                    if (grid.Get(x, y) is Cell cl && cl.Obj is PieceObject piece)
+                    {
+                        var pos = new Vector2(x, y);
+
+                        if (piece is DefensiveBuilding defensive)
+                            defensive.AtEndTurn(cl, this, pos);
+
+                        if (piece is Unit unit && unit.OwnerName == GameState.Username)
+                            unit.AtEndTurn(cl, this, pos);
+                    }
+                }
+            }
+        }
+
+        public void RegisterCollector(ResourceCollector collector)
+        {
+            Collectors.Add(collector);
         }
 
         private static void OnTimedEvent(object source, ElapsedEventArgs e)
         {
-            Console.WriteLine($"Ending turn at {e.SignalTime}");
+        //    Console.WriteLine($"Ending turn at {e.SignalTime}");
             endTurn();
         }
 

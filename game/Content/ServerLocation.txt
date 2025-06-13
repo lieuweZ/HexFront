@@ -6,7 +6,7 @@
 	},
 	"release":
 	{
-		"location": "https://docent-2.pad.hbo-ict.cloud",
+		"location": "https://xooqaadaatuu78-pb4gdg2425.hbo-ict.cloud/api/",
 		"path": "/api/socket.io"
 	}
 }

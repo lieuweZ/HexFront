@@ -8,18 +8,22 @@ using System.Text;
 using System.Threading.Tasks;
 using Blok3Game.Engine.Helpers;
 using BaseProject;
+using Blok3Game.GameStates;
+using Blok3Game.Engine.SocketIOClient;
+using Blok3Game.Packets;
 
 namespace Blok3Game.GameObjects
 {
     public class Cell : GameObject
     {
-        public GameObject Obj;
+        public GameObject Obj { get; private set; }
         public ResourceType Resource;
         public CellType cell;
         public int GlowTime = 0;
         public Cell()
         {
-            cell = new CellType(DrawingHelper.GetColorEGA(34), true, false) ;
+            Random rand = new Random();
+            cell = new CellType(rand.Next(2), DrawingHelper.GetColorEGA(34), true, false);
         }
 
         public override void DebugDraw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -31,7 +35,15 @@ namespace Blok3Game.GameObjects
         public void SetObject(GameObject obj)
         { 
             Obj = obj;
-            obj.Position = obj.Position;
+            if (obj != null && obj.GetType() != typeof(Cube))
+            {
+                obj.Position = Position;
+            //    Console.WriteLine($"Placed {obj.GetType().Name} at position {Position}");
+            }
+            else
+            {
+            //    Console.WriteLine("Cleared cell contents");
+            }
         }
 
         public void ClearObject()
@@ -47,11 +59,10 @@ namespace Blok3Game.GameObjects
             }
         }
 
-
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             int tileScale = HexFront.self.CellScale;
-            DrawingHelper.FillHexagon(new Rectangle((int)this.position.X, (int)this.position.Y, tileScale, tileScale), spriteBatch, new Color(cell.Color));
+            DrawingHelper.FillHexagon(new Rectangle((int)this.position.X, (int)this.position.Y, tileScale, tileScale), spriteBatch, new Color(cell.GetColor()));
 
             Vector2 displacementhalf = new Vector2(tileScale / 2, tileScale / 2);
 
@@ -64,10 +75,25 @@ namespace Blok3Game.GameObjects
                 Obj.Draw(this.position + displacementhalf, gameTime, spriteBatch);
             }
 
-            
-            
-            
-            //DrawingHelper.FillRectangle(new Rectangle((int)this.position.X, (int)this.position.Y, 25, 25), spriteBatch, Color.Blue);
+            if (Resource != null && Resource.Amount > 0)
+            {
+                int circleRadius = 4;
+                int spacing = 10;
+
+                Vector2 basePos = this.position + displacementhalf + new Vector2(-((Resource.Amount - 1) * spacing) / 2f, tileScale / 3);
+
+                for (int i = 0; i < Resource.Amount; i++)
+                {
+                    Rectangle circleRect = new Rectangle(
+                        (int)(basePos.X + i * spacing - circleRadius),
+                        (int)(basePos.Y - circleRadius),
+                        circleRadius * 2,
+                        circleRadius * 2
+                    );
+
+                    DrawingHelper.FillRectangle(circleRect, spriteBatch, Color.Yellow);
+                }
+            }
         }
     }
 }
