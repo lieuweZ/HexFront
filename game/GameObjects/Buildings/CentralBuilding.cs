@@ -62,13 +62,8 @@ namespace Blok3Game.Engine.GameObjects
         public override bool TakeDamage(int damageAmount)
         {
             Health -= damageAmount;
+            HoverText = $"HP: {Health} \n ATK: {Attack}";
             Console.WriteLine("this objectt took damage" + Health + "this is the damage amount:" + damageAmount);
-
-            if (Health <= 0)
-            {
-                SocketClient.Instance.SendDataPacket(new GameOverPacket());
-            }
-
 
             return Health <= 0;
         }

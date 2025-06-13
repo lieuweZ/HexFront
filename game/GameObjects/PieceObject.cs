@@ -17,12 +17,14 @@ namespace Blok3Game.Engine.GameObjects
         private readonly Color flashOverlayColor = Color.Red * 0.4f;
         public int ResourceCost { get; set; }
         public string HoverText { get; set; }
-        public PieceObject(string assestSprite, string type, int attack, int health, string name) : base(assestSprite)
+        public SpriteSheet IconSprite { get; private set; }
+        public PieceObject(string assetSprite, string type, int attack, int health, string name) : base(assetSprite)
         {
             Type = type;
             Attack = attack;
             Health = health;
             Name = name;
+            IconSprite = new SpriteSheet(assetSprite);
             HoverText = $"HP: {Health} \n ATK: {Attack}";
         }
 
@@ -32,6 +34,7 @@ namespace Blok3Game.Engine.GameObjects
         public virtual bool TakeDamage(int damageAmount)
         {
             Health -= damageAmount;
+            HoverText = $"HP: {Health} \n ATK: {Attack}";
             Console.WriteLine("this objectt took damage" + Health + "this is the damage amount:" + damageAmount);
             return Health <= 0;
         }

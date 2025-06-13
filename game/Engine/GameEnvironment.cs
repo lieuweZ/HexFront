@@ -127,7 +127,7 @@ public class GameEnvironment : Game
         inputHelper.Update();
         if (inputHelper.KeyPressed(Keys.Escape))
         {
-            Exit();
+            //Exit();
         }
         if (inputHelper.KeyPressed(Keys.F11))
         {

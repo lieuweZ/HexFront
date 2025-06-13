@@ -25,6 +25,7 @@ namespace Blok3Game.Engine.GameObjects
         }
 
         public string HoverText { get; set; }
+        private SpriteSheet iconSprite;
 
         public SelectPiece(Vector2 position, int width, int height, int id) : base()
         {
@@ -38,6 +39,8 @@ namespace Blok3Game.Engine.GameObjects
             {
                 string typeLabel = piece.Type == "unit" ? "Units" : "Gold";
                 HoverText = $"{piece.Name}\nCost: {piece.ResourceCost}  {typeLabel}";
+
+                iconSprite = piece.IconSprite; // assign icon sprite here
             }
             else
             {
@@ -63,6 +66,15 @@ namespace Blok3Game.Engine.GameObjects
         public override void Draw(GameTime gametime, SpriteBatch spritebatch)
         {
             DrawingHelper.DrawRectangle(tangle, spritebatch, currentColor);
+
+            if (iconSprite != null)
+            {
+                float scale = Math.Min((float)tangle.Width / iconSprite.Width, (float)tangle.Height / iconSprite.Height);
+
+                Vector2 iconPosition = new Vector2(tangle.X, tangle.Y);
+
+                iconSprite.Draw(spritebatch, iconPosition, Vector2.Zero, scale, Color.White);
+            }
         }
     }
 }

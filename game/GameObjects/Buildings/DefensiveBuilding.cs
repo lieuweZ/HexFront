@@ -12,10 +12,17 @@ namespace Blok3Game.Engine.GameObjects
 {
     public class DefensiveBuilding : PieceObject
     {
-
-        public DefensiveBuilding() : base("Images/Sprites/Colector", "building", 1, 10, "Defense Tower")
+        private static SpriteSheet spriteDefensiveBuilding;
+        private static bool assetsLoaded = false;
+        public DefensiveBuilding() : base("Images/Sprites/DefensiveBuilding", "building", 1, 10, "Defense Tower")
         {
             ResourceCost = 3;
+            if (!assetsLoaded)
+            {
+                LoadAssets();
+            }
+            sprite = spriteDefensiveBuilding;  // Assign the preloaded sprite
+            Origin = new Vector2(sprite.Width / 2, sprite.Height / 2); // Optional: center origin
         }
         public Vector2? AttackObjects(Vector2 cellPosition)
         {
@@ -42,6 +49,11 @@ namespace Blok3Game.Engine.GameObjects
             return enemyCell[random.Next(enemyCell.Count)];
         }
 
+        public static void LoadAssets()
+        {
+            spriteDefensiveBuilding = new SpriteSheet("Images/Sprites/DefensiveBuilding");
+            assetsLoaded = true;
+        }
         public void Update(GameTime gameTime)
         {
             base.Update(gameTime);
@@ -61,8 +73,11 @@ namespace Blok3Game.Engine.GameObjects
         }
         public override void Draw(Vector2 displacement, GameTime gameTime, SpriteBatch spriteBatch)
         {
-            DrawingHelper.FillRectangle(new Rectangle((int)(displacement.X - 12), (int)(displacement.Y - 12), 25, 25), spriteBatch, Color.Orange);
-            base.Draw(displacement, spriteBatch);
+            if (sprite != null)
+            {
+                float scale = 1f; // adjust if you want to scale your sprite
+                sprite.Draw(spriteBatch, displacement, Origin, scale, Color.White);
+            }
         }
     }
 }

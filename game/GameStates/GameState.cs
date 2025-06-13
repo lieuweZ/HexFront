@@ -222,7 +222,6 @@ namespace Blok3Game.GameStates
                         }
                     }
                 }
-
             grid.updated = true;
         }
 
@@ -438,9 +437,16 @@ namespace Blok3Game.GameStates
             Cell cl = (Cell)grid.Get(x, y);
             if (cl.Obj is PieceObject piece)
             {
+                if (piece == null) return;
                 if (piece.TakeDamage(data.attackDamage))
                 {
+                    if (cl.Obj == null) return; 
                     cl.ClearObject();
+                    if (piece is CentralBuilding && !finished)
+                    {
+                        finished = true;
+                        SocketClient.Instance.SendDataPacket(new GameOverPacket());
+                    }
                 }
             }
         }
