@@ -56,7 +56,7 @@ namespace Blok3Game.Engine.GameObjects
         public override void Update(GameTime gameTime)
         {
             if (isSelected)
-                currentColor = Color.Green;
+                currentColor = Color.Black;
             else if (isHovered)
                 currentColor = Color.Yellow;
             else

@@ -251,7 +251,7 @@ namespace Blok3Game.GameStates
             }
             else
             {
-                timerText.Text = "Time Left: 60s";
+                timerText.Text = "Time Left: 30s";
             }
         }
 
@@ -307,6 +307,7 @@ namespace Blok3Game.GameStates
             }
             else
             {
+                UpdateResources();
                 player.EndTurn();
                 grid.OnTurnEnd();
                 Player.myTurn = false;
@@ -440,12 +441,28 @@ namespace Blok3Game.GameStates
                 if (piece == null) return;
                 if (piece.TakeDamage(data.attackDamage))
                 {
-                    if (cl.Obj == null) return; 
+                    if (cl.Obj == null) return;
                     cl.ClearObject();
                     if (piece is CentralBuilding && !finished)
                     {
                         finished = true;
                         SocketClient.Instance.SendDataPacket(new GameOverPacket());
+                    }
+                }
+            }
+        }
+
+        private void UpdateResources()
+        {
+            for (int i = 0; i < grid.Rows; i++)
+            {
+                for (int j = 0; j < grid.Columns; j++)
+                {
+                    Cell cell = (Cell)grid.Get(i, j);
+
+                    if (cell.Obj != null && cell.Obj is ResourceCollector collector && collector.OwnerName != Username && cell.Resource.Amount > 0)
+                    {
+                        cell.Resource.Amount -= 1;
                     }
                 }
             }

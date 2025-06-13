@@ -88,13 +88,9 @@ namespace Blok3Game.GameObjects
         {
             base.Update(gameTime);
         }
-        public override void Draw(Vector2 displacement, GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(Vector2 displacement, GameTime gameTime, SpriteBatch spriteBatch)
         {
-            if (sprite != null)
-            {
-                float scale = 1f; // adjust if you want to scale your sprite
-                sprite.Draw(spriteBatch, displacement, Origin, scale, Color.White);
-            }
+            base.Draw(displacement, gameTime, spriteBatch);
         }
     }
 }

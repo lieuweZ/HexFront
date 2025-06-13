@@ -74,6 +74,26 @@ namespace Blok3Game.GameObjects
             {
                 Obj.Draw(this.position + displacementhalf, gameTime, spriteBatch);
             }
+
+            if (Resource != null && Resource.Amount > 0)
+            {
+                int circleRadius = 4;
+                int spacing = 10;
+
+                Vector2 basePos = this.position + displacementhalf + new Vector2(-((Resource.Amount - 1) * spacing) / 2f, tileScale / 3);
+
+                for (int i = 0; i < Resource.Amount; i++)
+                {
+                    Rectangle circleRect = new Rectangle(
+                        (int)(basePos.X + i * spacing - circleRadius),
+                        (int)(basePos.Y - circleRadius),
+                        circleRadius * 2,
+                        circleRadius * 2
+                    );
+
+                    DrawingHelper.FillRectangle(circleRect, spriteBatch, Color.Yellow);
+                }
+            }
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Blok3Game.GameObjects
     {
         public static bool myTurn = true;
         public static Timer turnTimer;
-        public static double TimePerTurn = 60;
+        public static double TimePerTurn = 30;
 
         public string Name { get; set; }
         public List<ResourceType> resources;

@@ -3,6 +3,7 @@ using Blok3Game.Engine.Helpers;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System;
+using Blok3Game.GameStates;
 namespace Blok3Game.Engine.GameObjects
 {
     public class PieceObject : SpriteGameObject
@@ -42,8 +43,32 @@ namespace Blok3Game.Engine.GameObjects
 
         public virtual void AtEndTurn(Cell cell, Player player, Vector2 cellPosition) { }
 
-        public virtual void Draw(Vector2 displacement, SpriteBatch spriteBatch)
+        public override void Draw(Vector2 displacement, GameTime gameTime, SpriteBatch spriteBatch)
         {
+            base.Draw(displacement, gameTime, spriteBatch);
+
+            float scale = 1f;
+            sprite.Draw(spriteBatch, displacement, Origin, scale, Color.White);
+
+            if (OwnerName == GameState.Username)
+            {
+                int markerWidth = 24;
+                int markerHeight = 4;
+
+                Vector2 markerPos = new Vector2(
+                    displacement.X - markerWidth / 2f,
+                    displacement.Y + sprite.Height / 2f + 2
+                );
+
+                Rectangle markerRect = new Rectangle(
+                    (int)markerPos.X,
+                    (int)markerPos.Y,
+                    markerWidth,
+                    markerHeight
+                );
+
+                DrawingHelper.FillRectangle(markerRect, spriteBatch, Color.Black);
+            }
         }
     }
 }
