@@ -33,7 +33,7 @@ class AchievementSystem extends MessageHandler {
                 await this.checkAchievement(gameId, playerName, 'unit_commander', unitCount, 10);
             } else if (pieceId === 1) { // ResourceCollector
                 await this.checkAchievement(gameId, playerName, 'master_builder', unitCount, 5);
-            } else if (pieceId === 2) { // DefensiveBuilding
+            } else if (pieceId === 2) { // DefensiveBuilding 
                 await this.checkAchievement(gameId, playerName, 'fortress_architect', unitCount, 3);
             }
         } catch (error) {
@@ -52,40 +52,51 @@ class AchievementSystem extends MessageHandler {
         return result.rows.length > 0 ? result.rows[0].count : 0;
     }
 
-    async checkAchievement(gameId, playerName, achievementKey, currentProgress, targetProgress) {
-        const achievement = this.achievementDefinitions.get(achievementKey);
-        if (!achievement) return;
+async checkAchievement(gameId, playerName, achievementKey, currentProgress, targetProgress) {
+    const achievement = this.achievementDefinitions.get(achievementKey);
+    if (!achievement) return;
 
-        try {
-            console.log(`[ACH] Upserting achievement ${achievementKey} for game ${gameId}, player ${playerName}: current=${currentProgress}, target=${targetProgress}`);
-            // Update or insert achievement progress
-            await this._databaseConnector.executePreparedQuery(
-                `INSERT INTO player_achievements 
-                    (game_id, player_name, achievement_id, progress_current, progress_target, is_completed, completed_at)
-                    VALUES (?, ?, ?, ?, ?, ?, ?)
-                    ON DUPLICATE KEY UPDATE
-                    progress_current = VALUES(progress_current),
-                    is_completed = VALUES(is_completed),
-                    completed_at = VALUES(completed_at)`,
-                [
-                    gameId,
-                    playerName,
-                    achievement.achievement_id,
-                    currentProgress,
-                    targetProgress,
-                    currentProgress >= targetProgress,
-                    currentProgress >= targetProgress ? new Date() : null
-                ]
-            );
-
-            // If achievement just completed, notify the player
-            if (currentProgress >= targetProgress) {
-                await this.notifyAchievementUnlocked(gameId, playerName, achievement);
-            }
-        } catch (error) {
-            console.error(`Failed to update achievement ${achievementKey}:`, error);
+    try {
+        console.log(`[ACH] Upserting achievement ${achievementKey} for game ${gameId}, player ${playerName}: current=${currentProgress}, target=${targetProgress}`);
+        
+        // First, check if achievement was already completed
+        const existingResult = await this._databaseConnector.executePreparedQuery(
+            `SELECT is_completed FROM player_achievements 
+                WHERE game_id = ? AND player_name = ? AND achievement_id = ?`,
+            [gameId, playerName, achievement.achievement_id]
+        );
+        
+        const wasAlreadyCompleted = existingResult.rows.length > 0 && existingResult.rows[0].is_completed;
+        const isNowCompleted = currentProgress >= targetProgress;
+        
+        // Update or insert achievement progress
+        await this._databaseConnector.executePreparedQuery(
+            `INSERT INTO player_achievements 
+                (game_id, player_name, achievement_id, progress_current, progress_target, is_completed, completed_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+                ON DUPLICATE KEY UPDATE
+                progress_current = VALUES(progress_current),
+                is_completed = VALUES(is_completed),
+                completed_at = VALUES(completed_at)`,
+            [
+                gameId,
+                playerName,
+                achievement.achievement_id,
+                currentProgress,
+                targetProgress,
+                isNowCompleted,
+                isNowCompleted ? new Date() : null
+            ]
+        );
+        if (isNowCompleted && !wasAlreadyCompleted) {
+            await this.notifyAchievementUnlocked(gameId, playerName, achievement);
         }
+
+    } catch (error) {
+        console.error(`Failed to update achievement ${achievementKey}:`, error);
     }
+}
+
 
     async notifyAchievementUnlocked(gameId, playerName, achievement) {
         // Find the room this game belongs to
