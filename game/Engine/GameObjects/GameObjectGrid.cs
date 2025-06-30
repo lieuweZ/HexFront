@@ -428,12 +428,18 @@ namespace Blok3Game.Engine.GameObjects
 
 		public void SetCellPiece(Vector2 cell, GameObject obj, string playerName)
 		{
+			// Add null check for the cell
 			Cell cl = (Cell)Get((int)cell.X, (int)cell.Y);
+			if (cl == null)
+			{
+				Console.WriteLine($"Error: Cell at ({cell.X}, {cell.Y}) is null");
+				return;
+			}
+
 			if (cl.Obj != null)
 			{
 				return;
 			}
-
 			else if (obj is PieceObject piece)
 			{
 				piece.OwnerName = playerName;
@@ -442,6 +448,7 @@ namespace Blok3Game.Engine.GameObjects
 			cl.SetObject(obj);
 			cl.Obj.Parent = cl;
 		}
+
 
 		private bool CanPlaceAt(Vector2 pos)
 		{
