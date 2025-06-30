@@ -483,7 +483,7 @@ namespace Blok3Game.GameStates
                     Add(notification);
 
                     // Play achievement sound effect
-                    // GameEnvironment.AssetManager.AudioManager.PlaySoundEffect("achievement_unlocked");
+                    GameEnvironment.AssetManager.AudioManager.PlaySoundEffect("switch-3");
                 }
             });
         }

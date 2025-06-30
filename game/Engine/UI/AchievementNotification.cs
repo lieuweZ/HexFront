@@ -34,7 +34,7 @@ namespace Blok3Game.GameObjects
             // Create text elements
             titleText = new TextGameObject("Fonts/SpriteFont", 100)
             {
-                Text = $"🏆 {title}",
+                Text = $" {title}",
                 Position = position + new Vector2(10, 5),
                 Color = Color.Gold
             };
