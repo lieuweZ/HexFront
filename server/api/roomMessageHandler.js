@@ -1,10 +1,12 @@
 const { generateHexId } = require("../framework/utils/cryptoHelper.js");
 const MessageHandler = require("./messageHandler.js");
+const AchievementSystem = require("./achievementSystem.js");
 
 class RoomMessageHandler extends MessageHandler {
   constructor(io, databaseConnector, rooms) {
     super(io, databaseConnector, rooms);
-  }
+    this.achievementSystem = new AchievementSystem(io, databaseConnector);
+  }	
 
   handleIncomingMessages(socket) {
     this.#handleIncomingCreateRoomMessages(socket);
@@ -95,23 +97,23 @@ class RoomMessageHandler extends MessageHandler {
     socket.on("cell update", async (data, ack) => {
       console.log("⟵ cell update received:", data);
 
-      const { roomId, cell: position, piece: pieceId, playerName } = data;
+	const { roomId, cell: position, piece: pieceIdStr, playerName } = data;
+	const pieceId = parseInt(pieceIdStr, 10);
 
       // Broadcast to all clients
       this._io.to(roomId).emit("cell update", {
         roomId,
         cell: position,
-        piece: pieceId,
+        piece: pieceIdStr,
         playerName,
       });
 
-            const trackMap = {
-        0: 'UnitCreator',
-        1: 'ResourceCollector',
-        2: 'DefensiveBuilding',
-        3: 'Unit'
+      const trackMap = {
+        0: "UnitCreator",
+        1: "ResourceCollector",
+        2: "DefensiveBuilding",
+        3: "Unit",
       };
-
 
       if (trackMap[pieceId]) {
         try {
@@ -132,6 +134,15 @@ class RoomMessageHandler extends MessageHandler {
                 placement_count = placement_count + 1,
                 last_placement_time = NOW()`,
             [roomId, playerName, pieceId]
+          );
+
+          console.log(
+            `[ACH] Checking achievements for piece ${pieceId} in game ${roomId}, player ${playerName}`
+          );
+          await this.achievementSystem.checkPieceAchievements(
+            roomId,
+            playerName,
+            pieceId
           );
 
           if (ack) ack({ success: true });
@@ -327,7 +338,9 @@ class RoomMessageHandler extends MessageHandler {
         this._rooms[roomId].players[1].role = 2;
         this._rooms[roomId].currentTurnPlayer = this._rooms[roomId].players[0].name;
 
-        console.log(`Starting game in room ${roomId}. First turn: ${this._rooms[roomId].currentTurnPlayer}`);
+        console.log(
+          `Starting game in room ${roomId}. First turn: ${this._rooms[roomId].currentTurnPlayer}`
+        );
 
         // Create game records
         try {

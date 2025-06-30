@@ -68,6 +68,7 @@ namespace Blok3Game.GameStates
             SocketClient.Instance.SubscribeToDataPacket<StartGameData>(StartGame);
             SocketClient.Instance.SubscribeToDataPacket<DamagePacket>(DamageCell);
             SocketClient.Instance.SubscribeToDataPacket<GameOverPacket>(GameOver);
+            SocketClient.Instance.SubscribeToDataPacket<AchievementUnlockedPacket>(OnAchievementUnlocked);
 
 
             player = new Player("player");
@@ -176,16 +177,16 @@ namespace Blok3Game.GameStates
         public void ReceivedData(object i)
         {
             HexFront.RunOnUIThread(() =>
-           {
-               if (i is CellUpdatePacket piecePacket)
-               {
-                   PieceList pieces = new PieceList();
-                   string[] pos = piecePacket.cell.Split(" ");
-                   grid.SetCellPiece(new Vector2(int.Parse(pos[0]), int.Parse(pos[1])), pieces.CreateFromId(int.Parse(piecePacket.piece)), piecePacket.playerName);
+            {
+                if (i is CellUpdatePacket piecePacket)
+                {
+                    PieceList pieces = new PieceList();
+                    string[] pos = piecePacket.cell.Split(" ");
+                    grid.SetCellPiece(new Vector2(int.Parse(pos[0]), int.Parse(pos[1])), pieces.CreateFromId(int.Parse(piecePacket.piece)), piecePacket.playerName);
 
-                   piecePacket = null;
-               }
-           });
+                    piecePacket = null;
+                }
+            });
         }
 
         public void RecievedCellData(object i)
@@ -295,12 +296,11 @@ namespace Blok3Game.GameStates
             if (this.finished) return;
             string playerName = data.playerName.ToString();
             currentTurnPlayerName = playerName;
-            //Console.WriteLine($"Turn changed to: {playerName}");
             GameEnvironment.AssetManager.AudioManager.PlaySoundEffect("your_turn");
             if (playerName == Username)
             {
                 Player.myTurn = true;
-                grid.OnTurnStart();  // Make sure this line is present
+                grid.OnTurnStart(); 
                 timeRemaining = Player.TimePerTurn;
                 elapsedSinceTurnStart = 0;
                 player.BeginTurn();
@@ -466,6 +466,26 @@ namespace Blok3Game.GameStates
                     }
                 }
             }
+        }
+
+        private void OnAchievementUnlocked(AchievementUnlockedPacket packet)
+        {
+            HexFront.RunOnUIThread(() =>
+            {
+                // Only show notification for current player
+                if (packet.playerName == Username)
+                {
+                    var notification = new AchievementNotification(
+                        packet.achievement.name,
+                        packet.achievement.description,
+                        packet.achievement.points
+                    );
+                    Add(notification);
+
+                    // Play achievement sound effect
+                    // GameEnvironment.AssetManager.AudioManager.PlaySoundEffect("achievement_unlocked");
+                }
+            });
         }
     }
 }
