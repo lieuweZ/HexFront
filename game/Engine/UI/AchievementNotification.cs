@@ -17,7 +17,7 @@ namespace Blok3Game.GameObjects
         private bool isAnimating = true;
         private Rectangle background;
 
-        public AchievementNotification(string title, string description, int points) : base(999) // High layer
+        public AchievementNotification(string title, string description, int points) : base(999)
         {
             // Position in bottom-right corner
             int width = 300;
@@ -31,21 +31,21 @@ namespace Blok3Game.GameObjects
 
             background = new Rectangle((int)position.X, (int)position.Y, width, height);
 
-            // Create text elements
+            // Title text
             titleText = new TextGameObject("Fonts/SpriteFont", 100)
             {
                 Text = $" {title}",
                 Position = position + new Vector2(10, 5),
                 Color = Color.Gold
             };
-
+            // Description text
             descriptionText = new TextGameObject("Fonts/SpriteFont", 100)
             {
                 Text = description,
                 Position = position + new Vector2(10, 25),
                 Color = Color.White
             };
-
+            // Points text
             pointsText = new TextGameObject("Fonts/SpriteFont", 100)
             {
                 Text = $"+{points} points",
