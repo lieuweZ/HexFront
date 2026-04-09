@@ -25,6 +25,20 @@ namespace Blok3Game.GameStates
             Button buttonCancel = CreateButton(new Vector2(450, 525), "CANCEL", OnButtonCancelClicked);
             TextGameObject tut = CreateText(new Vector2(211, 250 + 125), "Instructions\nSelect structures bij  choosing from the top menu.\nClick an empty cell next to one of your buildings to build the structure\nOrder units from structures\nUse your units to extract resources from resource nodes\nUse your units to destroy the main building of your opponent.");
             Add(tut);
+
+
+            TextGameObject achHeader = CreateText(new Vector2(-100, 380), "ACHIEVEMENTS");
+            achHeader.Color = Color.Gold;
+            Add(achHeader);
+
+        TextGameObject achList = CreateText(new Vector2(-100, 410),
+            "- Unit Commander: 10 Units\n" +
+            "- Master Builder: 5 Resource Collectors\n" +
+            "- Fortress Architect: 3 Defensive Buildings\n" +
+            "- Unit Factory Master: 4 Unit Creators"
+        );
+        Add(achList);
+
         }
 
         protected override void HandleIncomingMessages()

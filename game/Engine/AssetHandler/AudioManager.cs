@@ -41,15 +41,23 @@ namespace Blok3Game.Engine.AssetHandler
             LoadSongs();
         }
 
-        private void LoadSoundEffects(ContentManager contentManager)
+private void LoadSoundEffects(ContentManager contentManager)
+{
+    foreach (var filePath in Directory.GetFiles(FilePathContentAudioEffects))
+    {
+        var assetName = Path.GetFileNameWithoutExtension(filePath);
+        if (!soundEffects.ContainsKey(assetName))
         {
-            foreach (var filePath in Directory.GetFiles(FilePathContentAudioEffects))
-            {
-                var assetName = Path.GetFileNameWithoutExtension(filePath);
-
-                soundEffects.Add(assetName, contentManager.Load<SoundEffect>(Path.Combine(FilePathAudioEffects, assetName)));
-            }
+            soundEffects[assetName] = contentManager.Load<SoundEffect>(
+                Path.Combine(FilePathAudioEffects, assetName));
         }
+        else
+        {
+            // Optional: log skipped duplicates
+            Console.WriteLine($"⚠️ Skipping duplicate sound effect '{assetName}'.");
+        }
+    }
+}
 
         private void LoadSongs()
         {

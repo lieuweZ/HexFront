@@ -36,7 +36,7 @@ namespace Blok3Game.Engine.GameObjects
         {
             Health -= damageAmount;
             HoverText = $"HP: {Health} \n ATK: {Attack}";
-            Console.WriteLine("this objectt took damage" + Health + "this is the damage amount:" + damageAmount);
+            Console.WriteLine("this object took damage" + Health + "this is the damage amount:" + damageAmount);
             return Health <= 0;
         }
         public virtual void AtStartTurn(Cell cell, Player player) { }
