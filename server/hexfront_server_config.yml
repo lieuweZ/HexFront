@@ -1,9 +1,10 @@
-services:
+  services:
   - type: web
     name: hexfront-server
     runtime: node
-    buildCommand: cd server && npm install
-    startCommand: cd server && npm start
+    dir: server
+    buildCommand: npm install
+    startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
