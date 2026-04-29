@@ -6,7 +6,7 @@
 	},
 	"release":
 	{
-		"location": "https://xooqaadaatuu78-pb4gdg2425.hbo-ict.cloud",
-		"path": "/api/socket.io"
+		"location": "https://your-multiplayer-server.example.com",
+		"path": "/socket.io"
 	}
 }

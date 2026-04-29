@@ -1,24 +1,17 @@
 {
-    "name": "game-development-blok-3",
-    "displayName": "Game Development blok 3",
-    "description": "Game Development back-end blok 3",
-    "private": true,
+    "name": "hexfront-server",
     "version": "1.0.0",
-    "engines": {
-        "node": "18.x"
-    },
-    "devDependencies": {
-        "nodemon": "3.1.9"
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js",
+        "dev": "nodemon app.js"
     },
     "dependencies": {
-        "body-parser": "2.2.0",
-        "express": "5.1.0",
-        "morgan": "1.10.0",
-        "multer": "1.4.5-lts.2",
-        "socket.io": "4.8.1",
-		"mysql2": "3.14.0"
+        "express": "^5.1.0",
+        "socket.io": "^4.8.1",
+        "morgan": "^1.10.0"
     },
-    "scripts": {
-        "start": "nodemon server.js"
+    "devDependencies": {
+        "nodemon": "^3.1.9"
     }
 }
